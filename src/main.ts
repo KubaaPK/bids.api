@@ -1,8 +1,16 @@
-import { NestFactory } from '@nestjs/core';
+import 'dotenv/config';
+import { NestApplication, NestFactory } from '@nestjs/core';
+import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+async function bootstrap(): Promise<void> {
+  const app: NestApplication = await NestFactory.create(AppModule);
+
+  app.use(helmet());
+  app.setGlobalPrefix(process.env.APP_API_PREFIX);
+
+  await app.listen(process.env.APP_PORT);
 }
-bootstrap();
+(async () => {
+  await bootstrap();
+})();
