@@ -1,10 +1,26 @@
+import 'dotenv/config';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as admin from 'firebase-admin';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { DatabaseConfigFactory } from './config/database-config.factory';
+import { AccountModule } from './modules/modules/account/account.module';
 
 @Module({
-  imports: [],
+  imports: [
+    TypeOrmModule.forRoot(DatabaseConfigFactory.create(process.env.NODE_ENV)),
+    AccountModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    admin.initializeApp({
+      credential: admin.credential.cert(
+        require(`${process.env.FIREBASE_CONFIG_JSON_PATH}`),
+      ),
+      databaseURL: `https://${process.env.FIREBASE_DATABASE}.firebaseio.com`,
+    });
+  }
+}

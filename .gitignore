@@ -34,3 +34,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 .env
+/src/config/bids-2a878-firebase-adminsdk-yhs1z-791366a1e2.json
