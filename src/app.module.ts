@@ -5,11 +5,13 @@ import * as admin from 'firebase-admin';
 import { AppController } from './app.controller';
 import { DatabaseConfigFactory } from './config/database-config.factory';
 import { AccountModule } from './modules/modules/account/account.module';
+import { AuthModule } from './modules/modules/auth/auth.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(DatabaseConfigFactory.create(process.env.NODE_ENV)),
     AccountModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [],
