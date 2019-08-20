@@ -1,18 +1,21 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  InternalServerErrorException,
   Post,
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
+  ApiOkResponse,
   ApiUnauthorizedResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
@@ -24,6 +27,9 @@ import { CreateCategoryCommand } from '../commands/admin/create-category/create-
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../../../auth/application/guards/roles.guard';
 import { roles } from '../../../auth/application/guards/roles.decorator';
+import { ListableCategoryDto } from '../dtos/read/listable-category.dto';
+import { ExceptionMessages } from '../../../../common/exception-messages';
+import { ListCategoriesQuery } from '../queries/list-categories/list-categories.query';
 
 @ApiUseTags('categories')
 @Controller('sale/categories')
@@ -33,7 +39,10 @@ export class CategoryController {
     true,
   );
 
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @ApiCreatedResponse({ description: 'Category has been added.' })
   @ApiBadRequestResponse({ description: 'Validation error. ' })
@@ -51,11 +60,38 @@ export class CategoryController {
     const id: Uuid = Uuid.v4();
     newCategory.id = id;
 
-    await this.commandBus.execute(new CreateCategoryCommand(newCategory));
-    response
-      .header({
-        Location: `${process.env.APP_API_ROOT_URL}/sale/categories/${id}`,
-      })
-      .sendStatus(HttpStatus.CREATED);
+    try {
+      await this.commandBus.execute(new CreateCategoryCommand(newCategory));
+      response
+        .header({
+          Location: `${process.env.APP_API_ROOT_URL}/sale/categories/${id}`,
+        })
+        .sendStatus(HttpStatus.CREATED);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({
+    description: 'An array with categories.',
+    type: [ListableCategoryDto],
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  public async getAll(): Promise<ListableCategoryDto[]> {
+    try {
+      return await this.queryBus.execute(new ListCategoriesQuery());
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
   }
 }

@@ -5,10 +5,11 @@ import { CategoryController } from './application/controllers/category.controlle
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './domain/category/category';
 import { ioCContainer } from '../../../config/ioc-container';
+import { queryHandlers } from './application/queries';
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([Category])],
-  providers: [...ioCContainer, ...commandHandlers],
+  providers: [...ioCContainer, ...commandHandlers, ...queryHandlers],
   controllers: [CategoryController],
 })
 export class SaleModule {}

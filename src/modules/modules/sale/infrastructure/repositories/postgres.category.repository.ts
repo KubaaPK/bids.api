@@ -40,6 +40,22 @@ export class PostgresCategoryRepository implements CategoryRepository {
     }
   }
 
+  public async find(): Promise<Category[]> {
+    try {
+      return await this.repository.find({
+        where: {
+          parent: null,
+        },
+        relations: ['parent'],
+      });
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   public async save(category: Category): Promise<Category> {
     try {
       return await this.repository.save(category);

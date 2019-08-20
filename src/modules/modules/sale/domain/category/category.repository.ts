@@ -7,4 +7,5 @@ export abstract class CategoryRepository {
     arg: string | Uuid,
   ): Promise<Category | undefined>;
   public abstract async findOne(id: Uuid): Promise<Category | undefined>;
+  public abstract async find(): Promise<Category[]>;
 }
