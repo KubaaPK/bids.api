@@ -6,12 +6,14 @@ import { AppController } from './app.controller';
 import { DatabaseConfigFactory } from './config/database-config.factory';
 import { AccountModule } from './modules/modules/account/account.module';
 import { AuthModule } from './modules/modules/auth/auth.module';
+import { SaleModule } from './modules/modules/sale/sale.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(DatabaseConfigFactory.create(process.env.NODE_ENV)),
     AccountModule,
     AuthModule,
+    SaleModule,
   ],
   controllers: [AppController],
   providers: [],

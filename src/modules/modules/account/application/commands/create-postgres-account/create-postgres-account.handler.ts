@@ -2,6 +2,7 @@ import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { CreatePostgresAccountCommand } from './create-postgres-account.command';
 import { AccountRepository } from '../../../domain/account.repository';
 import { Account } from '../../../domain/account';
+// tslint:disable-next-line:max-line-length
 import { PostgresAccountHasNotBeenCreatedEvent } from '../../events/postgres-account-has-not-been-created/postgres-account-has-not-been-created.event';
 
 @CommandHandler(CreatePostgresAccountCommand)
@@ -13,6 +14,7 @@ export class CreatePostgresAccountHandler
   ) {}
 
   public async execute(command: CreatePostgresAccountCommand): Promise<any> {
+    console.log(this.accountRepository);
     const newAccount: Account = Account.create(command.newAccount);
     const existingAccount:
       | Account

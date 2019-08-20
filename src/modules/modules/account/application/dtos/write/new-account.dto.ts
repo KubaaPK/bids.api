@@ -5,6 +5,7 @@ import {
   IsEmail,
   IsEnum,
   IsNumber,
+  IsOptional,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -70,18 +71,19 @@ export class NewAccountDto {
     description: 'Company NIP number.',
     required: false,
   })
+  @IsOptional()
   @IsNumber(
     {},
     {
       message:
-        'Adres NIP musi być podany w formie liczby bez znaków specjalnych.',
+        'Numer NIP musi być podany w formie liczby bez znaków specjalnych.',
     },
   )
   @MinLength(10, {
-    message: 'Adres NIP musi składać się z 10 cyfr bez znaków specjalnych.',
+    message: 'Numer NIP musi składać się z 10 cyfr bez znaków specjalnych.',
   })
   @MaxLength(10, {
-    message: 'Adres NIP musi składać się z 10 cyfr bez znaków specjalnych.',
+    message: 'Numer NIP musi składać się z 10 cyfr bez znaków specjalnych.',
   })
   public readonly nip?: number;
 }

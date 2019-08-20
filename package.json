@@ -31,6 +31,7 @@
     "class-validator": "^0.10.0",
     "dotenv": "^8.0.0",
     "firebase-admin": "^8.3.0",
+    "flat": "^4.1.0",
     "helmet": "^3.20.0",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
