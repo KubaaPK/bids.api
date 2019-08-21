@@ -25,7 +25,9 @@ export class PostgresCategoryRepository implements CategoryRepository {
   public async findOne(arg: string | Uuid): Promise<Category | undefined> {
     try {
       if (Uuid.isUuidV4(arg)) {
-        return await this.repository.findOne(arg as Uuid);
+        return await this.repository.findOne(arg as Uuid, {
+          relations: ['parent'],
+        });
       }
       return await this.repository.findOne({
         where: {

@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   Res,
   UseGuards,
@@ -15,6 +16,7 @@ import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiUnauthorizedResponse,
   ApiUseTags,
@@ -30,6 +32,7 @@ import { roles } from '../../../auth/application/guards/roles.decorator';
 import { ListableCategoryDto } from '../dtos/read/listable-category.dto';
 import { ExceptionMessages } from '../../../../common/exception-messages';
 import { ListCategoriesQuery } from '../queries/list-categories/list-categories.query';
+import { ListCategoryQuery } from '../queries/list-category/list-category.query';
 
 @ApiUseTags('categories')
 @Controller('sale/categories')
@@ -86,6 +89,26 @@ export class CategoryController {
   public async getAll(): Promise<ListableCategoryDto[]> {
     try {
       return await this.queryBus.execute(new ListCategoriesQuery());
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({ description: 'Listed category', type: ListableCategoryDto })
+  @ApiBadRequestResponse({ description: 'Invalid UUID format. ' })
+  @ApiNotFoundResponse({ description: 'Category not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Get('/:categoryId')
+  @HttpCode(HttpStatus.OK)
+  public async get(
+    @Param('categoryId') categoryId: Uuid,
+  ): Promise<ListableCategoryDto> {
+    try {
+      return await this.queryBus.execute(new ListCategoryQuery(categoryId));
     } catch (e) {
       this.logger.error(e.message);
       throw e ||
