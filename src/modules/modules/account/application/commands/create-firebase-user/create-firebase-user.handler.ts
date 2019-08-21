@@ -38,7 +38,6 @@ export class CreateFirebaseUserHandler
       if (e.code === 'auth/email-already-exists') {
         throw new ConflictException('Konto o podanych danych już istnieje.');
       }
-      console.log(e);
       throw new InternalServerErrorException(
         ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
       );

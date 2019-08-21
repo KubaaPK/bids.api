@@ -19,7 +19,9 @@ export class Category extends AggregateRoot {
   })
   public leaf: boolean;
 
-  @ManyToOne(type => Category, category => category.children)
+  @ManyToOne(type => Category, category => category.children, {
+    onDelete: 'CASCADE',
+  })
   public parent: Category;
 
   @OneToMany(type => Category, category => category.parent)

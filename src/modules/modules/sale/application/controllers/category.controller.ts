@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -16,6 +17,7 @@ import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiUnauthorizedResponse,
@@ -33,6 +35,7 @@ import { ListableCategoryDto } from '../dtos/read/listable-category.dto';
 import { ExceptionMessages } from '../../../../common/exception-messages';
 import { ListCategoriesQuery } from '../queries/list-categories/list-categories.query';
 import { ListCategoryQuery } from '../queries/list-category/list-category.query';
+import { DeleteCategoryCommand } from '../commands/admin/delete-category/delete-category.command';
 
 @ApiUseTags('categories')
 @Controller('sale/categories')
@@ -109,6 +112,31 @@ export class CategoryController {
   ): Promise<ListableCategoryDto> {
     try {
       return await this.queryBus.execute(new ListCategoryQuery(categoryId));
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiNoContentResponse({ description: 'Category has been deleted. ' })
+  @ApiBadRequestResponse({ description: 'Invalid UUID format. ' })
+  @ApiNotFoundResponse({ description: 'Category not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Delete('/:categoryId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles('admin')
+  public async delete(
+    @Res() response: Response,
+    @Param('categoryId') categoryId: Uuid,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new DeleteCategoryCommand(categoryId));
+
+      response.sendStatus(HttpStatus.NO_CONTENT);
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

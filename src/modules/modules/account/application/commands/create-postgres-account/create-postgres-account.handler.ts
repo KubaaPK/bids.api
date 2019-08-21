@@ -14,7 +14,6 @@ export class CreatePostgresAccountHandler
   ) {}
 
   public async execute(command: CreatePostgresAccountCommand): Promise<any> {
-    console.log(this.accountRepository);
     const newAccount: Account = Account.create(command.newAccount);
     const existingAccount:
       | Account
