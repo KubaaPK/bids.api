@@ -7,6 +7,7 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Param,
+  Patch,
   Post,
   Res,
   UseGuards,
@@ -36,6 +37,8 @@ import { ExceptionMessages } from '../../../../common/exception-messages';
 import { ListCategoriesQuery } from '../queries/list-categories/list-categories.query';
 import { ListCategoryQuery } from '../queries/list-category/list-category.query';
 import { DeleteCategoryCommand } from '../commands/admin/delete-category/delete-category.command';
+import { UpdatedCategoryDto } from '../dtos/write/updated-category.dto';
+import { UpdateCategoryCommand } from '../commands/admin/update-category/update-category.command';
 
 @ApiUseTags('categories')
 @Controller('sale/categories')
@@ -122,7 +125,7 @@ export class CategoryController {
   }
 
   @ApiNoContentResponse({ description: 'Category has been deleted. ' })
-  @ApiBadRequestResponse({ description: 'Invalid UUID format. ' })
+  @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
   @ApiNotFoundResponse({ description: 'Category not found.' })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
   @Delete('/:categoryId')
@@ -135,6 +138,34 @@ export class CategoryController {
   ): Promise<void> {
     try {
       await this.commandBus.execute(new DeleteCategoryCommand(categoryId));
+
+      response.sendStatus(HttpStatus.NO_CONTENT);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiNoContentResponse({ description: 'Category has been updated. ' })
+  @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
+  @ApiNotFoundResponse({ description: 'Category not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Patch('/:categoryId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles('admin')
+  public async update(
+    @Res() response: Response,
+    @Param('categoryId') categoryId: Uuid,
+    @Body() updatedCategory: UpdatedCategoryDto,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(
+        new UpdateCategoryCommand(categoryId, updatedCategory),
+      );
 
       response.sendStatus(HttpStatus.NO_CONTENT);
     } catch (e) {

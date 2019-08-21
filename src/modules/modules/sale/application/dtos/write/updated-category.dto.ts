@@ -1,23 +1,18 @@
-import { Uuid } from '../../../../../common/uuid';
-import { Category } from '../../../domain/category/category';
-import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ApiModelPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { CategoryParentDto } from './category-parent.dto';
 import { Type } from 'class-transformer';
 
-export class NewCategoryDto {
-  public id: Uuid;
-
-  @ApiModelProperty({
+export class UpdatedCategoryDto {
+  @ApiModelPropertyOptional({
     type: String,
     example: `TV`,
     description: 'New category name.',
-    required: true,
   })
   @IsNotEmpty({
     message: 'Category cannot be empty.',
   })
-  public readonly name: string;
+  public readonly name?: string;
 
   @ApiModelPropertyOptional({
     type: CategoryParentDto,

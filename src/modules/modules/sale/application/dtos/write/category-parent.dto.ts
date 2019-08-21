@@ -1,7 +1,7 @@
 import { IsUUID } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
-export class NewCategoryParentDto {
+export class CategoryParentDto {
   @ApiModelProperty({
     type: String,
     example: 'c500893e-4837-4e71-a1ad-1c63c46a063c',

@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreatePostgresAccountHandler } from './create-postgres-account.handler';
 import { AccountRepository } from '../../../domain/account.repository';
 import { ioCContainer } from '../../../../../../config/ioc-container';
-import { entityManagerStub } from '../../../../../../utils/tests/entity-manager-stub';
 import { InternalServerErrorException } from '@nestjs/common';
 import { NewAccountDto } from '../../dtos/write/new-account.dto';
 import { CreatePostgresAccountCommand } from './create-postgres-account.command';
@@ -11,6 +10,7 @@ import { EventBus } from '@nestjs/cqrs';
 // tslint:disable-next-line:max-line-length
 import { PostgresAccountHasNotBeenCreatedEvent } from '../../events/postgres-account-has-not-been-created/postgres-account-has-not-been-created.event';
 import { Account } from '../../../domain/account';
+import { EntityManager } from 'typeorm';
 import SpyInstance = jest.SpyInstance;
 
 describe('Create Postgres Account Handler', () => {
@@ -23,7 +23,12 @@ describe('Create Postgres Account Handler', () => {
       providers: [
         CreatePostgresAccountHandler,
         ...ioCContainer,
-        entityManagerStub,
+        {
+          provide: EntityManager,
+          useValue: {
+            getRepository: jest.fn().mockReturnThis(),
+          },
+        },
         {
           provide: EventBus,
           useValue: {

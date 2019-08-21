@@ -48,7 +48,7 @@ export class CreateFirebaseUserHandler
     const weight: number[] = [6, 5, 7, 2, 3, 4, 5, 6, 7];
     let sum: number = 0;
     const controlNumber: number = parseInt(nip.toString().substring(9, 10), 10);
-    for (let i = 0; i < weight.length; i++) {
+    for (let i = 0; i < weight.length; i += 1) {
       sum += parseInt(nip.toString().substring(i, i + 1), 10) * weight[i];
     }
     return sum % 11 === controlNumber;

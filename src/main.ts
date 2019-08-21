@@ -27,5 +27,5 @@ async function bootstrap(): Promise<void> {
   await app.listen(process.env.APP_PORT);
 }
 (async () => {
-  await bootstrap();
+  await bootstrap().catch(err => console.error(err));
 })();

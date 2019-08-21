@@ -2,6 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { Uuid } from '../../../../common/uuid';
 import { NewCategoryDto } from '../../application/dtos/write/new-category.dto';
+import { UpdatedCategoryDto } from '../../application/dtos/write/updated-category.dto';
 
 @Entity('categories')
 export class Category extends AggregateRoot {
@@ -26,6 +27,11 @@ export class Category extends AggregateRoot {
 
   @OneToMany(type => Category, category => category.parent)
   public children: Category[];
+
+  public update(dto: UpdatedCategoryDto): void {
+    this.name = dto.name;
+    this.parent = (dto.parent as unknown) as Category;
+  }
 
   public static create(dto: NewCategoryDto): Category {
     const category: Category = new Category();
