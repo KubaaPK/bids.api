@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
@@ -18,11 +19,12 @@ import {
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
+  ApiOkResponse,
   ApiUnauthorizedResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
 import { AppLogger } from '../../../common/app-logger';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../../../auth/application/guards/roles.guard';
 import { roles } from '../../../auth/application/guards/roles.decorator';
@@ -32,6 +34,8 @@ import { ExceptionMessages } from '../../../common/exception-messages';
 import { Uuid } from '../../../common/uuid';
 import { CreateParameterCommand } from '../commands/admin/create-parameter/create-parameter.command';
 import { DeleteParameterCommand } from '../commands/admin/delete-parameter/delete-parameter.command';
+import { ListableParameterDto } from '../dtos/read/listable-parameter.dto';
+import { ListParametersQuery } from '../queries/admin/list-parameters/list-parameters.query';
 
 @ApiUseTags('parameters')
 @Controller('sale/parameters')
@@ -41,7 +45,10 @@ export class ParameterController {
     true,
   );
 
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @ApiCreatedResponse({ description: 'Parameter has been created. ' })
   @ApiBadRequestResponse({ description: 'Validation error.' })
@@ -78,6 +85,8 @@ export class ParameterController {
 
   @ApiNoContentResponse({ description: 'Parameter has been deleted. ' })
   @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @ApiForbiddenResponse({ description: 'Forbidden resource.' })
   @ApiNotFoundResponse({ description: 'Parameter not found.' })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
   @ApiImplicitParam({
@@ -93,6 +102,29 @@ export class ParameterController {
   public async delete(@Param('parameterId') parameterId: Uuid): Promise<void> {
     try {
       await this.commandBus.execute(new DeleteParameterCommand(parameterId));
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({
+    description: 'List of parameters.',
+    type: [ListableParameterDto],
+  })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @ApiForbiddenResponse({ description: 'Forbidden resource.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles('admin')
+  public async getAll(): Promise<ListableParameterDto[]> {
+    try {
+      return await this.queryBus.execute(new ListParametersQuery());
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

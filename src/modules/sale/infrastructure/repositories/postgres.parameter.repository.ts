@@ -41,6 +41,17 @@ export class PostgresParameterRepository implements ParameterRepository {
     }
   }
 
+  public async find(): Promise<Parameter[]> {
+    try {
+      return await this.repository.find();
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   public async delete(id: Uuid): Promise<void> {
     try {
       await this.repository.delete(id);
