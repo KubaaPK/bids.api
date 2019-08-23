@@ -1,6 +1,7 @@
 import { ConnectionOptions } from 'typeorm';
-import { Account } from '../modules/modules/account/domain/account';
-import { Category } from '../modules/modules/sale/domain/category/category';
+import { Account } from '../modules/account/domain/account';
+import { Category } from '../modules/sale/domain/category/category';
+import { Parameter } from '../modules/sale/domain/category/parameter';
 
 export class DatabaseConfigFactory {
   public static create(env: string): ConnectionOptions {
@@ -27,6 +28,6 @@ export class DatabaseConfigFactory {
   }
 
   private static loadEntities(): Function[] {
-    return [Account, Category];
+    return [Account, Category, Parameter];
   }
 }

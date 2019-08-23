@@ -4,9 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as admin from 'firebase-admin';
 import { AppController } from './app.controller';
 import { DatabaseConfigFactory } from './config/database-config.factory';
-import { AccountModule } from './modules/modules/account/account.module';
-import { AuthModule } from './modules/modules/auth/auth.module';
-import { SaleModule } from './modules/modules/sale/sale.module';
+import { AccountModule } from './modules/account/account.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { SaleModule } from './modules/sale/sale.module';
 
 @Module({
   imports: [
