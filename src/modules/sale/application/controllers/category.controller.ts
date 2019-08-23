@@ -17,6 +17,7 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
+  ApiImplicitParam,
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -108,6 +109,12 @@ export class CategoryController {
   @ApiBadRequestResponse({ description: 'Invalid UUID format. ' })
   @ApiNotFoundResponse({ description: 'Category not found.' })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @ApiImplicitParam({
+    name: 'categoryId',
+    type: Uuid,
+    description: 'Category ID.',
+    required: true,
+  })
   @Get('/:categoryId')
   @HttpCode(HttpStatus.OK)
   public async get(
@@ -128,6 +135,12 @@ export class CategoryController {
   @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
   @ApiNotFoundResponse({ description: 'Category not found.' })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @ApiImplicitParam({
+    name: 'categoryId',
+    type: Uuid,
+    description: 'Category ID.',
+    required: true,
+  })
   @Delete('/:categoryId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('bearer'), RolesGuard)
@@ -153,6 +166,12 @@ export class CategoryController {
   @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
   @ApiNotFoundResponse({ description: 'Category not found.' })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @ApiImplicitParam({
+    name: 'categoryId',
+    type: Uuid,
+    description: 'Category ID.',
+    required: true,
+  })
   @Patch('/:categoryId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('bearer'), RolesGuard)

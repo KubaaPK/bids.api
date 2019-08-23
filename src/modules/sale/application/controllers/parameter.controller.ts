@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   Res,
   UseGuards,
@@ -12,7 +14,10 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
+  ApiImplicitParam,
   ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiUnauthorizedResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
@@ -26,6 +31,7 @@ import { NewParameterDto } from '../dtos/write/new-parameter.dto';
 import { ExceptionMessages } from '../../../common/exception-messages';
 import { Uuid } from '../../../common/uuid';
 import { CreateParameterCommand } from '../commands/admin/create-parameter/create-parameter.command';
+import { DeleteParameterCommand } from '../commands/admin/delete-parameter/delete-parameter.command';
 
 @ApiUseTags('parameters')
 @Controller('sale/parameters')
@@ -61,6 +67,32 @@ export class ParameterController {
           Location: `${process.env.APP_API_ROOT_URL}/sale/parameters/${id}`,
         })
         .sendStatus(HttpStatus.CREATED);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiNoContentResponse({ description: 'Parameter has been deleted. ' })
+  @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
+  @ApiNotFoundResponse({ description: 'Parameter not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @ApiImplicitParam({
+    name: 'parameterId',
+    type: Uuid,
+    description: 'Parameter ID.',
+    required: true,
+  })
+  @Delete('/:parameterId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles('admin')
+  public async delete(@Param('parameterId') parameterId: Uuid): Promise<void> {
+    try {
+      await this.commandBus.execute(new DeleteParameterCommand(parameterId));
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

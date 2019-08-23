@@ -4,6 +4,7 @@ import { AppLogger } from '../../../common/app-logger';
 import { EntityManager, Repository } from 'typeorm';
 import { Parameter } from '../../domain/category/parameter';
 import { ExceptionMessages } from '../../../common/exception-messages';
+import { Uuid } from '../../../common/uuid';
 
 @Injectable()
 export class PostgresParameterRepository implements ParameterRepository {
@@ -21,6 +22,28 @@ export class PostgresParameterRepository implements ParameterRepository {
   public async save(parameter: Parameter): Promise<Parameter> {
     try {
       return await this.repository.save(parameter);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async findOne(id: Uuid): Promise<Parameter | undefined> {
+    try {
+      return await this.repository.findOne(id);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async delete(id: Uuid): Promise<void> {
+    try {
+      await this.repository.delete(id);
     } catch (e) {
       this.logger.error(e.message);
       throw new InternalServerErrorException(
