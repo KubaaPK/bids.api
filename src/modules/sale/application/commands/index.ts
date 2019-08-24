@@ -4,6 +4,7 @@ import { DeleteCategoryHandler } from './admin/delete-category/delete-category.h
 import { UpdateCategoryHandler } from './admin/update-category/update-category.handler';
 import { CreateParameterHandler } from './admin/create-parameter/create-parameter.handler';
 import { DeleteParameterHandler } from './admin/delete-parameter/delete-parameter.handler';
+import { UpdateParameterHandler } from './admin/update-parameter/update-parameter.handler';
 
 export const commandHandlers: Type<any>[] = [
   CreateCategoryHandler,
@@ -11,4 +12,5 @@ export const commandHandlers: Type<any>[] = [
   UpdateCategoryHandler,
   CreateParameterHandler,
   DeleteParameterHandler,
+  UpdateParameterHandler,
 ];

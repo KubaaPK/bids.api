@@ -7,6 +7,7 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Param,
+  Patch,
   Post,
   Res,
   UseGuards,
@@ -36,6 +37,8 @@ import { CreateParameterCommand } from '../commands/admin/create-parameter/creat
 import { DeleteParameterCommand } from '../commands/admin/delete-parameter/delete-parameter.command';
 import { ListableParameterDto } from '../dtos/read/listable-parameter.dto';
 import { ListParametersQuery } from '../queries/admin/list-parameters/list-parameters.query';
+import { UpdatedParameterDto } from '../dtos/write/updated-parameter.dto';
+import { UpdateParameterCommand } from '../commands/admin/update-parameter/update-parameter.command';
 
 @ApiUseTags('parameters')
 @Controller('sale/parameters')
@@ -125,6 +128,41 @@ export class ParameterController {
   public async getAll(): Promise<ListableParameterDto[]> {
     try {
       return await this.queryBus.execute(new ListParametersQuery());
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiNoContentResponse({ description: 'Parameter has been updated. ' })
+  @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
+  @ApiBadRequestResponse({ description: 'Validation error.' })
+  @ApiNotFoundResponse({ description: 'Parameter not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @ApiImplicitParam({
+    name: 'parameterId',
+    type: Uuid,
+    description: 'Parameter ID.',
+    required: true,
+  })
+  @Patch('/:parameterId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles('admin')
+  public async update(
+    @Res() response: Response,
+    @Param('parameterId') parameterId: Uuid,
+    @Body() updatedParameter: UpdatedParameterDto,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(
+        new UpdateParameterCommand(parameterId, updatedParameter),
+      );
+
+      response.sendStatus(HttpStatus.NO_CONTENT);
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

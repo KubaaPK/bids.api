@@ -4,6 +4,7 @@ import { ParameterType } from './parameter-type.enum';
 import { Restrictions } from './restrictions';
 import { NewParameterDto } from '../../application/dtos/write/new-parameter.dto';
 import { NoDictionarySpecifiedException } from './exceptions/no-dictionary-specified.exception';
+import { UpdatedParameterDto } from '../../application/dtos/write/updated-parameter.dto';
 
 @Entity('parameters')
 export class Parameter {
@@ -42,6 +43,15 @@ export class Parameter {
     type: 'simple-json',
   })
   public restrictions: Restrictions;
+
+  public update(dto: UpdatedParameterDto): void {
+    this.name = dto.name;
+    this.type = dto.type;
+    this.unit = dto.unit;
+    this.required = dto.required;
+    this.dictionary = dto.dictionary;
+    this.restrictions = dto.restrictions;
+  }
 
   public static create(dto: NewParameterDto): Parameter {
     const parameter: Parameter = new Parameter();
