@@ -15,6 +15,7 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   ApiBadRequestResponse,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiImplicitParam,
@@ -23,6 +24,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiUnauthorizedResponse,
+  ApiUnprocessableEntityResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -40,6 +42,8 @@ import { ListCategoryQuery } from '../queries/list-category/list-category.query'
 import { DeleteCategoryCommand } from '../commands/admin/delete-category/delete-category.command';
 import { UpdatedCategoryDto } from '../dtos/write/updated-category.dto';
 import { UpdateCategoryCommand } from '../commands/admin/update-category/update-category.command';
+import { LinkableParameterToCategoryDto } from '../dtos/write/linkable-parameter-to-category.dto';
+import { LinkParameterToCategoryCommand } from '../commands/admin/link-parameter-to-category/link-parameter-to-category.command';
 
 @ApiUseTags('categories')
 @Controller('sale/categories')
@@ -163,7 +167,7 @@ export class CategoryController {
   }
 
   @ApiNoContentResponse({ description: 'Category has been updated. ' })
-  @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
+  @ApiBadRequestResponse({ description: 'Validation error.' })
   @ApiNotFoundResponse({ description: 'Category not found.' })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
   @ApiImplicitParam({
@@ -187,6 +191,46 @@ export class CategoryController {
       );
 
       response.sendStatus(HttpStatus.NO_CONTENT);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({ description: 'Parameter has been linked to category. ' })
+  @ApiBadRequestResponse({ description: 'Validation error.' })
+  @ApiConflictResponse({
+    description: 'Parameter already linked to category. ',
+  })
+  @ApiNotFoundResponse({ description: 'Category and/or parameter not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @ApiImplicitParam({
+    name: 'categoryId',
+    type: Uuid,
+    description: 'Category ID.',
+    required: true,
+  })
+  @Post('/:categoryId/parameters')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles('admin')
+  async linkParameter(
+    @Res() response: Response,
+    @Param('categoryId') categoryId: Uuid,
+    @Body() linkableParameter: LinkableParameterToCategoryDto,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(
+        new LinkParameterToCategoryCommand(
+          categoryId,
+          linkableParameter.parameterId,
+        ),
+      );
+
+      response.sendStatus(HttpStatus.OK);
     } catch (e) {
       this.logger.error(e.message);
       throw e ||
