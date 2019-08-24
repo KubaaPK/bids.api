@@ -10,7 +10,9 @@ export class ListParametersHandler
   implements IQueryHandler<ListParametersQuery> {
   constructor(private readonly parameterRepository: ParameterRepository) {}
 
-  public async execute(command: ListParametersQuery): Promise<any> {
+  public async execute(
+    command: ListParametersQuery,
+  ): Promise<ListableParameterDto[]> {
     const parameters: Parameter[] = await this.parameterRepository.find();
 
     return parameters.map((parameter: Parameter) => {

@@ -2,38 +2,38 @@ import { ApiResponseModelProperty } from '@nestjs/swagger';
 
 export class ListableParameterRestrictionsDto {
   @ApiResponseModelProperty({
-    type: Number,
-    example: 1.0,
+    type: String,
+    example: '1.00',
   })
-  public readonly min: number;
+  public readonly min?: number;
 
   @ApiResponseModelProperty({
-    type: Number,
-    example: 1000.0,
+    type: String,
+    example: '1000.00',
   })
-  public readonly max: number;
+  public readonly max?: number;
 
   @ApiResponseModelProperty({
     type: Number,
     example: 2,
   })
-  public readonly precision: number;
+  public readonly precision?: number;
 
   @ApiResponseModelProperty({
     type: Number,
-    example: 3,
+    example: null,
   })
-  public readonly minLength: number;
+  public readonly minLength?: number;
 
   @ApiResponseModelProperty({
     type: Number,
-    example: 10,
+    example: null,
   })
-  public readonly maxLength: number;
+  public readonly maxLength?: number;
 
   @ApiResponseModelProperty({
     type: Boolean,
-    example: false,
+    example: null,
   })
-  public readonly multipleChoices: boolean;
+  public readonly multipleChoices?: boolean;
 }

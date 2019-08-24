@@ -48,6 +48,9 @@ export class ListableParameterDto {
   @Expose()
   public readonly dictionary: string[];
 
+  @ApiResponseModelProperty({
+    type: ListableParameterRestrictionsDto,
+  })
   @Expose()
   @Type(() => ListableParameterRestrictionsDto)
   public readonly restrictions: ListableParameterRestrictionsDto;
