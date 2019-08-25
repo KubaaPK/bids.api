@@ -21,7 +21,7 @@ export class ListableParameterDto {
   public readonly name: string;
 
   @ApiResponseModelProperty({
-    type: ParameterType,
+    type: String,
     example: ParameterType.FLOAT,
   })
   @Expose()

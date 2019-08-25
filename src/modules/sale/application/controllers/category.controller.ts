@@ -24,7 +24,6 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiUnauthorizedResponse,
-  ApiUnprocessableEntityResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -44,6 +43,8 @@ import { UpdatedCategoryDto } from '../dtos/write/updated-category.dto';
 import { UpdateCategoryCommand } from '../commands/admin/update-category/update-category.command';
 import { LinkableParameterToCategoryDto } from '../dtos/write/linkable-parameter-to-category.dto';
 import { LinkParameterToCategoryCommand } from '../commands/admin/link-parameter-to-category/link-parameter-to-category.command';
+import { ListableParameterDto } from '../dtos/read/listable-parameter.dto';
+import { ListCategoryParametersQuery } from '../queries/list-category-parameters/list-category-parameters.query';
 
 @ApiUseTags('categories')
 @Controller('sale/categories')
@@ -231,6 +232,37 @@ export class CategoryController {
       );
 
       response.sendStatus(HttpStatus.OK);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({
+    description: 'List of category parameters.',
+    type: [ListableParameterDto],
+  })
+  @ApiBadRequestResponse({ description: 'Validation error.' })
+  @ApiNotFoundResponse({ description: 'Category not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @ApiImplicitParam({
+    name: 'categoryId',
+    type: Uuid,
+    description: 'Category ID.',
+    required: true,
+  })
+  @Get('/:categoryId/parameters')
+  @HttpCode(HttpStatus.OK)
+  public async getCategoryParameters(
+    @Param('categoryId') categoryId: Uuid,
+  ): Promise<ListableParameterDto[]> {
+    try {
+      return await this.queryBus.execute(
+        new ListCategoryParametersQuery(categoryId),
+      );
     } catch (e) {
       this.logger.error(e.message);
       throw e ||
