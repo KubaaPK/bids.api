@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { Uuid } from '../../../common/uuid';
 import { PaymentPolicy } from './payment-policy.enum';
 import { NewDeliveryMethodDto } from '../../application/dtos/write/new-delivery-method.dto';
+import { UpdatedDeliveryMethodDto } from '../../application/dtos/write/updated-delivery-method.dto';
 
 @Entity('delivery_methods')
 export class DeliveryMethod {
@@ -18,6 +19,11 @@ export class DeliveryMethod {
     enum: PaymentPolicy,
   })
   public paymentPolicy: PaymentPolicy;
+
+  public update(dto: UpdatedDeliveryMethodDto): void {
+    this.name = dto.name;
+    this.paymentPolicy = dto.paymentPolicy;
+  }
 
   public static create(dto: NewDeliveryMethodDto): DeliveryMethod {
     const deliveryMethod: DeliveryMethod = new DeliveryMethod();

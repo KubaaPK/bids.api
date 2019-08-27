@@ -7,11 +7,13 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Param,
+  Patch,
   Post,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -36,6 +38,8 @@ import { NewDeliveryMethodDto } from '../dtos/write/new-delivery-method.dto';
 import { ListableDeliveryMethodDto } from '../dtos/read/listable-delivery-method.dto';
 import { ListDeliveryMethodsQuery } from '../queries/customer/list-delivery-methods/list-delivery-methods.query';
 import { DeleteDeliveryMethodCommand } from '../commands/admin/delete-delivery-method/delete-delivery-method.command';
+import { UpdatedDeliveryMethodDto } from '../dtos/write/updated-delivery-method.dto';
+import { UpdateDeliveryMethodCommand } from '../commands/admin/update-delivery-method/update-delivery-method.command';
 
 @ApiUseTags('delivery-methods')
 @Controller('sale/delivery-methods')
@@ -115,6 +119,7 @@ export class DeliveryMethodController {
   }
 
   @ApiNoContentResponse({ description: 'Delivery method has been deleted.' })
+  @ApiBadRequestResponse({ description: 'Validation error.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   @ApiNotFoundResponse({
     description: 'Delivery method with given id does not exist.',
@@ -139,6 +144,46 @@ export class DeliveryMethodController {
     try {
       await this.commandBus.execute(
         new DeleteDeliveryMethodCommand(deliveryMethodId),
+      );
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({ description: 'Delivery method has been updated.' })
+  @ApiBadRequestResponse({ description: 'Validation error.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @ApiNotFoundResponse({
+    description: 'Delivery method with given id does not exist.',
+  })
+  @ApiForbiddenResponse({
+    description: ExceptionMessages.DOCUMENTATION_ADMIN_FORBIDDEN_EXCEPTION,
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @ApiImplicitParam({
+    type: Uuid,
+    required: true,
+    description: 'Delivery method id.',
+    name: 'deliveryMethodId',
+  })
+  @Patch('/:deliveryMethodId')
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles('admin')
+  @HttpCode(HttpStatus.OK)
+  public async update(
+    @Param('deliveryMethodId') deliveryMethodId: Uuid,
+    @Body() updatedDeliveryMethod: UpdatedDeliveryMethodDto,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(
+        new UpdateDeliveryMethodCommand(
+          deliveryMethodId,
+          updatedDeliveryMethod,
+        ),
       );
     } catch (e) {
       this.logger.error(e.message);
