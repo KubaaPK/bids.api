@@ -36,15 +36,15 @@ import { RolesGuard } from '../../../auth/application/guards/roles.guard';
 import { roles } from '../../../auth/application/guards/roles.decorator';
 import { ListableCategoryDto } from '../dtos/read/listable-category.dto';
 import { ExceptionMessages } from '../../../common/exception-messages';
-import { ListCategoriesQuery } from '../queries/list-categories/list-categories.query';
-import { ListCategoryQuery } from '../queries/list-category/list-category.query';
+import { ListCategoriesQuery } from '../queries/customer/list-categories/list-categories.query';
+import { ListCategoryQuery } from '../queries/customer/list-category/list-category.query';
 import { DeleteCategoryCommand } from '../commands/admin/delete-category/delete-category.command';
 import { UpdatedCategoryDto } from '../dtos/write/updated-category.dto';
 import { UpdateCategoryCommand } from '../commands/admin/update-category/update-category.command';
 import { LinkableParameterToCategoryDto } from '../dtos/write/linkable-parameter-to-category.dto';
 import { LinkParameterToCategoryCommand } from '../commands/admin/link-parameter-to-category/link-parameter-to-category.command';
 import { ListableParameterDto } from '../dtos/read/listable-parameter.dto';
-import { ListCategoryParametersQuery } from '../queries/list-category-parameters/list-category-parameters.query';
+import { ListCategoryParametersQuery } from '../queries/customer/list-category-parameters/list-category-parameters.query';
 
 @ApiUseTags('categories')
 @Controller('sale/categories')

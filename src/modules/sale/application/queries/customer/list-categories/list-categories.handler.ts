@@ -1,9 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { ListCategoriesQuery } from './list-categories.query';
-import { CategoryRepository } from '../../../domain/category/category.repository';
-import { Category } from '../../../domain/category/category';
+import { CategoryRepository } from '../../../../domain/category/category.repository';
+import { Category } from '../../../../domain/category/category';
 import { plainToClass } from 'class-transformer';
-import { ListableCategoryDto } from '../../dtos/read/listable-category.dto';
+import { ListableCategoryDto } from '../../../dtos/read/listable-category.dto';
 
 @QueryHandler(ListCategoriesQuery)
 export class ListCategoriesHandler

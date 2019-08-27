@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ListCategoryParametersHandler } from './list-category-parameters.handler';
-import { CategoryRepository } from '../../../domain/category/category.repository';
-import { ioCContainer } from '../../../../../config/ioc-container';
+import { CategoryRepository } from '../../../../domain/category/category.repository';
+import { ioCContainer } from '../../../../../../config/ioc-container';
 import { EntityManager } from 'typeorm';
 import { ListCategoryParametersQuery } from './list-category-parameters.query';
-import { InvalidUuidFormatException } from '../../../../common/exceptions/invalid-uuid-format.exception';
-import { CategoryNotFoundException } from '../../../domain/category/exceptions/category-not-found.exception';
-import { Category } from '../../../domain/category/category';
-import { Parameter } from '../../../domain/category/parameter';
-import { ListableParameterDto } from '../../dtos/read/listable-parameter.dto';
+import { InvalidUuidFormatException } from '../../../../../common/exceptions/invalid-uuid-format.exception';
+import { CategoryNotFoundException } from '../../../../domain/category/exceptions/category-not-found.exception';
+import { Category } from '../../../../domain/category/category';
+import { Parameter } from '../../../../domain/category/parameter';
+import { ListableParameterDto } from '../../../dtos/read/listable-parameter.dto';
 
 describe('List Category Parameters Handler', () => {
   let handler: ListCategoryParametersHandler;

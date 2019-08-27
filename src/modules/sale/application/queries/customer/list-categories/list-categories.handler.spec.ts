@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ListCategoriesHandler } from './list-categories.handler';
-import { CategoryRepository } from '../../../domain/category/category.repository';
-import { ioCContainer } from '../../../../../config/ioc-container';
+import { CategoryRepository } from '../../../../domain/category/category.repository';
+import { ioCContainer } from '../../../../../../config/ioc-container';
 import { EntityManager } from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import { ListCategoriesQuery } from './list-categories.query';
-import { Category } from '../../../domain/category/category';
-import { ListableCategoryDto } from '../../dtos/read/listable-category.dto';
+import { Category } from '../../../../domain/category/category';
+import { ListableCategoryDto } from '../../../dtos/read/listable-category.dto';
 
 describe('List Categories Handler', () => {
   let handler: ListCategoriesHandler;
