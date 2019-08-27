@@ -37,17 +37,10 @@ export class ValidationPipe implements PipeTransform<any> {
 
   private formatErrorMessages(errors: ValidationError[]): string[] {
     const flattenErrorsObject: string[] = Object.values(flat(errors));
-    const elementsToUnFilter: any[] = [
-      null,
-      undefined,
-      'parent',
-      'id',
-      'name',
-      'type',
-      'restrictions',
-    ];
+    const elementsToUnFilter: any[] = [null, undefined];
     return flattenErrorsObject
       .filter(el => !elementsToUnFilter.includes(el))
-      .filter(el => el.length > 0);
+      .filter(el => el.length > 0)
+      .filter(el => el.indexOf(' ') !== -1);
   }
 }

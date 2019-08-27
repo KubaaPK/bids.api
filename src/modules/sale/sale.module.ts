@@ -7,10 +7,15 @@ import { Category } from './domain/category/category';
 import { ioCContainer } from '../../config/ioc-container';
 import { queryHandlers } from './application/queries';
 import { ParameterController } from './application/controllers/parameter.controller';
+import { DeliveryMethodController } from './application/controllers/delivery-method.controller';
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([Category])],
   providers: [...ioCContainer, ...commandHandlers, ...queryHandlers],
-  controllers: [CategoryController, ParameterController],
+  controllers: [
+    CategoryController,
+    ParameterController,
+    DeliveryMethodController,
+  ],
 })
 export class SaleModule {}
