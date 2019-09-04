@@ -4,7 +4,7 @@ import { ParameterRepository } from '../../../../domain/category/parameter.repos
 import { ioCContainer } from '../../../../../../config/ioc-container';
 import { EntityManager } from 'typeorm';
 import { UpdateParameterCommand } from './update-parameter.command';
-import { UpdatedParameterDto } from '../../../dtos/write/updated-parameter.dto';
+import { UpdatedParameterDto } from '../../../dtos/write/parameter/updated-parameter.dto';
 import { InvalidUuidFormatException } from '../../../../../common/exceptions/invalid-uuid-format.exception';
 import { ParameterNotFoundException } from '../../../../domain/category/exceptions/parameter-not-found.exception';
 import { InternalServerErrorException } from '@nestjs/common';

@@ -4,7 +4,7 @@ import { ioCContainer } from '../../../../../../config/ioc-container';
 import { EntityManager } from 'typeorm';
 import { CreateDeliveryMethodHandler } from './create-delivery-method.handler';
 import { InternalServerErrorException } from '@nestjs/common';
-import { NewDeliveryMethodDto } from '../../../dtos/write/new-delivery-method.dto';
+import { NewDeliveryMethodDto } from '../../../dtos/write/delivery-method/new-delivery-method.dto';
 import { PaymentPolicy } from '../../../../domain/delivery/payment-policy.enum';
 import { CreateDeliveryMethodCommand } from './create-delivery-method.command';
 import { DeliveryMethod } from '../../../../domain/delivery/delivery-method';

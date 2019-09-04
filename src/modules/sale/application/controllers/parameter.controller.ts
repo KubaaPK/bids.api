@@ -30,14 +30,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../../../auth/application/guards/roles.guard';
 import { roles } from '../../../auth/application/guards/roles.decorator';
 import { Response } from 'express';
-import { NewParameterDto } from '../dtos/write/new-parameter.dto';
+import { NewParameterDto } from '../dtos/write/parameter/new-parameter.dto';
 import { ExceptionMessages } from '../../../common/exception-messages';
 import { Uuid } from '../../../common/uuid';
 import { CreateParameterCommand } from '../commands/admin/create-parameter/create-parameter.command';
 import { DeleteParameterCommand } from '../commands/admin/delete-parameter/delete-parameter.command';
 import { ListableParameterDto } from '../dtos/read/listable-parameter.dto';
 import { ListParametersQuery } from '../queries/admin/list-parameters/list-parameters.query';
-import { UpdatedParameterDto } from '../dtos/write/updated-parameter.dto';
+import { UpdatedParameterDto } from '../dtos/write/parameter/updated-parameter.dto';
 import { UpdateParameterCommand } from '../commands/admin/update-parameter/update-parameter.command';
 
 @ApiUseTags('parameters')

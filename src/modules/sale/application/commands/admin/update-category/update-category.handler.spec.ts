@@ -5,7 +5,7 @@ import { ioCContainer } from '../../../../../../config/ioc-container';
 import { EntityManager } from 'typeorm';
 import { UpdateCategoryCommand } from './update-category.command';
 import { InvalidUuidFormatException } from '../../../../../common/exceptions/invalid-uuid-format.exception';
-import { UpdatedCategoryDto } from '../../../dtos/write/updated-category.dto';
+import { UpdatedCategoryDto } from '../../../dtos/write/category/updated-category.dto';
 import { CategoryNotFoundException } from '../../../../domain/category/exceptions/category-not-found.exception';
 import { InternalServerErrorException } from '@nestjs/common';
 import { Category } from '../../../../domain/category/category';

@@ -74,7 +74,7 @@ describe('List Delivery Methods Handler', () => {
         return [new DeliveryMethod(), new DeliveryMethod()];
       });
 
-    const deliveryMethods: ListableDeliveryAddressDto[] = await handler.execute(
+    const deliveryMethods: ListableDeliveryMethodDto[] = await handler.execute(
       new ListDeliveryMethodsQuery(),
     );
 

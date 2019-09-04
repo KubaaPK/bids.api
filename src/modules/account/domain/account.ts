@@ -1,4 +1,10 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  TableInheritance,
+} from 'typeorm';
 import { Uuid } from '../../common/uuid';
 import { AccountType } from './account-type.enum';
 import { NewAccountDto } from '../application/dtos/write/new-account.dto';

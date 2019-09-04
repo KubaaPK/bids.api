@@ -3,6 +3,8 @@ import { Account } from '../modules/account/domain/account';
 import { Category } from '../modules/sale/domain/category/category';
 import { Parameter } from '../modules/sale/domain/category/parameter';
 import { DeliveryMethod } from '../modules/sale/domain/delivery/delivery-method';
+import { ShippingRate } from '../modules/sale/domain/customer/shipping-rate/shipping-rate';
+import { Customer } from '../modules/sale/domain/customer/customer';
 
 export class DatabaseConfigFactory {
   public static create(env: string): ConnectionOptions {
@@ -29,6 +31,13 @@ export class DatabaseConfigFactory {
   }
 
   private static loadEntities(): Function[] {
-    return [Account, Category, Parameter, DeliveryMethod];
+    return [
+      Account,
+      Category,
+      Parameter,
+      DeliveryMethod,
+      ShippingRate,
+      Customer,
+    ];
   }
 }

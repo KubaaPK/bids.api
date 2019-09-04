@@ -18,9 +18,9 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
 import { AppLogger } from '../../../common/app-logger';
 import { NewAccountDto } from '../dtos/write/new-account.dto';
-import { CreateFirebaseUserCommand } from '../commands/create-firebase-user/create-firebase-user.command';
 import { Uuid } from '../../../common/uuid';
 import { ExceptionMessages } from '../../../common/exception-messages';
+import { CreateAccountCommand } from '../commands/create-account/create-account.command';
 
 @ApiUseTags('accounts')
 @Controller('accounts')
@@ -47,7 +47,7 @@ export class AccountController {
     try {
       const id: Uuid = Uuid.v4();
       newAccount.id = id;
-      await this.commandBus.execute(new CreateFirebaseUserCommand(newAccount));
+      await this.commandBus.execute(new CreateAccountCommand(newAccount));
 
       response
         .header({

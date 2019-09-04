@@ -9,6 +9,7 @@ import { LinkParameterToCategoryHandler } from './admin/link-parameter-to-catego
 import { CreateDeliveryMethodHandler } from './admin/create-delivery-method/create-delivery-method.handler';
 import { DeleteDeliveryMethodHandler } from './admin/delete-delivery-method/delete-delivery-method.handler';
 import { UpdateDeliveryMethodHandler } from './admin/update-delivery-method/update-delivery-method.handler';
+import { CreateShippingRateHandler } from './customer/create-shipping-rate/create-shipping-rate.handler';
 
 export const commandHandlers: Type<any>[] = [
   CreateCategoryHandler,
@@ -21,4 +22,5 @@ export const commandHandlers: Type<any>[] = [
   CreateDeliveryMethodHandler,
   DeleteDeliveryMethodHandler,
   UpdateDeliveryMethodHandler,
+  CreateShippingRateHandler,
 ];

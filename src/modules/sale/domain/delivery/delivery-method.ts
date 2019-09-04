@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { Uuid } from '../../../common/uuid';
 import { PaymentPolicy } from './payment-policy.enum';
-import { NewDeliveryMethodDto } from '../../application/dtos/write/new-delivery-method.dto';
-import { UpdatedDeliveryMethodDto } from '../../application/dtos/write/updated-delivery-method.dto';
+import { NewDeliveryMethodDto } from '../../application/dtos/write/delivery-method/new-delivery-method.dto';
+import { UpdatedDeliveryMethodDto } from '../../application/dtos/write/delivery-method/updated-delivery-method.dto';
 
 @Entity('delivery_methods')
 export class DeliveryMethod {

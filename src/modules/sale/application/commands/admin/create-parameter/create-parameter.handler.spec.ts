@@ -3,7 +3,7 @@ import { CreateParameterHandler } from './create-parameter.handler';
 import { ParameterRepository } from '../../../../domain/category/parameter.repository';
 import { ioCContainer } from '../../../../../../config/ioc-container';
 import { EntityManager } from 'typeorm';
-import { NewParameterDto } from '../../../dtos/write/new-parameter.dto';
+import { NewParameterDto } from '../../../dtos/write/parameter/new-parameter.dto';
 import { ParameterType } from '../../../../domain/category/parameter-type.enum';
 import { CreateParameterCommand } from './create-parameter.command';
 import { InternalServerErrorException } from '@nestjs/common';

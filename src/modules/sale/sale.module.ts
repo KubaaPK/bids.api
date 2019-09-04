@@ -8,14 +8,23 @@ import { ioCContainer } from '../../config/ioc-container';
 import { queryHandlers } from './application/queries';
 import { ParameterController } from './application/controllers/parameter.controller';
 import { DeliveryMethodController } from './application/controllers/delivery-method.controller';
+import { ShippingRate } from './domain/customer/shipping-rate/shipping-rate';
+import { ShippingRateController } from './application/controllers/shipping-rate.controller';
+import { eventHandlers } from './application/events';
 
 @Module({
-  imports: [CqrsModule, TypeOrmModule.forFeature([Category])],
-  providers: [...ioCContainer, ...commandHandlers, ...queryHandlers],
+  imports: [CqrsModule, TypeOrmModule.forFeature([Category, ShippingRate])],
+  providers: [
+    ...ioCContainer,
+    ...commandHandlers,
+    ...queryHandlers,
+    ...eventHandlers,
+  ],
   controllers: [
     CategoryController,
     ParameterController,
     DeliveryMethodController,
+    ShippingRateController,
   ],
 })
 export class SaleModule {}

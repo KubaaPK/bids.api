@@ -9,8 +9,8 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { Uuid } from '../../../common/uuid';
-import { NewCategoryDto } from '../../application/dtos/write/new-category.dto';
-import { UpdatedCategoryDto } from '../../application/dtos/write/updated-category.dto';
+import { NewCategoryDto } from '../../application/dtos/write/category/new-category.dto';
+import { UpdatedCategoryDto } from '../../application/dtos/write/category/updated-category.dto';
 import { Parameter } from './parameter';
 import { ParameterAlreadyLinkedToCategoryException } from './exceptions/parameter-already-linked-to-category.exception';
 

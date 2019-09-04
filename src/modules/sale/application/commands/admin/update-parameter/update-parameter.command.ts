@@ -1,5 +1,5 @@
 import { Uuid } from '../../../../../common/uuid';
-import { UpdatedParameterDto } from '../../../dtos/write/updated-parameter.dto';
+import { UpdatedParameterDto } from '../../../dtos/write/parameter/updated-parameter.dto';
 
 export class UpdateParameterCommand {
   constructor(

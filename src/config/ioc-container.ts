@@ -7,6 +7,8 @@ import { ParameterRepository } from '../modules/sale/domain/category/parameter.r
 import { PostgresParameterRepository } from '../modules/sale/infrastructure/repositories/postgres.parameter.repository';
 import { DeliveryMethodRepository } from '../modules/sale/domain/delivery/delivery-method.repository';
 import { PostgresDeliveryMethodRepository } from '../modules/sale/infrastructure/repositories/postgres.delivery-method.repository';
+import { CustomerRepository } from '../modules/sale/domain/customer/customer.repository';
+import { PostgresCustomerRepository } from '../modules/sale/infrastructure/repositories/postgres.customer.repository';
 
 export const ioCContainer: Provider<any>[] = [
   {
@@ -24,5 +26,9 @@ export const ioCContainer: Provider<any>[] = [
   {
     provide: DeliveryMethodRepository,
     useClass: PostgresDeliveryMethodRepository,
+  },
+  {
+    provide: CustomerRepository,
+    useClass: PostgresCustomerRepository,
   },
 ];

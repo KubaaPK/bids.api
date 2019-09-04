@@ -1,5 +1,5 @@
 import { Uuid } from '../../../../../common/uuid';
-import { UpdatedDeliveryMethodDto } from '../../../dtos/write/updated-delivery-method.dto';
+import { UpdatedDeliveryMethodDto } from '../../../dtos/write/delivery-method/updated-delivery-method.dto';
 
 export class UpdateDeliveryMethodCommand {
   constructor(

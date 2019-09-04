@@ -5,7 +5,7 @@ import { ioCContainer } from '../../../../../../config/ioc-container';
 import { EntityManager } from 'typeorm';
 import { UpdateDeliveryMethodCommand } from './update-delivery-method.command';
 import { InvalidUuidFormatException } from '../../../../../common/exceptions/invalid-uuid-format.exception';
-import { UpdatedDeliveryMethodDto } from '../../../dtos/write/updated-delivery-method.dto';
+import { UpdatedDeliveryMethodDto } from '../../../dtos/write/delivery-method/updated-delivery-method.dto';
 import { DeliveryMethodNotFoundException } from '../../../../domain/delivery/exceptions/delivery-method-not-found.exception';
 import { InternalServerErrorException } from '@nestjs/common';
 import { DeliveryMethod } from '../../../../domain/delivery/delivery-method';

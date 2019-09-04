@@ -2,7 +2,6 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CustomerRepository } from '../../domain/customer/customer.repository';
 import { AppLogger } from '../../../common/app-logger';
 import { EntityManager, Repository } from 'typeorm';
-import { Account } from '../../../account/domain/account';
 import { Customer } from '../../domain/customer/customer';
 import { ExceptionMessages } from '../../../common/exception-messages';
 import { Uuid } from '../../../common/uuid';
@@ -14,10 +13,10 @@ export class PostgresCustomerRepository implements CustomerRepository {
     true,
   );
 
-  private readonly repository: Repository<Account>;
+  private readonly repository: Repository<Customer>;
 
   constructor(private readonly manager: EntityManager) {
-    this.repository = this.manager.getRepository(Account);
+    this.repository = this.manager.getRepository(Customer);
   }
 
   public async findOne(id: Uuid): Promise<Customer | undefined> {

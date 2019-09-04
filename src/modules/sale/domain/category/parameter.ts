@@ -2,9 +2,9 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { Uuid } from '../../../common/uuid';
 import { ParameterType } from './parameter-type.enum';
 import { Restrictions } from './restrictions';
-import { NewParameterDto } from '../../application/dtos/write/new-parameter.dto';
+import { NewParameterDto } from '../../application/dtos/write/parameter/new-parameter.dto';
 import { NoDictionarySpecifiedException } from './exceptions/no-dictionary-specified.exception';
-import { UpdatedParameterDto } from '../../application/dtos/write/updated-parameter.dto';
+import { UpdatedParameterDto } from '../../application/dtos/write/parameter/updated-parameter.dto';
 
 @Entity('parameters')
 export class Parameter {

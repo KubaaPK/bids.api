@@ -34,11 +34,11 @@ import { ExceptionMessages } from '../../../common/exception-messages';
 import { Uuid } from '../../../common/uuid';
 import { CreateDeliveryMethodCommand } from '../commands/admin/create-delivery-method/create-delivery-method.command';
 import { Response } from 'express';
-import { NewDeliveryMethodDto } from '../dtos/write/new-delivery-method.dto';
+import { NewDeliveryMethodDto } from '../dtos/write/delivery-method/new-delivery-method.dto';
 import { ListableDeliveryMethodDto } from '../dtos/read/listable-delivery-method.dto';
 import { ListDeliveryMethodsQuery } from '../queries/customer/list-delivery-methods/list-delivery-methods.query';
 import { DeleteDeliveryMethodCommand } from '../commands/admin/delete-delivery-method/delete-delivery-method.command';
-import { UpdatedDeliveryMethodDto } from '../dtos/write/updated-delivery-method.dto';
+import { UpdatedDeliveryMethodDto } from '../dtos/write/delivery-method/updated-delivery-method.dto';
 import { UpdateDeliveryMethodCommand } from '../commands/admin/update-delivery-method/update-delivery-method.command';
 
 @ApiUseTags('delivery-methods')

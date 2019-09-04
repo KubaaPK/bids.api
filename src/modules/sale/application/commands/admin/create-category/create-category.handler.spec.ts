@@ -4,7 +4,7 @@ import { CategoryRepository } from '../../../../domain/category/category.reposit
 import { ioCContainer } from '../../../../../../config/ioc-container';
 import { EntityManager } from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
-import { NewCategoryDto } from '../../../dtos/write/new-category.dto';
+import { NewCategoryDto } from '../../../dtos/write/category/new-category.dto';
 import { CreateCategoryCommand } from './create-category.command';
 import { Category } from '../../../../domain/category/category';
 import { CategoryAlreadyExistsException } from '../../../../domain/category/exceptions/category-already-exists.exception';
