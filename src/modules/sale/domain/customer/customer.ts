@@ -3,6 +3,7 @@ import { ShippingRate } from './shipping-rate/shipping-rate';
 import { ToManyShippingRatesDefinedException } from './exceptions/to-many-shipping-rates-defined.exception';
 import { ShippingRateAlreadyExistsException } from './exceptions/shipping-rate-already-exists.exception';
 import { Uuid } from '../../../common/uuid';
+import { ShippingRateNotFoundException } from './exceptions/shipping-rate-not-found.exception';
 
 @Entity('customers')
 export class Customer {
@@ -31,6 +32,19 @@ export class Customer {
       }
     });
     existingShippingRates.push(newShippingRate);
+  }
+
+  public async deleteShippingRate(shippingRateId: Uuid): Promise<void> {
+    const existingShippingRates: ShippingRate[] = await this.shippingRates;
+    const shippingRateToDeleteIdx: number = existingShippingRates.findIndex(
+      el => el.id === shippingRateId,
+    );
+
+    if (shippingRateToDeleteIdx === -1) {
+      throw new ShippingRateNotFoundException();
+    }
+
+    existingShippingRates.splice(shippingRateToDeleteIdx, 1);
   }
 
   public static create(id: Uuid): Customer {

@@ -10,6 +10,7 @@ import { CreateDeliveryMethodHandler } from './admin/create-delivery-method/crea
 import { DeleteDeliveryMethodHandler } from './admin/delete-delivery-method/delete-delivery-method.handler';
 import { UpdateDeliveryMethodHandler } from './admin/update-delivery-method/update-delivery-method.handler';
 import { CreateShippingRateHandler } from './customer/create-shipping-rate/create-shipping-rate.handler';
+import { DeleteShippingRateHandler } from './customer/delete-shipping-rate/delete-shipping-rate.handler';
 
 export const commandHandlers: Type<any>[] = [
   CreateCategoryHandler,
@@ -23,4 +24,5 @@ export const commandHandlers: Type<any>[] = [
   DeleteDeliveryMethodHandler,
   UpdateDeliveryMethodHandler,
   CreateShippingRateHandler,
+  DeleteShippingRateHandler,
 ];

@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   Req,
   Res,
@@ -16,6 +18,8 @@ import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
@@ -34,6 +38,7 @@ import { Uuid } from '../../../common/uuid';
 import { ListableShippingRateDto } from '../dtos/read/listable-shipping-rate.dto';
 import { ListShippingRatesQuery } from '../queries/customer/list-shipping-rates/list-shipping-rates.query';
 import { AccountRole } from '../../../account/domain/account-role.enum';
+import { DeleteShippingRateCommand } from '../commands/customer/delete-shipping-rate/delete-shipping-rate.command';
 
 @ApiUseTags('shipping-rates')
 @Controller('sale/shipping-rates')
@@ -107,6 +112,36 @@ export class ShippingRateController {
       return await this.queryBus.execute(
         new ListShippingRatesQuery(request.user.uid),
       );
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiNoContentResponse({ description: 'Shipping rate has been deleted.' })
+  @ApiBadRequestResponse({ description: 'Invalid UUID format.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @ApiNotFoundResponse({
+    description: 'Shipping rate with given id does not exists.',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Delete('/:shippingRateId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  public async delete(
+    @Req() request,
+    @Res() response: Response,
+    @Param('shippingRateId') shippingRateId: Uuid,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(
+        new DeleteShippingRateCommand(request.user.uid, shippingRateId),
+      );
+      response.sendStatus(HttpStatus.NO_CONTENT);
     } catch (e) {
       this.logger.error(e.message);
       throw e ||
