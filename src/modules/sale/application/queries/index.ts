@@ -4,6 +4,7 @@ import { ListCategoryHandler } from './customer/list-category/list-category.hand
 import { ListParametersHandler } from './admin/list-parameters/list-parameters.handler';
 import { ListCategoryParametersHandler } from './customer/list-category-parameters/list-category-parameters.handler';
 import { ListDeliveryMethodsHandler } from './customer/list-delivery-methods/list-delivery-methods.handler';
+import { ListShippingRatesHandler } from './customer/list-shipping-rates/list-shipping-rates.handler';
 
 export const queryHandlers: Type<any>[] = [
   ListCategoriesHandler,
@@ -11,4 +12,5 @@ export const queryHandlers: Type<any>[] = [
   ListParametersHandler,
   ListCategoryParametersHandler,
   ListDeliveryMethodsHandler,
+  ListShippingRatesHandler,
 ];
