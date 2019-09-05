@@ -4,6 +4,7 @@ import { ToManyShippingRatesDefinedException } from './exceptions/to-many-shippi
 import { ShippingRateAlreadyExistsException } from './exceptions/shipping-rate-already-exists.exception';
 import { Uuid } from '../../../common/uuid';
 import { ShippingRateNotFoundException } from './exceptions/shipping-rate-not-found.exception';
+import { UpdatedShippingRateDto } from '../../application/dtos/write/shipping-rate/updated-shipping-rate.dto';
 
 @Entity('customers')
 export class Customer {
@@ -45,6 +46,24 @@ export class Customer {
     }
 
     existingShippingRates.splice(shippingRateToDeleteIdx, 1);
+  }
+
+  public async updateShippingRate(
+    updatedShippingRate: UpdatedShippingRateDto,
+  ): Promise<void> {
+    const existingShippingRates: ShippingRate[] = await this.shippingRates;
+    const shippingRateToUpdateIdx: number = existingShippingRates.findIndex(
+      el => el.id === updatedShippingRate.id,
+    );
+
+    if (shippingRateToUpdateIdx === -1) {
+      throw new ShippingRateNotFoundException();
+    }
+
+    existingShippingRates[shippingRateToUpdateIdx].name =
+      updatedShippingRate.name;
+    existingShippingRates[shippingRateToUpdateIdx].rates =
+      updatedShippingRate.rates;
   }
 
   public static create(id: Uuid): Customer {

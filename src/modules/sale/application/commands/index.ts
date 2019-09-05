@@ -11,6 +11,7 @@ import { DeleteDeliveryMethodHandler } from './admin/delete-delivery-method/dele
 import { UpdateDeliveryMethodHandler } from './admin/update-delivery-method/update-delivery-method.handler';
 import { CreateShippingRateHandler } from './customer/create-shipping-rate/create-shipping-rate.handler';
 import { DeleteShippingRateHandler } from './customer/delete-shipping-rate/delete-shipping-rate.handler';
+import { UpdateShippingRateHandler } from './customer/update-shipping-rate/update-shipping-rate.handler';
 
 export const commandHandlers: Type<any>[] = [
   CreateCategoryHandler,
@@ -25,4 +26,5 @@ export const commandHandlers: Type<any>[] = [
   UpdateDeliveryMethodHandler,
   CreateShippingRateHandler,
   DeleteShippingRateHandler,
+  UpdateShippingRateHandler,
 ];

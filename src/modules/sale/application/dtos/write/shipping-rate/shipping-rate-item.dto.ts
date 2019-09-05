@@ -4,7 +4,7 @@ import { ShippingRateDeliveryMethodDto } from './shipping-rate-delivery-method.d
 import { ItemRateDto } from './item-rate.dto';
 import { ApiModelProperty } from '@nestjs/swagger';
 
-export class NewShippingRateItemDto {
+export class ShippingRateItemDto {
   @IsNotEmpty({ message: 'Należy zdefiniować sposób dostawy.' })
   @Type(() => ShippingRateDeliveryMethodDto)
   @ValidateNested()

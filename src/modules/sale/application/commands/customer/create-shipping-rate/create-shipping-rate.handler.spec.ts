@@ -11,7 +11,7 @@ import { ShippingRate } from '../../../../domain/customer/shipping-rate/shipping
 import { ShippingRateAlreadyExistsException } from '../../../../domain/customer/exceptions/shipping-rate-already-exists.exception';
 import { ToManyShippingRatesDefinedException } from '../../../../domain/customer/exceptions/to-many-shipping-rates-defined.exception';
 import { DeliveryMethodRepository } from '../../../../domain/delivery/delivery-method.repository';
-import { NewShippingRateItemDto } from '../../../dtos/write/shipping-rate/new-shipping-rate-item.dto';
+import { ShippingRateItemDto } from '../../../dtos/write/shipping-rate/shipping-rate-item.dto';
 import { DeliveryMethodNotFoundException } from '../../../../domain/delivery/exceptions/delivery-method-not-found.exception';
 
 describe('Create Shipping Rate Handler', () => {
@@ -67,7 +67,7 @@ describe('Create Shipping Rate Handler', () => {
           deliveryMethod: {
             id: '8db4c23c-fce6-4e88-b46e-5164bb582e0e',
           },
-        } as unknown) as NewShippingRateItemDto,
+        } as unknown) as ShippingRateItemDto,
       ],
     };
 

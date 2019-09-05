@@ -7,6 +7,7 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Param,
+  Patch,
   Post,
   Req,
   Res,
@@ -16,7 +17,6 @@ import {
   ApiBadRequestResponse,
   ApiConflictResponse,
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -39,6 +39,8 @@ import { ListableShippingRateDto } from '../dtos/read/listable-shipping-rate.dto
 import { ListShippingRatesQuery } from '../queries/customer/list-shipping-rates/list-shipping-rates.query';
 import { AccountRole } from '../../../account/domain/account-role.enum';
 import { DeleteShippingRateCommand } from '../commands/customer/delete-shipping-rate/delete-shipping-rate.command';
+import { UpdateShippingRateCommand } from '../commands/customer/update-shipping-rate/update-shipping-rate.command';
+import { UpdatedShippingRateDto } from '../dtos/write/shipping-rate/updated-shipping-rate.dto';
 
 @ApiUseTags('shipping-rates')
 @Controller('sale/shipping-rates')
@@ -144,6 +146,36 @@ export class ShippingRateController {
       response.sendStatus(HttpStatus.NO_CONTENT);
     } catch (e) {
       this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiNoContentResponse({ description: 'Shipping rate has been updated. ' })
+  @ApiBadRequestResponse({ description: 'Invalid shippingRateId.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @ApiNotFoundResponse({ description: 'Shipping rate not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Patch('/:shippingRateId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  public async update(
+    @Req() request,
+    @Res() response: Response,
+    @Param('shippingRateId') shippingRateId: Uuid,
+    @Body() updatedShippingRate: UpdatedShippingRateDto,
+  ): Promise<void> {
+    try {
+      updatedShippingRate.id = shippingRateId;
+      await this.commandBus.execute(
+        new UpdateShippingRateCommand(request.user.uid, updatedShippingRate),
+      );
+      response.status(HttpStatus.NO_CONTENT).sendStatus(HttpStatus.NO_CONTENT);
+    } catch (e) {
+      this.logger.error(e.messag);
       throw e ||
         new InternalServerErrorException(
           ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,

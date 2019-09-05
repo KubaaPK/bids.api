@@ -1,4 +1,4 @@
-import { Uuid } from '../../../../../common/uuid';
+import { ShippingRateItemDto } from './shipping-rate-item.dto';
 import { ApiModelProperty } from '@nestjs/swagger';
 import {
   ArrayMinSize,
@@ -7,10 +7,10 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
-import { ShippingRateItemDto } from './shipping-rate-item.dto';
 import { Type } from 'class-transformer';
+import { Uuid } from '../../../../../common/uuid';
 
-export class NewShippingRateDto {
+export class UpdatedShippingRateDto {
   public id: Uuid;
 
   @ApiModelProperty({
@@ -19,10 +19,11 @@ export class NewShippingRateDto {
     type: String,
     example: 'Cennik dla elektroniki.',
   })
+  @IsOptional()
   @IsNotEmpty({
     message: 'Nazwa cennika jest wymagana.',
   })
-  public readonly name: string;
+  public readonly name?: string;
 
   @ApiModelProperty({
     type: ShippingRateItemDto,

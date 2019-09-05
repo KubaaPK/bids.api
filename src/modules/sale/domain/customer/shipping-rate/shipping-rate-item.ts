@@ -1,6 +1,6 @@
 import { Uuid } from '../../../../common/uuid';
 import { ItemRate } from './item-rate';
-import { NewShippingRateItemDto } from '../../../application/dtos/write/shipping-rate/new-shipping-rate-item.dto';
+import { ShippingRateItemDto } from '../../../application/dtos/write/shipping-rate/shipping-rate-item.dto';
 
 export class ShippingRateItem {
   public deliveryMethod: {
@@ -10,7 +10,7 @@ export class ShippingRateItem {
   public firstItemRate: ItemRate;
   public nextItemRate: ItemRate;
 
-  public static create(dto: NewShippingRateItemDto): ShippingRateItem {
+  public static create(dto: ShippingRateItemDto): ShippingRateItem {
     const newShippingRateItem: ShippingRateItem = new ShippingRateItem();
     newShippingRateItem.deliveryMethod = dto.deliveryMethod;
     newShippingRateItem.firstItemRate = dto.firstItemRate;
