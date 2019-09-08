@@ -5,6 +5,7 @@ import { ShippingRateAlreadyExistsException } from './exceptions/shipping-rate-a
 import { Uuid } from '../../../common/uuid';
 import { ShippingRateNotFoundException } from './exceptions/shipping-rate-not-found.exception';
 import { UpdatedShippingRateDto } from '../../application/dtos/write/shipping-rate/updated-shipping-rate.dto';
+import { Offer } from '../offer/offer';
 
 @Entity('customers')
 export class Customer {
@@ -15,6 +16,12 @@ export class Customer {
     cascade: true,
   })
   public shippingRates: Promise<ShippingRate[]>;
+
+  @OneToMany(type => Offer, offer => offer.customer, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  public offers: Promise<Offer[]>;
 
   public async createShippingRate(
     newShippingRate: ShippingRate,
@@ -64,6 +71,10 @@ export class Customer {
       updatedShippingRate.name;
     existingShippingRates[shippingRateToUpdateIdx].rates =
       updatedShippingRate.rates;
+  }
+
+  public async createDraftOffer(draftOffer: Offer): Promise<void> {
+    (await this.offers).push(draftOffer);
   }
 
   public static create(id: Uuid): Customer {

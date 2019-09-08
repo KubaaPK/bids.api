@@ -9,6 +9,8 @@ import { DeliveryMethodRepository } from '../modules/sale/domain/delivery/delive
 import { PostgresDeliveryMethodRepository } from '../modules/sale/infrastructure/repositories/postgres.delivery-method.repository';
 import { CustomerRepository } from '../modules/sale/domain/customer/customer.repository';
 import { PostgresCustomerRepository } from '../modules/sale/infrastructure/repositories/postgres.customer.repository';
+import { OfferRepository } from '../modules/sale/domain/offer/offer.repository';
+import { PostgresOfferRepository } from '../modules/sale/infrastructure/repositories/postgres.offer.repository';
 
 export const ioCContainer: Provider<any>[] = [
   {
@@ -30,5 +32,9 @@ export const ioCContainer: Provider<any>[] = [
   {
     provide: CustomerRepository,
     useClass: PostgresCustomerRepository,
+  },
+  {
+    provide: OfferRepository,
+    useClass: PostgresOfferRepository,
   },
 ];

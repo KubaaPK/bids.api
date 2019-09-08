@@ -1,5 +1,5 @@
 import { Uuid } from '../../../../common/uuid';
-import { ItemRate } from './item-rate';
+import { CurrencyRate } from '../../../../common/value-objects/currency-rate';
 import { ShippingRateItemDto } from '../../../application/dtos/write/shipping-rate/shipping-rate-item.dto';
 
 export class ShippingRateItem {
@@ -7,8 +7,8 @@ export class ShippingRateItem {
     id: Uuid;
   };
   public maxQuantityPerPackage: number;
-  public firstItemRate: ItemRate;
-  public nextItemRate: ItemRate;
+  public firstItemRate: CurrencyRate;
+  public nextItemRate: CurrencyRate;
 
   public static create(dto: ShippingRateItemDto): ShippingRateItem {
     const newShippingRateItem: ShippingRateItem = new ShippingRateItem();

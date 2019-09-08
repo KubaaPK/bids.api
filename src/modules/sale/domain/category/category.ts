@@ -13,9 +13,10 @@ import { NewCategoryDto } from '../../application/dtos/write/category/new-catego
 import { UpdatedCategoryDto } from '../../application/dtos/write/category/updated-category.dto';
 import { Parameter } from './parameter';
 import { ParameterAlreadyLinkedToCategoryException } from './exceptions/parameter-already-linked-to-category.exception';
+import { Offer } from '../offer/offer';
 
 @Entity('categories')
-export class Category extends AggregateRoot {
+export class Category {
   @PrimaryColumn('uuid')
   public id: Uuid;
 
@@ -43,6 +44,9 @@ export class Category extends AggregateRoot {
     name: 'categories_parameters',
   })
   public parameters: Promise<Parameter[]>;
+
+  @OneToMany(type => Offer, offer => offer.category)
+  public offers: Promise<Offer[]>;
 
   public update(dto: UpdatedCategoryDto): void {
     this.name = dto.name;

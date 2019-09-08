@@ -1,4 +1,4 @@
-export class ItemRate {
+export class CurrencyRate {
   public readonly amount: string;
   public readonly currency: string;
 

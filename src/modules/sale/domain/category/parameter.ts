@@ -1,10 +1,11 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm';
 import { Uuid } from '../../../common/uuid';
 import { ParameterType } from './parameter-type.enum';
 import { Restrictions } from './restrictions';
 import { NewParameterDto } from '../../application/dtos/write/parameter/new-parameter.dto';
 import { NoDictionarySpecifiedException } from './exceptions/no-dictionary-specified.exception';
 import { UpdatedParameterDto } from '../../application/dtos/write/parameter/updated-parameter.dto';
+import { Offer } from '../offer/offer';
 
 @Entity('parameters')
 export class Parameter {
@@ -43,6 +44,9 @@ export class Parameter {
     type: 'simple-json',
   })
   public restrictions: Restrictions;
+
+  @ManyToMany(type => Offer, offer => offer.parameters)
+  public offers: Offer[];
 
   public update(dto: UpdatedParameterDto): void {
     this.name = dto.name;
