@@ -22,9 +22,9 @@ export class AppModule {
   constructor() {
     admin.initializeApp({
       credential: admin.credential.cert(
-        require(`${process.env.FIREBASE_CONFIG_JSON_PATH}`),
+        require(`${process.env.FIREBASE_ADMIN_SDK_KEY}`),
       ),
-      databaseURL: `https://${process.env.FIREBASE_DATABASE}.firebaseio.com`,
+      databaseURL: `${process.env.FIREBASE_DATABASE}`,
     });
   }
 }

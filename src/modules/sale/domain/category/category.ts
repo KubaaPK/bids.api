@@ -2,6 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -64,12 +65,17 @@ export class Category {
     parameters.push(parameter);
   }
 
+  public async hasParameters(parametersId: Uuid[]): Promise<boolean> {
+    const linkedParametersId: Uuid[] = (await this.parameters).map(el => el.id);
+    return parametersId.some(el => linkedParametersId.includes(el));
+  }
+
   public static create(dto: NewCategoryDto): Category {
     const category: Category = new Category();
     category.id = dto.id;
     category.name = dto.name;
     category.parent = (dto.parent as unknown) as Category;
-    dto.parent ? (category.leaf = true) : (category.leaf = false);
+    dto.parent === undefined ? (category.leaf = true) : (category.leaf = false);
     return category;
   }
 }

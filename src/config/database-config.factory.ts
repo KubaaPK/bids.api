@@ -5,6 +5,7 @@ import { Parameter } from '../modules/sale/domain/category/parameter';
 import { DeliveryMethod } from '../modules/sale/domain/delivery/delivery-method';
 import { ShippingRate } from '../modules/sale/domain/customer/shipping-rate/shipping-rate';
 import { Customer } from '../modules/sale/domain/customer/customer';
+import { Offer } from '../modules/sale/domain/offer/offer';
 
 export class DatabaseConfigFactory {
   public static create(env: string): ConnectionOptions {
@@ -38,6 +39,7 @@ export class DatabaseConfigFactory {
       DeliveryMethod,
       ShippingRate,
       Customer,
+      Offer,
     ];
   }
 }

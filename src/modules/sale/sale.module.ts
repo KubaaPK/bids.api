@@ -11,6 +11,8 @@ import { DeliveryMethodController } from './application/controllers/delivery-met
 import { ShippingRate } from './domain/customer/shipping-rate/shipping-rate';
 import { ShippingRateController } from './application/controllers/shipping-rate.controller';
 import { eventHandlers } from './application/events';
+import { OfferController } from './application/controllers/offer.controller';
+import { ParameterValidator } from './application/services/parameter-validator/parameter-validator';
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([Category, ShippingRate])],
@@ -19,12 +21,14 @@ import { eventHandlers } from './application/events';
     ...commandHandlers,
     ...queryHandlers,
     ...eventHandlers,
+    ParameterValidator,
   ],
   controllers: [
     CategoryController,
     ParameterController,
     DeliveryMethodController,
     ShippingRateController,
+    OfferController,
   ],
 })
 export class SaleModule {}

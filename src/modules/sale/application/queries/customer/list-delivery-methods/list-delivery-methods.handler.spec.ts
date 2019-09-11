@@ -6,7 +6,6 @@ import { EntityManager } from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import { ListDeliveryMethodsQuery } from './list-delivery-methods.query';
 import { DeliveryMethod } from '../../../../domain/delivery/delivery-method';
-import { ListableDeliveryAddressDto } from '../../../../../../../dist/modules/account/application/dtos/read/listable-delivery-address.dto';
 import { ListableDeliveryMethodDto } from '../../../dtos/read/listable-delivery-method.dto';
 
 describe('List Delivery Methods Handler', () => {
