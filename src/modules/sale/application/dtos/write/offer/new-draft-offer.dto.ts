@@ -1,10 +1,8 @@
 import { Uuid } from '../../../../../common/uuid';
 import { SellingMode } from '../../../../domain/offer/selling-mode';
-import { Parameter } from '../../../../domain/category/parameter';
 import * as admin from 'firebase-admin';
 import { Category } from '../../../../domain/category/category';
 import { ShippingRate } from '../../../../domain/customer/shipping-rate/shipping-rate';
-import { ListableParameterDto } from '../../read/listable-parameter.dto';
 import {
   IsArray,
   IsNotEmpty,
@@ -80,6 +78,16 @@ export class NewDraftOfferDto {
   @ValidateNested()
   @Type(() => ShippingRateOfferDto)
   public readonly shippingRate?: ShippingRate;
+
+  @ApiModelPropertyOptional({
+    description: 'Array with images urls.',
+    example: ['https://picsum.photos/200/300', 'https://picsum.photos/200/300'],
+  })
+  @IsOptional()
+  @IsArray({
+    message: 'Zdjęcia muszą być przesłane tablicą zawierającą adresy url.',
+  })
+  public readonly images?: string[];
 
   public customer: admin.auth.DecodedIdToken;
 }

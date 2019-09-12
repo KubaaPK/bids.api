@@ -11,6 +11,8 @@ import { CustomerRepository } from '../modules/sale/domain/customer/customer.rep
 import { PostgresCustomerRepository } from '../modules/sale/infrastructure/repositories/postgres.customer.repository';
 import { OfferRepository } from '../modules/sale/domain/offer/offer.repository';
 import { PostgresOfferRepository } from '../modules/sale/infrastructure/repositories/postgres.offer.repository';
+import { ImageUploader } from '../modules/sale/application/services/image-uploader/image-uploader';
+import { CloudinaryUploader } from '../modules/sale/application/services/image-uploader/cloudinary-uploader';
 
 export const ioCContainer: Provider<any>[] = [
   {
@@ -36,5 +38,9 @@ export const ioCContainer: Provider<any>[] = [
   {
     provide: OfferRepository,
     useClass: PostgresOfferRepository,
+  },
+  {
+    provide: ImageUploader,
+    useClass: CloudinaryUploader,
   },
 ];

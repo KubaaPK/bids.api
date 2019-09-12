@@ -62,13 +62,19 @@ export class Offer extends AggregateRoot {
   })
   public parameters: ParameterValue[];
 
+  @Column({
+    type: 'simple-array',
+    nullable: true,
+  })
+  public images: string[];
+
   @ManyToOne(type => ShippingRate, shippingRate => shippingRate.offers)
   public shippingRate: ShippingRate;
 
   @ManyToOne(type => Customer, customer => customer.offers)
   public customer: Customer;
 
-  public static create(dto: NewDraftOfferDto): Offer {
+  public static create(dto: NewDraftOfferDto, images?: string[]): Offer {
     const offer: Offer = new Offer();
     offer.id = dto.id;
     offer.name = dto.name;
@@ -96,6 +102,7 @@ export class Offer extends AggregateRoot {
         return section;
       })
       : null;
+    offer.images = images;
     return offer;
   }
 }

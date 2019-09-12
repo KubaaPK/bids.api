@@ -11,6 +11,7 @@ import { UnprocessableEntityException } from '@nestjs/common';
 import { Parameter } from '../../../../domain/category/parameter';
 import { ParameterValueDto } from '../../../dtos/write/offer/parameter-value.dto';
 import { InvalidParameterValueException } from '../../../exceptions/invalid-parameter-value.exception';
+import { ImageUploader } from '../../../services/image-uploader/image-uploader';
 
 @CommandHandler(CreateDraftOfferCommand)
 export class CreateDraftOfferHandler
@@ -19,6 +20,7 @@ export class CreateDraftOfferHandler
     private readonly customerRepository: CustomerRepository,
     private readonly categoryRepository: CategoryRepository,
     private readonly parameterValidator: ParameterValidator,
+    private readonly imageUploader: ImageUploader,
   ) {}
 
   public async execute(command: CreateDraftOfferCommand): Promise<void> {
@@ -44,7 +46,20 @@ export class CreateDraftOfferHandler
       }
     }
 
-    const newDraftOffer: Offer = Offer.create(command.newDraftOffer);
+    let uploadedImagesUrls: string[] = [];
+    if (
+      command.newDraftOffer.images &&
+      command.newDraftOffer.images.length > 0
+    ) {
+      uploadedImagesUrls = await this.handleImageUpload(
+        command.newDraftOffer.images,
+      );
+    }
+
+    const newDraftOffer: Offer = Offer.create(
+      command.newDraftOffer,
+      uploadedImagesUrls,
+    );
     // @ts-ignore
     newDraftOffer.description = JSON.stringify(newDraftOffer.description);
     await customer.createDraftOffer(newDraftOffer);
@@ -102,5 +117,13 @@ export class CreateDraftOfferHandler
       return resolvedErrors;
     }
     return [];
+  }
+
+  private handleImageUpload(urls: string[]): any {
+    return Promise.all(
+      urls.map(async (url: string) => {
+        return await this.imageUploader.fromUrl(url);
+      }),
+    );
   }
 }
