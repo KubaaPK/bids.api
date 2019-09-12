@@ -19,6 +19,7 @@ import { CategoryNotFoundException } from '../../../../domain/category/exception
 import { Parameter } from '../../../../domain/category/parameter';
 import { ParameterType } from '../../../../domain/category/parameter-type.enum';
 import { InvalidParameterValueException } from '../../../exceptions/invalid-parameter-value.exception';
+import { OfferDescriptionItemType } from '../../../../domain/offer/description/offer-description-item-type';
 
 describe('Create Draft Offer Handler', () => {
   let handler: CreateDraftOfferHandler;
@@ -248,6 +249,81 @@ describe('Create Draft Offer Handler', () => {
     ).rejects.toThrowError(InvalidParameterValueException);
   });
 
+  it('should throw Unprocessable Entity Exception if one of description sections has more than 2 items', async () => {
+    const firstParameterId: string = faker.random.uuid();
+
+    jest.spyOn(customerRepository, 'findOne').mockImplementationOnce(async () =>
+      Object.assign(new Customer(), {
+        offers: new Promise(resolve => resolve([])),
+      }),
+    );
+
+    jest.spyOn(categoryRepository, 'findOne').mockImplementationOnce(async () =>
+      Object.assign(new Category(), {
+        leaf: true,
+        parameters: new Promise(resolve =>
+          resolve([
+            Object.assign(new Parameter(), {
+              id: firstParameterId,
+              restrictions: {
+                min: 1,
+                max: 15,
+                precision: 2,
+              },
+            }),
+          ]),
+        ),
+      }),
+    );
+
+    jest
+      .spyOn(parameterValidator, 'validate')
+      .mockImplementationOnce(() => true);
+
+    const newDraftOffer: NewDraftOfferDto = {
+      id: faker.random.uuid(),
+      name: 'Test offer',
+      customer: {
+        uid: faker.random.uuid(),
+      } as admin.auth.DecodedIdToken,
+      category: ({
+        id: faker.random.uuid(),
+      } as any) as Category,
+      parameters: [
+        {
+          id: firstParameterId,
+          name: 'Przekątna ekranu',
+          value: '4.50',
+          type: ParameterType.FLOAT,
+        },
+      ],
+      description: {
+        sections: [
+          {
+            items: [
+              {
+                type: OfferDescriptionItemType.TEXT,
+                content: 'Content',
+              },
+              {
+                type: OfferDescriptionItemType.TEXT,
+                content: 'Content',
+              },
+              {
+                type: OfferDescriptionItemType.TEXT,
+                content: 'Content',
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    await expect(
+      handler.execute(new CreateDraftOfferCommand(newDraftOffer)),
+    ).rejects.toThrowError(UnprocessableEntityException);
+  });
+
   it('should throw Internal Server Error Exception if saving updated (with new draft offer) customer to Postgres fails', async () => {
     const firstParameterId: string = faker.random.uuid();
 
@@ -300,6 +376,22 @@ describe('Create Draft Offer Handler', () => {
           type: ParameterType.FLOAT,
         },
       ],
+      description: {
+        sections: [
+          {
+            items: [
+              {
+                type: OfferDescriptionItemType.TEXT,
+                content: 'Content',
+              },
+              {
+                type: OfferDescriptionItemType.TEXT,
+                content: 'Content',
+              },
+            ],
+          },
+        ],
+      },
     };
 
     await expect(

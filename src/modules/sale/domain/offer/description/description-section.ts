@@ -1,5 +1,6 @@
 import { DescriptionItemImage } from './description-item-image';
 import { DescriptionItemText } from './description-item-text';
+import { UnprocessableEntityException } from '@nestjs/common';
 
 export class DescriptionSection {
   public readonly maxItemsPerSection: number = 2;
@@ -7,7 +8,9 @@ export class DescriptionSection {
 
   public addItem(item: DescriptionItemImage | DescriptionItemText): void {
     if (this.items.length === this.maxItemsPerSection) {
-      throw new Error('Maximum number of items per section reached.');
+      throw new UnprocessableEntityException(
+        'W jednej sekcji opisu może znajdować się maksymalnie 2 elementy.',
+      );
     }
     this.items.push(item);
   }

@@ -33,6 +33,6 @@ export class OfferDescriptionDto {
   @ValidateNested({ each: true })
   @Type(() => DescriptionItem)
   public readonly sections: {
-    items: [DescriptionItem];
+    items: DescriptionItem[];
   }[];
 }

@@ -83,17 +83,18 @@ export class Offer extends AggregateRoot {
     offer.ean = dto.ean;
     offer.sellingMode = dto.sellingMode;
     offer.shippingRate = dto.shippingRate;
+    // prettier-ignore
     offer.description = dto.description
       ? dto.description.sections.map((el: any) => {
-          const section: DescriptionSection = DescriptionSection.create();
-          const items: any = el.items.map((el: DescriptionItem) => {
-            return el.type === OfferDescriptionItemType.TEXT
+        const section: DescriptionSection = DescriptionSection.create();
+        const items: any = el.items.map((el: DescriptionItem) => {
+          return el.type === OfferDescriptionItemType.TEXT
               ? DescriptionItemText.create(el.type, el.content)
               : DescriptionItemImage.create(el.type, el.url);
-          });
-          items.map(el => section.addItem(el));
-          return section;
-        })
+        });
+        items.map(el => section.addItem(el));
+        return section;
+      })
       : null;
     return offer;
   }
