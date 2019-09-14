@@ -13,6 +13,7 @@ import { DescriptionItem } from '../../application/dtos/write/offer/offer-descri
 import { OfferDescriptionItemType } from '../offer/description/offer-description-item-type';
 import { DescriptionItemText } from '../offer/description/description-item-text';
 import { DescriptionItemImage } from '../offer/description/description-item-image';
+import { OfferStatus } from '../offer/offer-status';
 
 @Entity('customers')
 export class Customer {
@@ -121,6 +122,18 @@ export class Customer {
         category: dto.category,
       },
     );
+  }
+
+  public async listDraftOffers(
+    offset: number = 0,
+    limit?: number,
+  ): Promise<Offer[]> {
+    const existingOffers: Offer[] = await this.offers;
+    return existingOffers
+      .map((offer: Offer) =>
+        offer.status === OfferStatus.IN_ACTIVE ? offer : null,
+      )
+      .splice(offset, limit !== undefined ? limit : existingOffers.length);
   }
 
   public static create(id: Uuid): Customer {

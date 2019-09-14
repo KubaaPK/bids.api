@@ -17,10 +17,8 @@ import { DescriptionSection } from './description/description-section';
 import { OfferDescriptionItemType } from './description/offer-description-item-type';
 import { DescriptionItemText } from './description/description-item-text';
 import { DescriptionItemImage } from './description/description-item-image';
-import {
-  DescriptionItem,
-  OfferDescriptionDto,
-} from '../../application/dtos/write/offer/offer-description.dto';
+import { DescriptionItem } from '../../application/dtos/write/offer/offer-description.dto';
+import { OfferStatus } from './offer-status';
 
 @Entity('offers')
 export class Offer extends AggregateRoot {
@@ -47,7 +45,7 @@ export class Offer extends AggregateRoot {
   @CreateDateColumn()
   public createdAt: Date;
 
-  @ManyToOne(type => Category, category => category.offers)
+  @ManyToOne(type => Category, category => category.offers, { lazy: true })
   public category: Category;
 
   @Column({
@@ -68,11 +66,20 @@ export class Offer extends AggregateRoot {
   })
   public images: string[];
 
-  @ManyToOne(type => ShippingRate, shippingRate => shippingRate.offers)
+  @ManyToOne(type => ShippingRate, shippingRate => shippingRate.offers, {
+    lazy: true,
+  })
   public shippingRate: ShippingRate;
 
   @ManyToOne(type => Customer, customer => customer.offers)
   public customer: Customer;
+
+  @Column({
+    nullable: false,
+    default: OfferStatus.IN_ACTIVE,
+    enum: OfferStatus,
+  })
+  public status: OfferStatus;
 
   public static create(dto: NewDraftOfferDto, images?: string[]): Offer {
     const offer: Offer = new Offer();

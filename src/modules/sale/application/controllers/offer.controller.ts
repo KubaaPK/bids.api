@@ -1,18 +1,20 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { AppLogger } from '../../../common/app-logger';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../../../auth/application/guards/roles.guard';
 import { roles } from '../../../auth/application/guards/roles.decorator';
@@ -33,6 +35,8 @@ import {
 import { Response } from 'express';
 import { UpdatedDraftOfferDto } from '../dtos/write/offer/updated-draft-offer.dto';
 import { UpdateDraftOfferCommand } from '../commands/customer/update-draft-offer/update-draft-offer.command';
+import { ListableDraftOfferDto } from '../dtos/read/listable-draft-offer.dto';
+import { ListDraftOffersQuery } from '../queries/customer/list-draft-offers/list-draft-offers.query';
 
 @ApiUseTags('offers')
 @Controller('sale/offers')
@@ -42,7 +46,10 @@ export class OfferController {
     true,
   );
 
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @ApiCreatedResponse({ description: 'Draft offer has been created.' })
   @ApiBadRequestResponse({ description: 'Validation errors.' })
@@ -118,6 +125,27 @@ export class OfferController {
         new InternalServerErrorException(
           ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
         );
+    }
+  }
+
+  @Get('/drafts')
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  public async getAllDrafts(
+    @Req() request,
+    @Query('limit') limit?: number,
+    @Query('offset') offset?: number,
+  ): Promise<ListableDraftOfferDto[]> {
+    try {
+      return await this.queryBus.execute(
+        new ListDraftOffersQuery(request.user, offset, limit),
+      );
+    } catch (e) {
+      console.log(e);
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

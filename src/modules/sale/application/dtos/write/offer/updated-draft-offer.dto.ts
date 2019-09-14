@@ -21,6 +21,7 @@ export class UpdatedDraftOfferDto {
     type: String,
     example: 'Samsung Galaxy S10 64GB',
   })
+  @IsOptional()
   @IsNotEmpty({
     message: 'Tytuł oferty jest wymagany.',
   })
