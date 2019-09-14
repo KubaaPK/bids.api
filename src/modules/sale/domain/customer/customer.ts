@@ -6,6 +6,13 @@ import { Uuid } from '../../../common/uuid';
 import { ShippingRateNotFoundException } from './exceptions/shipping-rate-not-found.exception';
 import { UpdatedShippingRateDto } from '../../application/dtos/write/shipping-rate/updated-shipping-rate.dto';
 import { Offer } from '../offer/offer';
+import { UpdatedDraftOfferDto } from '../../application/dtos/write/offer/updated-draft-offer.dto';
+import { NotFoundException } from '@nestjs/common';
+import { DescriptionSection } from '../offer/description/description-section';
+import { DescriptionItem } from '../../application/dtos/write/offer/offer-description.dto';
+import { OfferDescriptionItemType } from '../offer/description/offer-description-item-type';
+import { DescriptionItemText } from '../offer/description/description-item-text';
+import { DescriptionItemImage } from '../offer/description/description-item-image';
 
 @Entity('customers')
 export class Customer {
@@ -75,6 +82,45 @@ export class Customer {
 
   public async createDraftOffer(draftOffer: Offer): Promise<void> {
     (await this.offers).push(draftOffer);
+  }
+
+  public async updateDraftOffer(
+    draftOfferId: Uuid,
+    dto: UpdatedDraftOfferDto,
+  ): Promise<void> {
+    const existingOffers: Offer[] = await this.offers;
+    const offerToUpdateIdx: number = existingOffers.findIndex(
+      (el: Offer) => el.id === draftOfferId,
+    );
+    if (offerToUpdateIdx === -1) {
+      throw new NotFoundException('Oferta o podanym ID nie istnieje.');
+    }
+    existingOffers[offerToUpdateIdx] = Object.assign(
+      existingOffers[offerToUpdateIdx],
+      {
+        images: dto.images,
+        // prettier-ignore
+        description:
+          dto.description !== undefined
+            ? dto.description.sections.map((el: any) => {
+              const section: DescriptionSection = DescriptionSection.create();
+              const items: any = el.items.map((el: DescriptionItem) => {
+                return el.type === OfferDescriptionItemType.TEXT
+                  ? DescriptionItemText.create(el.type, el.content)
+                  : DescriptionItemImage.create(el.type, el.url);
+              });
+              items.map(el => section.addItem(el));
+              return section;
+            })
+            : existingOffers[offerToUpdateIdx].description,
+        sellingMode: dto.sellingMode,
+        parameters: dto.parameters,
+        shippingRate: dto.shippingRate,
+        ean: dto.ean,
+        name: dto.name,
+        category: dto.category,
+      },
+    );
   }
 
   public static create(id: Uuid): Customer {

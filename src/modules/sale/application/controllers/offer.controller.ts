@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
+  Patch,
   Post,
   Req,
   Res,
@@ -28,6 +31,8 @@ import {
   ApiUseTags,
 } from '@nestjs/swagger';
 import { Response } from 'express';
+import { UpdatedDraftOfferDto } from '../dtos/write/offer/updated-draft-offer.dto';
+import { UpdateDraftOfferCommand } from '../commands/customer/update-draft-offer/update-draft-offer.command';
 
 @ApiUseTags('offers')
 @Controller('sale/offers')
@@ -69,6 +74,44 @@ export class OfferController {
           Location: `${process.env.APP_API_ROOT_URL}/sale/offers/${id}`,
         })
         .sendStatus(HttpStatus.CREATED);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiCreatedResponse({ description: 'Draft offer has been updated.' })
+  @ApiBadRequestResponse({ description: 'Validation errors.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @ApiNotFoundResponse({
+    description:
+      'Category with given id does not exist. | Draft offer has not been found.',
+  })
+  @ApiUnprocessableEntityResponse({
+    description:
+      'Category is not the leaf | Category does not have given parameters | Invalid parameters values',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Patch('/:offerId')
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  @HttpCode(HttpStatus.OK)
+  public async update(
+    @Req() request,
+    @Res() response: Response,
+    @Param('offerId') offerId: Uuid,
+    @Body() updatedDraftOffer: UpdatedDraftOfferDto,
+  ): Promise<void> {
+    try {
+      updatedDraftOffer.customer = request.user;
+      await this.commandBus.execute(
+        new UpdateDraftOfferCommand(offerId, updatedDraftOffer),
+      );
+
+      response.sendStatus(HttpStatus.NO_CONTENT);
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

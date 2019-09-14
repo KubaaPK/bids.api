@@ -1,8 +1,6 @@
-import { AggregateRoot } from '@nestjs/cqrs';
 import {
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,

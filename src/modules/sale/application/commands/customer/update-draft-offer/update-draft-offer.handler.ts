@@ -1,20 +1,19 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { CreateDraftOfferCommand } from './create-draft-offer.command';
+import { UpdateDraftOfferCommand } from './update-draft-offer.command';
 import { CustomerRepository } from '../../../../domain/customer/customer.repository';
-import { Customer } from '../../../../domain/customer/customer';
-import { Offer } from '../../../../domain/offer/offer';
-import { ParameterValidator } from '../../../services/parameter-validator/parameter-validator';
 import { CategoryRepository } from '../../../../domain/category/category.repository';
+import { Customer } from '../../../../domain/customer/customer';
+import { ParameterValidator } from '../../../services/parameter-validator/parameter-validator';
+import { CategoryValidator } from '../../../services/category-validator/category-validator';
 import { Category } from '../../../../domain/category/category';
-import { Parameter } from '../../../../domain/category/parameter';
 import { ParameterValueDto } from '../../../dtos/write/offer/parameter-value.dto';
+import { Parameter } from '../../../../domain/category/parameter';
 import { InvalidParameterValueException } from '../../../exceptions/invalid-parameter-value.exception';
 import { ImageUploader } from '../../../services/image-uploader/image-uploader';
-import { CategoryValidator } from '../../../services/category-validator/category-validator';
 
-@CommandHandler(CreateDraftOfferCommand)
-export class CreateDraftOfferHandler
-  implements ICommandHandler<CreateDraftOfferCommand> {
+@CommandHandler(UpdateDraftOfferCommand)
+export class UpdateDraftOfferHandler
+  implements ICommandHandler<UpdateDraftOfferCommand> {
   constructor(
     private readonly customerRepository: CustomerRepository,
     private readonly categoryRepository: CategoryRepository,
@@ -23,46 +22,44 @@ export class CreateDraftOfferHandler
     private readonly imageUploader: ImageUploader,
   ) {}
 
-  public async execute(command: CreateDraftOfferCommand): Promise<void> {
+  public async execute(command: UpdateDraftOfferCommand): Promise<any> {
     const customer: Customer = await this.customerRepository.findOne(
-      command.newDraftOffer.customer.uid,
+      command.updatedDraftOffer.customer.uid,
     );
 
-    if (command.newDraftOffer.category) {
+    if (command.updatedDraftOffer.category) {
       const category: Category = await this.categoryRepository.findOne(
-        command.newDraftOffer.category.id,
+        command.updatedDraftOffer.category.id,
       );
-      await this.categoryValidator.checkCategoryCorrectness(category);
-      await this.categoryValidator.checkIfCategoryHasGivenParameters(
-        category,
-        command.newDraftOffer.parameters,
-      );
-      const parameterValidationErrors: string[] = await this.validOfferParameters(
-        category,
-        command.newDraftOffer.parameters,
-      );
-      if (parameterValidationErrors.length > 0) {
-        throw new InvalidParameterValueException(parameterValidationErrors);
+      if (command.updatedDraftOffer.parameters) {
+        await this.categoryValidator.checkCategoryCorrectness(category);
+        await this.categoryValidator.checkIfCategoryHasGivenParameters(
+          category,
+          command.updatedDraftOffer.parameters,
+        );
+        const parameterValidationErrors: string[] = await this.validOfferParameters(
+          category,
+          command.updatedDraftOffer.parameters,
+        );
+        if (parameterValidationErrors.length > 0) {
+          throw new InvalidParameterValueException(parameterValidationErrors);
+        }
       }
+      await this.categoryValidator.checkCategoryCorrectness(category);
     }
 
     let uploadedImagesUrls: string[] = [];
     if (
-      command.newDraftOffer.images &&
-      command.newDraftOffer.images.length > 0
+      command.updatedDraftOffer.images &&
+      command.updatedDraftOffer.images.length > 0
     ) {
       uploadedImagesUrls = await this.handleImageUpload(
-        command.newDraftOffer.images,
+        command.updatedDraftOffer.images,
       );
+      command.updatedDraftOffer.images = uploadedImagesUrls;
     }
 
-    const newDraftOffer: Offer = Offer.create(
-      command.newDraftOffer,
-      uploadedImagesUrls,
-    );
-    // @ts-ignore
-    newDraftOffer.description = JSON.stringify(newDraftOffer.description);
-    await customer.createDraftOffer(newDraftOffer);
+    await customer.updateDraftOffer(command.offerId, command.updatedDraftOffer);
     await this.customerRepository.save(customer);
   }
 

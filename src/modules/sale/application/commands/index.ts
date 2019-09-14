@@ -13,6 +13,7 @@ import { CreateShippingRateHandler } from './customer/create-shipping-rate/creat
 import { DeleteShippingRateHandler } from './customer/delete-shipping-rate/delete-shipping-rate.handler';
 import { UpdateShippingRateHandler } from './customer/update-shipping-rate/update-shipping-rate.handler';
 import { CreateDraftOfferHandler } from './customer/create-draft-offer/create-draft-offer.handler';
+import { UpdateDraftOfferHandler } from './customer/update-draft-offer/update-draft-offer.handler';
 
 export const commandHandlers: Type<any>[] = [
   CreateCategoryHandler,
@@ -29,4 +30,5 @@ export const commandHandlers: Type<any>[] = [
   DeleteShippingRateHandler,
   UpdateShippingRateHandler,
   CreateDraftOfferHandler,
+  UpdateDraftOfferHandler,
 ];
