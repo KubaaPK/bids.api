@@ -136,6 +136,18 @@ export class Customer {
       .splice(offset, limit !== undefined ? limit : existingOffers.length);
   }
 
+  public async deleteDraftOffer(offerId: Uuid): Promise<void> {
+    const existingOffers: Offer[] = await this.offers;
+    const offerToDeleteIdx: number = existingOffers.findIndex(
+      (offer: Offer) =>
+        offer.status === OfferStatus.IN_ACTIVE && offer.id === offerId,
+    );
+    if (offerToDeleteIdx === -1) {
+      throw new NotFoundException('Oferta o podanym ID nie istnieje.');
+    }
+    existingOffers.splice(offerToDeleteIdx, 1);
+  }
+
   public static create(id: Uuid): Customer {
     const customer: Customer = new Customer();
     customer.id = id;

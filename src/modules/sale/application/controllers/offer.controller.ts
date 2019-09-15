@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -27,7 +28,9 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
+  ApiOkResponse,
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
   ApiUseTags,
@@ -37,6 +40,7 @@ import { UpdatedDraftOfferDto } from '../dtos/write/offer/updated-draft-offer.dt
 import { UpdateDraftOfferCommand } from '../commands/customer/update-draft-offer/update-draft-offer.command';
 import { ListableDraftOfferDto } from '../dtos/read/listable-draft-offer.dto';
 import { ListDraftOffersQuery } from '../queries/customer/list-draft-offers/list-draft-offers.query';
+import { DeleteDraftOfferCommand } from '../commands/customer/delete-draft-offer/delete-draft-offer.command';
 
 @ApiUseTags('offers')
 @Controller('sale/offers')
@@ -146,6 +150,33 @@ export class OfferController {
       throw new InternalServerErrorException(
         ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  @ApiNoContentResponse({ description: 'Draft offer has been deleted. ' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized. ' })
+  @ApiNotFoundResponse({ description: 'Draft offer not found. ' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Delete('/:offerId')
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async delete(
+    @Req() request,
+    @Res() response: Response,
+    @Param('offerId') offerId: Uuid,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(
+        new DeleteDraftOfferCommand(request.user.uid, offerId),
+      );
+      response.sendStatus(HttpStatus.NO_CONTENT);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
     }
   }
 }
