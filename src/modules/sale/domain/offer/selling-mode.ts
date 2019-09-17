@@ -8,7 +8,7 @@ export enum SellingModeFormat {
 
 export class SellingMode {
   public format: SellingModeFormat;
-  public price: CurrencyRate;
+  public price?: CurrencyRate;
   public minimalPrice?: CurrencyRate;
   public startingPrice?: CurrencyRate;
 

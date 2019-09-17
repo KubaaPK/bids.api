@@ -7,6 +7,7 @@ import { DatabaseConfigFactory } from './config/database-config.factory';
 import { AccountModule } from './modules/account/account.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { SaleModule } from './modules/sale/sale.module';
+import { PricingModule } from './modules/pricing/pricing.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SaleModule } from './modules/sale/sale.module';
     AccountModule,
     AuthModule,
     SaleModule,
+    PricingModule,
   ],
   controllers: [AppController],
   providers: [],

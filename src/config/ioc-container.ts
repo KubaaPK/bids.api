@@ -13,6 +13,8 @@ import { OfferRepository } from '../modules/sale/domain/offer/offer.repository';
 import { PostgresOfferRepository } from '../modules/sale/infrastructure/repositories/postgres.offer.repository';
 import { ImageUploader } from '../modules/sale/application/services/image-uploader/image-uploader';
 import { CloudinaryUploader } from '../modules/sale/application/services/image-uploader/cloudinary-uploader';
+import { FeeCalculator } from '../modules/pricing/domain/fee/fee-calculator';
+import { FeeCalculatorStrategy } from '../modules/pricing/application/services/fee-calculator/fee-calculator.strategy';
 
 export const ioCContainer: Provider<any>[] = [
   {
@@ -42,5 +44,9 @@ export const ioCContainer: Provider<any>[] = [
   {
     provide: ImageUploader,
     useClass: CloudinaryUploader,
+  },
+  {
+    provide: FeeCalculator,
+    useClass: FeeCalculatorStrategy,
   },
 ];

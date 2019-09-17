@@ -4,11 +4,7 @@ import { IsEnum, IsOptional, ValidateNested } from 'class-validator';
 import { EnumUtils } from '../../../../../common/utils/enum-utils';
 import { CurrencyRateDto } from './currency-rate.dto';
 import { Type } from 'class-transformer';
-import {
-  ApiModelProperty,
-  ApiModelPropertyOptional,
-  ApiOperation,
-} from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 
 export class SellingModeDto {
   @ApiModelProperty({
