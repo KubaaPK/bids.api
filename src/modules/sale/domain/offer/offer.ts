@@ -19,6 +19,7 @@ import { DescriptionItemText } from './description/description-item-text';
 import { DescriptionItemImage } from './description/description-item-image';
 import { DescriptionItem } from '../../application/dtos/write/offer/offer-description.dto';
 import { OfferStatus } from './offer-status';
+import { Stock } from './stock';
 
 @Entity('offers')
 export class Offer extends AggregateRoot {
@@ -66,6 +67,12 @@ export class Offer extends AggregateRoot {
   })
   public images: string[];
 
+  @Column({
+    type: 'simple-json',
+    nullable: true,
+  })
+  public stock: Stock;
+
   @ManyToOne(type => ShippingRate, shippingRate => shippingRate.offers, {
     lazy: true,
   })
@@ -110,6 +117,9 @@ export class Offer extends AggregateRoot {
       })
       : null;
     offer.images = images;
+    offer.stock = !!offer.stock
+      ? Stock.create(dto.stock.available, dto.stock.unit)
+      : null;
     return offer;
   }
 }

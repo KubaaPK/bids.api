@@ -16,6 +16,7 @@ import { ParameterValueDto } from './parameter-value.dto';
 import { ShippingRateOfferDto } from './shipping-rate-offer.dto';
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { OfferDescriptionDto } from './offer-description.dto';
+import { StockDto } from './stock.dto';
 
 export class NewDraftOfferDto {
   public id: Uuid;
@@ -88,6 +89,13 @@ export class NewDraftOfferDto {
     message: 'Zdjęcia muszą być przesłane tablicą zawierającą adresy url.',
   })
   public readonly images?: string[];
+
+  @ApiModelProperty({
+    type: StockDto,
+  })
+  @ValidateNested()
+  @IsOptional()
+  public readonly stock?: StockDto;
 
   public customer: admin.auth.DecodedIdToken;
 }

@@ -36,7 +36,7 @@ export class SellingModeDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => CurrencyRateDto)
-  public minimalPrice?: CurrencyRate;
+  public minimalPrice?: CurrencyRate | null;
 
   @ApiModelPropertyOptional({
     type: CurrencyRateDto,
@@ -44,5 +44,5 @@ export class SellingModeDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => CurrencyRateDto)
-  public startingPrice?: CurrencyRate;
+  public startingPrice?: CurrencyRate | null;
 }
