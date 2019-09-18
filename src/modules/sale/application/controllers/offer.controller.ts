@@ -41,6 +41,8 @@ import { UpdateDraftOfferCommand } from '../commands/customer/update-draft-offer
 import { ListableDraftOfferDto } from '../dtos/read/listable-draft-offer.dto';
 import { ListDraftOffersQuery } from '../queries/customer/list-draft-offers/list-draft-offers.query';
 import { DeleteDraftOfferCommand } from '../commands/customer/delete-draft-offer/delete-draft-offer.command';
+import { RequestOfferPublicationCommand } from '../commands/customer/request-offer-publication/request-offer-publication.command';
+import { OfferToPublishDto } from '../dtos/write/offer/offer-to-publish.dto';
 
 @ApiUseTags('offers')
 @Controller('sale/offers')
@@ -171,6 +173,34 @@ export class OfferController {
         new DeleteDraftOfferCommand(request.user.uid, offerId),
       );
       response.sendStatus(HttpStatus.NO_CONTENT);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({ description: 'Offer has been published. ' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+  @ApiNotFoundResponse({ description: 'Offer not found.' })
+  @ApiUnprocessableEntityResponse({ description: 'Offer validation failed.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error. ' })
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  @HttpCode(HttpStatus.OK)
+  @Post('/publish')
+  public async publish(
+    @Req() request,
+    @Res() response: Response,
+    @Body() offer: OfferToPublishDto,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(
+        new RequestOfferPublicationCommand(request.user.uid, offer.offerId),
+      );
+      response.sendStatus(HttpStatus.OK);
     } catch (e) {
       this.logger.error(e.message);
       throw e ||
