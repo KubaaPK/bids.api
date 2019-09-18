@@ -35,4 +35,8 @@ lerna-debug.log*
 
 .env
 /src/config/bids-2a878-firebase-adminsdk-yhs1z-8a1fbe8d4c.json
+<<<<<<< HEAD
 /trash.md
+=======
+/todo.md
+>>>>>>> module/sale
