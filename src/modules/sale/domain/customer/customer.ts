@@ -148,6 +148,11 @@ export class Customer {
     existingOffers.splice(offerToDeleteIdx, 1);
   }
 
+  public async publishOffer(offerIndex: number): Promise<void> {
+    const offers: Offer[] = await this.offers;
+    offers[offerIndex].status = OfferStatus.ACTIVE;
+  }
+
   public static create(id: Uuid): Customer {
     const customer: Customer = new Customer();
     customer.id = id;

@@ -14,6 +14,7 @@ import { eventHandlers } from './application/events';
 import { OfferController } from './application/controllers/offer.controller';
 import { ParameterValidator } from './application/services/parameter-validator/parameter-validator';
 import { CategoryValidator } from './application/services/category-validator/category-validator';
+import { DraftOfferValidator } from './application/services/draft-offer-validator/draft-offer-validator';
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([Category, ShippingRate])],
@@ -24,6 +25,7 @@ import { CategoryValidator } from './application/services/category-validator/cat
     ...eventHandlers,
     ParameterValidator,
     CategoryValidator,
+    DraftOfferValidator,
   ],
   controllers: [
     CategoryController,
