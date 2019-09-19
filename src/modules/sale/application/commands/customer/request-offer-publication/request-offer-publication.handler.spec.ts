@@ -99,7 +99,7 @@ describe('Request Offer Publication Handler', () => {
     );
     jest
       .spyOn(draftOfferValidator, 'validate')
-      .mockImplementationOnce(() => ['errors']);
+      .mockImplementationOnce(async () => ['errors']);
 
     await expect(
       handler.execute(
@@ -126,7 +126,7 @@ describe('Request Offer Publication Handler', () => {
     });
     jest
       .spyOn(draftOfferValidator, 'validate')
-      .mockImplementationOnce(() => []);
+      .mockImplementationOnce(async () => []);
 
     await expect(
       handler.execute(

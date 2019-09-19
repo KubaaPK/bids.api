@@ -27,6 +27,7 @@ import { Uuid } from '../../../common/uuid';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiImplicitQuery,
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -43,6 +44,8 @@ import { ListDraftOffersQuery } from '../queries/customer/list-draft-offers/list
 import { DeleteDraftOfferCommand } from '../commands/customer/delete-draft-offer/delete-draft-offer.command';
 import { RequestOfferPublicationCommand } from '../commands/customer/request-offer-publication/request-offer-publication.command';
 import { OfferToPublishDto } from '../dtos/write/offer/offer-to-publish.dto';
+import { ListOffersQuery } from '../queries/customer/list-offers/list-offers.query';
+import { ListableOfferDto } from '../dtos/read/offer/listable-offer.dto';
 
 @ApiUseTags('offers')
 @Controller('sale/offers')
@@ -201,6 +204,53 @@ export class OfferController {
         new RequestOfferPublicationCommand(request.user.uid, offer.offerId),
       );
       response.sendStatus(HttpStatus.OK);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({ description: 'List with offers.', type: [ListableOfferDto] })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error. ' })
+  @ApiImplicitQuery({
+    name: 'offset',
+    required: false,
+    description: 'Index of the first returned offer from all search results.',
+    type: Number,
+  })
+  @ApiImplicitQuery({
+    name: 'limit',
+    required: false,
+    description: 'The maximum number of offers.',
+    type: Number,
+  })
+  @ApiImplicitQuery({
+    name: 'seller.id',
+    required: false,
+    description: 'The identifier of a seller to show only his offers.',
+    type: Uuid,
+  })
+  @ApiImplicitQuery({
+    name: 'category.id',
+    required: false,
+    description: 'Identifier of the category, where offers will be search.',
+    type: Number,
+  })
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  public async get(
+    @Query('offset') offset?: number,
+    @Query('limit') limit?: number,
+    @Query('category.id') categoryId?: string,
+    @Query('seller.id') sellerId?: string,
+  ): Promise<ListableOfferDto> {
+    try {
+      return await this.queryBus.execute(
+        new ListOffersQuery(offset, limit, categoryId, sellerId),
+      );
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

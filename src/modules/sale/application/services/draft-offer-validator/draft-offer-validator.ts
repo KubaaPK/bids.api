@@ -4,16 +4,18 @@ import { DescriptionSection } from '../../../domain/offer/description/descriptio
 import { SellingMode } from '../../../domain/offer/selling-mode';
 import { Stock } from '../../../domain/offer/stock';
 import { Category } from '../../../domain/category/category';
+import { ShippingRate } from '../../../domain/customer/shipping-rate/shipping-rate';
 
 @Injectable()
 export class DraftOfferValidator {
-  public validate(offer: Offer): string[] {
+  public async validate(offer: Offer): Promise<string[]> {
     const errors: string[] = [];
 
     errors.push(this.validateOfferName(offer.name));
     errors.push(this.validateOfferDescription(offer.description));
     errors.push(this.validateOfferSellingMode(offer.sellingMode));
-    errors.push(this.validateOfferCategory(offer.category));
+    errors.push(await this.validateOfferCategory(offer.category));
+    errors.push(await this.validateOfferShippingRate(offer.shippingRate));
     errors.push(this.validateOfferImages(offer.images));
     errors.push(this.validateOfferStock(offer.stock));
 
@@ -39,8 +41,8 @@ export class DraftOfferValidator {
     }
   }
 
-  private validateOfferCategory(category: Category): string {
-    if (category === null || category === undefined) {
+  private async validateOfferCategory(category: Category): Promise<string> {
+    if ((await category) === null || (await category) === undefined) {
       return 'Należy zdefiniować kategorię oferty.';
     }
   }
@@ -64,6 +66,14 @@ export class DraftOfferValidator {
   private validateOfferStock(stock: Stock): string {
     if (stock === null || stock === undefined) {
       return 'Należy dodać informacje odnośnie ilości sprzedawanych przedmiotów.';
+    }
+  }
+
+  private async validateOfferShippingRate(
+    shippingRate: ShippingRate,
+  ): Promise<string> {
+    if ((await shippingRate) === null || (await shippingRate) === undefined) {
+      return 'Należy dodać cennik do oferty.';
     }
   }
 }
