@@ -6,6 +6,7 @@ import { Category } from '../../../domain/category/category';
 import * as faker from 'faker';
 import { SellingModeFormat } from '../../../domain/offer/selling-mode';
 import { StockUnit } from '../../../domain/offer/stock-unit';
+import { ShippingRate } from '../../../domain/customer/shipping-rate/shipping-rate';
 
 describe('Draft Offer Validator', () => {
   let validator: DraftOfferValidator;
@@ -25,7 +26,7 @@ describe('Draft Offer Validator', () => {
   it('should return array of strings with errors messages', async () => {
     const offerToValidate: Offer = {} as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(Array.isArray(result)).toBeTruthy();
   });
@@ -35,7 +36,7 @@ describe('Draft Offer Validator', () => {
       name: null,
     } as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(result).toContain('Należy zdefiniować tytuł oferty.');
   });
@@ -46,7 +47,7 @@ describe('Draft Offer Validator', () => {
       description: null,
     } as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(result).toContain('Należy zdefiniować opis oferty.');
   });
@@ -57,7 +58,7 @@ describe('Draft Offer Validator', () => {
       description: [],
     } as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(result).toContain(
       'Należy zdefiniować przynajmniej jedną sekcję opisu oferty.',
@@ -75,7 +76,7 @@ describe('Draft Offer Validator', () => {
       category: null,
     } as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(result).toContain('Należy zdefiniować kategorię oferty.');
   });
@@ -94,7 +95,7 @@ describe('Draft Offer Validator', () => {
       sellingMode: null,
     } as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(result).toContain(
       'Należy zdefiniować tryb sprzedaży: typ oferty i ceny.',
@@ -122,7 +123,7 @@ describe('Draft Offer Validator', () => {
       images: null,
     } as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(result).toContain('Należy dodać co najmniej 1 obrazek do oferty.');
   });
@@ -149,7 +150,7 @@ describe('Draft Offer Validator', () => {
       stock: null,
     } as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(result).toContain(
       'Należy dodać informacje odnośnie ilości sprzedawanych przedmiotów.',
@@ -162,6 +163,7 @@ describe('Draft Offer Validator', () => {
       'Należy zdefiniować opis oferty.',
       'Należy zdefiniować tryb sprzedaży: typ oferty i ceny.',
       'Należy zdefiniować kategorię oferty.',
+      'Należy dodać cennik do oferty.',
       'Należy dodać co najmniej 1 obrazek do oferty.',
       'Należy dodać informacje odnośnie ilości sprzedawanych przedmiotów.',
     ];
@@ -173,22 +175,33 @@ describe('Draft Offer Validator', () => {
       images: null,
     } as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     result.map((el, idx) => expect(result).toContain(errorMessages[idx]));
   });
 
   it('should return empty errors array if offer is correct', async () => {
-    const offerToValidate: Offer = {
+    const offerToValidate: Offer = ({
       name: 'Tytul oferty',
       description: [
         {
           items: [{ content: 'Opis', type: OfferDescriptionItemType.TEXT }],
         },
       ],
-      category: Object.assign(new Category(), {
-        id: faker.random.uuid(),
-      }) as Category,
+      category: new Promise(resolve =>
+        resolve(
+          Object.assign(new Category(), {
+            id: faker.random.uuid(),
+          }),
+        ),
+      ),
+      shippingRate: new Promise(resolve =>
+        resolve(
+          Object.assign(new ShippingRate(), {
+            id: faker.random.uuid(),
+          }),
+        ),
+      ),
       sellingMode: {
         format: SellingModeFormat.BUY_NOW,
         price: {
@@ -201,9 +214,9 @@ describe('Draft Offer Validator', () => {
         unit: StockUnit.UNIT,
         available: 1,
       },
-    } as Offer;
+    } as any) as Offer;
 
-    const result: string[] = validator.validate(offerToValidate);
+    const result: string[] = await validator.validate(offerToValidate);
 
     expect(result).toHaveLength(0);
   });

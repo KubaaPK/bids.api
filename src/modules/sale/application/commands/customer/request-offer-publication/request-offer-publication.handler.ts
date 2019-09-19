@@ -32,7 +32,7 @@ export class RequestOfferPublicationHandler
       (offer: Offer) => offer.id === command.offerId,
     );
 
-    const validationErrors: string[] = this.draftOfferValidator.validate(
+    const validationErrors: string[] = await this.draftOfferValidator.validate(
       draftOffer,
     );
     if (validationErrors.length > 0) {

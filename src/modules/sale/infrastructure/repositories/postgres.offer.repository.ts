@@ -2,8 +2,10 @@ import { OfferRepository } from '../../domain/offer/offer.repository';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Offer } from '../../domain/offer/offer';
 import { AppLogger } from '../../../common/app-logger';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, IsNull, Like, Not, Raw, Repository } from 'typeorm';
 import { ExceptionMessages } from '../../../common/exception-messages';
+import { Uuid } from '../../../common/uuid';
+import { OfferStatus } from '../../domain/offer/offer-status';
 
 @Injectable()
 export class PostgresOfferRepository implements OfferRepository {
@@ -21,6 +23,35 @@ export class PostgresOfferRepository implements OfferRepository {
   public async save(offer: Offer): Promise<Offer> {
     try {
       return await this.repository.save(offer);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  public async find(
+    offset?: number,
+    limit?: number,
+    categoryId?: Uuid,
+    sellerId?: Uuid,
+  ): Promise<Offer[]> {
+    try {
+      return await this.repository.find({
+        take: limit,
+        skip: offset,
+        relations: ['category', 'customer', 'shippingRate'],
+        where: {
+          category: {
+            id: categoryId || Not(IsNull()),
+          },
+          status: OfferStatus.ACTIVE,
+          customer: {
+            id: sellerId || Not(IsNull()),
+          },
+        },
+      });
     } catch (e) {
       this.logger.error(e.message);
       throw new InternalServerErrorException(

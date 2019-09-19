@@ -117,7 +117,7 @@ export class Offer extends AggregateRoot {
       })
       : null;
     offer.images = images;
-    offer.stock = !!offer.stock
+    offer.stock = !!dto.stock
       ? Stock.create(dto.stock.available, dto.stock.unit)
       : null;
     return offer;
