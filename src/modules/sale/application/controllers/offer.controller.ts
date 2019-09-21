@@ -46,6 +46,8 @@ import { RequestOfferPublicationCommand } from '../commands/customer/request-off
 import { OfferToPublishDto } from '../dtos/write/offer/offer-to-publish.dto';
 import { ListOffersQuery } from '../queries/customer/list-offers/list-offers.query';
 import { ListableOfferDto } from '../dtos/read/offer/listable-offer.dto';
+import { ListableSingleOfferDto } from '../dtos/read/offer/listable-single-offer.dto';
+import { ListOfferQuery } from '../queries/customer/list-offer/list-offer.query';
 
 @ApiUseTags('offers')
 @Controller('sale/offers')
@@ -251,6 +253,28 @@ export class OfferController {
       return await this.queryBus.execute(
         new ListOffersQuery(offset, limit, categoryId, sellerId),
       );
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @ApiOkResponse({
+    description: 'Offer object.',
+    type: [ListableSingleOfferDto],
+  })
+  @ApiNotFoundResponse({ description: 'Offer with given ID not found.' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
+  @Get('/:offerId')
+  @HttpCode(HttpStatus.OK)
+  public async getOne(
+    @Param('offerId') offerId: Uuid,
+  ): Promise<ListableSingleOfferDto> {
+    try {
+      return await this.queryBus.execute(new ListOfferQuery(offerId));
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

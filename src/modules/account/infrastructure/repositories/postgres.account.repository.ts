@@ -4,6 +4,7 @@ import { AccountRepository } from '../../domain/account.repository';
 import { AppLogger } from '../../../common/app-logger';
 import { Account } from '../../domain/account';
 import { ExceptionMessages } from '../../../common/exception-messages';
+import { Uuid } from '../../../common/uuid';
 
 @Injectable()
 export class PostgresAccountRepository implements AccountRepository {
@@ -28,10 +29,13 @@ export class PostgresAccountRepository implements AccountRepository {
     }
   }
 
-  public async findOne(username: string): Promise<Account | undefined> {
+  public async findOne(arg: string | Uuid): Promise<Account | undefined> {
     try {
+      if (Uuid.isUuidV4(arg)) {
+        return await this.repository.findOne(arg as Uuid);
+      }
       return await this.repository.findOne({
-        where: { username },
+        where: { username: arg },
       });
     } catch (e) {
       this.logger.error(e.message);
