@@ -15,9 +15,15 @@ import { OfferController } from './application/controllers/offer.controller';
 import { ParameterValidator } from './application/services/parameter-validator/parameter-validator';
 import { CategoryValidator } from './application/services/category-validator/category-validator';
 import { DraftOfferValidator } from './application/services/draft-offer-validator/draft-offer-validator';
+import { AccountModule } from '../account/account.module';
+import { AccountInformationService } from '../account/application/services/account-information/account-information.service';
 
 @Module({
-  imports: [CqrsModule, TypeOrmModule.forFeature([Category, ShippingRate])],
+  imports: [
+    CqrsModule,
+    TypeOrmModule.forFeature([Category, ShippingRate]),
+    AccountModule,
+  ],
   providers: [
     ...ioCContainer,
     ...commandHandlers,
@@ -26,6 +32,7 @@ import { DraftOfferValidator } from './application/services/draft-offer-validato
     ParameterValidator,
     CategoryValidator,
     DraftOfferValidator,
+    AccountInformationService,
   ],
   controllers: [
     CategoryController,

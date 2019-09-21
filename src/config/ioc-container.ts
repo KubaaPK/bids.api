@@ -13,6 +13,7 @@ import { OfferRepository } from '../modules/sale/domain/offer/offer.repository';
 import { PostgresOfferRepository } from '../modules/sale/infrastructure/repositories/postgres.offer.repository';
 import { ImageUploader } from '../modules/sale/application/services/image-uploader/image-uploader';
 import { CloudinaryUploader } from '../modules/sale/application/services/image-uploader/cloudinary-uploader';
+import { EntityManager } from 'typeorm';
 
 export const ioCContainer: Provider<any>[] = [
   {
