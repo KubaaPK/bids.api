@@ -187,10 +187,10 @@ export class OfferController {
     }
   }
 
-  @ApiOkResponse({ description: 'Offer has been published. ' })
+  @ApiOkResponse({ description: 'Item has been published. ' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
-  @ApiNotFoundResponse({ description: 'Offer not found.' })
-  @ApiUnprocessableEntityResponse({ description: 'Offer validation failed.' })
+  @ApiNotFoundResponse({ description: 'Item not found.' })
+  @ApiUnprocessableEntityResponse({ description: 'Item validation failed.' })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error. ' })
   @UseGuards(AuthGuard('bearer'), RolesGuard)
   @roles(AccountRole.USER)
@@ -263,10 +263,10 @@ export class OfferController {
   }
 
   @ApiOkResponse({
-    description: 'Offer object.',
+    description: 'Item object.',
     type: [ListableSingleOfferDto],
   })
-  @ApiNotFoundResponse({ description: 'Offer with given ID not found.' })
+  @ApiNotFoundResponse({ description: 'Item with given ID not found.' })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
   @Get('/:offerId')
   @HttpCode(HttpStatus.OK)

@@ -22,7 +22,7 @@ import { InvalidParameterValueException } from '../../../exceptions/invalid-para
 import { OfferDescriptionItemType } from '../../../../domain/offer/description/offer-description-item-type';
 import { CategoryValidator } from '../../../services/category-validator/category-validator';
 
-describe('Create Draft Offer Handler', () => {
+describe('Create Draft Item Handler', () => {
   let handler: CreateDraftOfferHandler;
   let customerRepository: CustomerRepository;
   let categoryRepository: CategoryRepository;
@@ -50,7 +50,7 @@ describe('Create Draft Offer Handler', () => {
     parameterValidator = module.get(ParameterValidator);
   });
 
-  it('should Create Draft Offer Handler be defined', async () => {
+  it('should Create Draft Item Handler be defined', async () => {
     expect(handler).toBeDefined();
   });
 

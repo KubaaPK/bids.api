@@ -17,6 +17,7 @@ import { CategoryValidator } from './application/services/category-validator/cat
 import { DraftOfferValidator } from './application/services/draft-offer-validator/draft-offer-validator';
 import { AccountModule } from '../account/account.module';
 import { AccountInformationService } from '../account/application/services/account-information/account-information.service';
+import { PurchaseController } from './application/controllers/purchase.controller';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AccountInformationService } from '../account/application/services/accou
     DeliveryMethodController,
     ShippingRateController,
     OfferController,
+    PurchaseController,
   ],
 })
 export class SaleModule {}

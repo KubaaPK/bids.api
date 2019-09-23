@@ -13,7 +13,7 @@ import { ListableSingleOfferDto } from '../../../dtos/read/offer/listable-single
 import { EntityManager } from 'typeorm';
 import { AccountInformationService } from '../../../../../account/application/services/account-information/account-information.service';
 
-describe('List Offer Handler', () => {
+describe('List Item Handler', () => {
   let handler: ListOfferHandler;
   let offerRepository: OfferRepository;
   let accountInformationService: AccountInformationService;
@@ -38,11 +38,11 @@ describe('List Offer Handler', () => {
     accountInformationService = module.get(AccountInformationService);
   });
 
-  it('should List Offer Handler be defined', async () => {
+  it('should List Item Handler be defined', async () => {
     expect(handler).toBeDefined();
   });
 
-  it('should Offer Repository be defined', async () => {
+  it('should Item Repository be defined', async () => {
     expect(offerRepository).toBeDefined();
   });
 
@@ -70,7 +70,7 @@ describe('List Offer Handler', () => {
     ).rejects.toThrowError(NotFoundException);
   });
 
-  it('should return Listable Single Offer Dto', async () => {
+  it('should return Listable Single Item Dto', async () => {
     jest.spyOn(offerRepository, 'findOne').mockImplementationOnce(async () =>
       Object.assign(new Offer(), {
         description: '[]',

@@ -24,7 +24,7 @@ import { ParameterType } from '../../../../domain/category/parameter-type.enum';
 import { InvalidParameterValueException } from '../../../exceptions/invalid-parameter-value.exception';
 import { OfferDescriptionItemType } from '../../../../domain/offer/description/offer-description-item-type';
 
-describe('Update Draft Offer Handler', () => {
+describe('Update Draft Item Handler', () => {
   let handler: UpdateDraftOfferHandler;
   let customerRepository: CustomerRepository;
   let categoryRepository: CategoryRepository;
@@ -56,7 +56,7 @@ describe('Update Draft Offer Handler', () => {
     jest.clearAllMocks();
   });
 
-  it('should Update Draft Offer Handler be defined', async () => {
+  it('should Update Draft Item Handler be defined', async () => {
     expect(handler).toBeDefined();
   });
 

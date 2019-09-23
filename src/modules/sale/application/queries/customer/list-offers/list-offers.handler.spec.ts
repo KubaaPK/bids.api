@@ -37,11 +37,11 @@ describe('List Offers Handler', () => {
     jest.clearAllMocks();
   });
 
-  it('should List Offer Handler be defined', async () => {
+  it('should List Item Handler be defined', async () => {
     expect(handler).toBeDefined();
   });
 
-  it('should Offer Repository be defined', async () => {
+  it('should Item Repository be defined', async () => {
     expect(offerRepository).toBeDefined();
   });
 
@@ -55,7 +55,7 @@ describe('List Offers Handler', () => {
     );
   });
 
-  it('should return array with Listable Offer Dto', async () => {
+  it('should return array with Listable Item Dto', async () => {
     jest.spyOn(offerRepository, 'find').mockImplementationOnce(async () => [
       Object.assign(new Offer(), {
         description: {},
