@@ -13,7 +13,7 @@ import { Customer } from '../../../../domain/customer/customer';
 import { Offer } from '../../../../domain/offer/offer';
 import { OfferStatus } from '../../../../domain/offer/offer-status';
 
-describe('Delete Draft Offer Handler', () => {
+describe('Delete Draft Item Handler', () => {
   let handler: DeleteDraftOfferHandler;
   let customerRepository: CustomerRepository;
 
@@ -39,7 +39,7 @@ describe('Delete Draft Offer Handler', () => {
     jest.clearAllMocks();
   });
 
-  it('should Delete Draft Offer Handler be defined', async () => {
+  it('should Delete Draft Item Handler be defined', async () => {
     expect(handler).toBeDefined();
   });
 

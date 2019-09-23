@@ -8,7 +8,7 @@ import { SellingModeFormat } from '../../../domain/offer/selling-mode';
 import { StockUnit } from '../../../domain/offer/stock-unit';
 import { ShippingRate } from '../../../domain/customer/shipping-rate/shipping-rate';
 
-describe('Draft Offer Validator', () => {
+describe('Draft Item Validator', () => {
   let validator: DraftOfferValidator;
 
   beforeEach(async () => {
@@ -19,7 +19,7 @@ describe('Draft Offer Validator', () => {
     validator = module.get(DraftOfferValidator);
   });
 
-  it('should Draft Offer Validator be defined', async () => {
+  it('should Draft Item Validator be defined', async () => {
     expect(validator).toBeDefined();
   });
 

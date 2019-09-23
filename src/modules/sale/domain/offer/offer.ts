@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
 } from 'typeorm';
 import { Uuid } from '../../../common/uuid';
@@ -20,6 +21,7 @@ import { DescriptionItemImage } from './description/description-item-image';
 import { DescriptionItem } from '../../application/dtos/write/offer/offer-description.dto';
 import { OfferStatus } from './offer-status';
 import { Stock } from './stock';
+import { Purchase } from '../purchase/purchase';
 
 @Entity('offers')
 export class Offer extends AggregateRoot {
@@ -87,6 +89,22 @@ export class Offer extends AggregateRoot {
     enum: OfferStatus,
   })
   public status: OfferStatus;
+
+  @OneToMany(type => Purchase, purchase => purchase.offer)
+  public purchases: Promise<Purchase[]>;
+
+  constructor(id?: Uuid) {
+    super();
+    this.id = id;
+  }
+
+  public isPurchasePossible(amount: number): boolean {
+    return this.stock.available >= amount;
+  }
+
+  public updateStockAmount(purchased: number): void {
+    this.stock.available = this.stock.available - purchased;
+  }
 
   public static create(dto: NewDraftOfferDto, images?: string[]): Offer {
     const offer: Offer = new Offer();

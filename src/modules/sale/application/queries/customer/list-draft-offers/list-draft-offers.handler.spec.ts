@@ -74,7 +74,7 @@ describe('List Draft Offers Handler', () => {
     expect(Array.isArray(result)).toBeTruthy();
   });
 
-  it('should single array element be an instance of Listable Draft Offer Dto', async () => {
+  it('should single array element be an instance of Listable Draft Item Dto', async () => {
     jest.spyOn(customerRepository, 'findOne').mockImplementationOnce(async () =>
       Object.assign(new Customer(), {
         offers: new Promise(resolve =>

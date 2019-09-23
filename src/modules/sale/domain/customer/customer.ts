@@ -14,6 +14,7 @@ import { OfferDescriptionItemType } from '../offer/description/offer-description
 import { DescriptionItemText } from '../offer/description/description-item-text';
 import { DescriptionItemImage } from '../offer/description/description-item-image';
 import { OfferStatus } from '../offer/offer-status';
+import { Purchase } from '../purchase/purchase';
 
 @Entity('customers')
 export class Customer {
@@ -30,6 +31,13 @@ export class Customer {
     onDelete: 'CASCADE',
   })
   public offers: Promise<Offer[]>;
+
+  @OneToMany(type => Purchase, purchase => purchase.buyer)
+  public purchases: Promise<Purchase[]>;
+
+  constructor(id?: Uuid) {
+    this.id = id;
+  }
 
   public async createShippingRate(
     newShippingRate: ShippingRate,

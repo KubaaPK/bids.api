@@ -14,6 +14,8 @@ import { PostgresOfferRepository } from '../modules/sale/infrastructure/reposito
 import { ImageUploader } from '../modules/sale/application/services/image-uploader/image-uploader';
 import { CloudinaryUploader } from '../modules/sale/application/services/image-uploader/cloudinary-uploader';
 import { EntityManager } from 'typeorm';
+import { PurchaseRepository } from '../modules/sale/domain/purchase/purchase.repository';
+import { PostgresPurchaseRepository } from '../modules/sale/infrastructure/repositories/postgres.purchase.repository';
 
 export const ioCContainer: Provider<any>[] = [
   {
@@ -43,5 +45,9 @@ export const ioCContainer: Provider<any>[] = [
   {
     provide: ImageUploader,
     useClass: CloudinaryUploader,
+  },
+  {
+    provide: PurchaseRepository,
+    useClass: PostgresPurchaseRepository,
   },
 ];

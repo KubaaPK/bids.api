@@ -14,7 +14,7 @@ import { Customer } from '../../../../domain/customer/customer';
 import { Offer } from '../../../../domain/offer/offer';
 import { DraftOfferValidator } from '../../../services/draft-offer-validator/draft-offer-validator';
 
-describe('Request Offer Publication Handler', () => {
+describe('Request Item Publication Handler', () => {
   let handler: RequestOfferPublicationHandler;
   let customerRepository: CustomerRepository;
   let draftOfferValidator: DraftOfferValidator;
@@ -43,7 +43,7 @@ describe('Request Offer Publication Handler', () => {
     jest.clearAllMocks();
   });
 
-  it('should Request Offer Publication Handler be defined', async () => {
+  it('should Request Item Publication Handler be defined', async () => {
     expect(handler).toBeDefined();
   });
 
@@ -51,7 +51,7 @@ describe('Request Offer Publication Handler', () => {
     expect(customerRepository).toBeDefined();
   });
 
-  it('should Draft Offer Validator be defined', async () => {
+  it('should Draft Item Validator be defined', async () => {
     expect(draftOfferValidator).toBeDefined();
   });
 
