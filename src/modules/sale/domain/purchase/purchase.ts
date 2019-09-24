@@ -16,7 +16,7 @@ export class Purchase {
   public id: Uuid;
 
   @ManyToOne(type => Offer, offer => offer.purchases)
-  public offer: Offer;
+  public offer: Promise<Offer>;
 
   @ManyToOne(type => Customer, customer => customer.purchases)
   public buyer: Customer;
@@ -29,11 +29,15 @@ export class Purchase {
   @CreateDateColumn()
   public createdAt: Date;
 
+  constructor(id?: Uuid) {
+    this.id = id;
+  }
+
   public static create(dto: NewPurchaseDto): Purchase {
     const purchase: Purchase = new Purchase();
     purchase.id = dto.id;
     purchase.amount = dto.amount;
-    purchase.offer = new Offer(dto.offerId);
+    purchase.offer = Promise.resolve(new Offer(dto.offerId));
     purchase.buyer = new Customer(dto.buyerId);
     return purchase;
   }

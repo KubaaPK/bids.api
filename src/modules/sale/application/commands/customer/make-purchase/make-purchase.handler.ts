@@ -8,10 +8,10 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { NoItemsInStockException } from '../../../../../../../dist/modules/purchase/domain/exceptions/no-items-in-stock.exception';
 import { Purchase } from '../../../../domain/purchase/purchase';
 import { PurchaseMadeEvent } from '../../../events/purchase-made/purchase-made.event';
 import { Customer } from '../../../../domain/customer/customer';
+import { NoItemsInStockException } from '../../../../domain/offer/exceptions/no-items-in-stock.exception';
 
 @CommandHandler(MakePurchaseCommand)
 export class MakePurchaseHandler

@@ -7,7 +7,7 @@ export class AccessoriesGsm implements Calculatable {
   private readonly above50zlPercentFee: number = 6;
   private readonly above50zlFlatFee: number = 5;
 
-  public calculate(calculatableOffer: CalculatableOfferDto): string {
+  public calculate(calculatableOffer: Partial<CalculatableOfferDto>): string {
     if (calculatableOffer.sellingMode.format === SellingModeFormat.BUY_NOW) {
       const price: number = Number.parseFloat(
         calculatableOffer.sellingMode.price.amount,

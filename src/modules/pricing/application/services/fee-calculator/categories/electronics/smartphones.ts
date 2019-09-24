@@ -6,7 +6,7 @@ export class Smartphones implements Calculatable {
   private readonly buyNowPercentFee: number = 4.5;
   private readonly auctionPercentFee: number = 6.5;
 
-  public calculate(calculatableOffer: CalculatableOfferDto): string {
+  public calculate(calculatableOffer: Partial<CalculatableOfferDto>): string {
     if (calculatableOffer.sellingMode.format === SellingModeFormat.BUY_NOW) {
       const price: number = Number.parseFloat(
         calculatableOffer.sellingMode.price.amount,

@@ -15,8 +15,10 @@ import { ImageUploader } from '../modules/sale/application/services/image-upload
 import { CloudinaryUploader } from '../modules/sale/application/services/image-uploader/cloudinary-uploader';
 import { FeeCalculator } from '../modules/pricing/domain/fee/fee-calculator';
 import { FeeCalculatorStrategy } from '../modules/pricing/application/services/fee-calculator/fee-calculator.strategy';
-import { PurchaseRepository } from 'src/modules/sale/domain/purchase/purchase.repository';
-import { PostgresPurchaseRepository } from 'src/modules/sale/infrastructure/repositories/postgres.purchase.repository';
+import { PurchaseRepository } from '../modules/sale/domain/purchase/purchase.repository';
+import { PostgresPurchaseRepository } from '../modules/sale/infrastructure/repositories/postgres.purchase.repository';
+import { FeeRepository } from '../modules/pricing/domain/fee/fee.repository';
+import { PostgresFeeRepository } from '../modules/pricing/infrastructure/repositories/postgres.fee.repository';
 
 export const ioCContainer: Provider<any>[] = [
   {
@@ -54,5 +56,9 @@ export const ioCContainer: Provider<any>[] = [
   {
     provide: PurchaseRepository,
     useClass: PostgresPurchaseRepository,
+  },
+  {
+    provide: FeeRepository,
+    useClass: PostgresFeeRepository,
   },
 ];

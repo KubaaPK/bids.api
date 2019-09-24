@@ -8,6 +8,7 @@ import { AccountModule } from './modules/account/account.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { SaleModule } from './modules/sale/sale.module';
 import { PricingModule } from './modules/pricing/pricing.module';
+import { PurchaseSaga } from './modules/sagas/purchase.saga';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { PricingModule } from './modules/pricing/pricing.module';
     PricingModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [PurchaseSaga],
 })
 export class AppModule {
   constructor() {

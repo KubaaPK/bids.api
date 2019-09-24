@@ -9,7 +9,7 @@ export class Laptops implements Calculatable {
   private readonly above2000zlPercentFee: number = 1;
   private readonly above2000zlFlatFee: number = 30;
 
-  public calculate(calculatableOffer: CalculatableOfferDto): string {
+  public calculate(calculatableOffer: Partial<CalculatableOfferDto>): string {
     if (calculatableOffer.sellingMode.format === SellingModeFormat.BUY_NOW) {
       const price: number = Number.parseFloat(
         calculatableOffer.sellingMode.price.amount,

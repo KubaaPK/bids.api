@@ -1,4 +1,4 @@
-import { IsEnum, ValidateNested } from 'class-validator';
+import { IsEnum, IsNumber, ValidateNested } from 'class-validator';
 import { EnumUtils } from '../../../../common/utils/enum-utils';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -72,4 +72,18 @@ export class CalculatableOfferDto {
   @ValidateNested()
   @Type(() => SellingModeDto)
   public readonly sellingMode: SellingModeDto;
+
+  @IsNumber(
+    {},
+    {
+      message: 'Należy zdefiniować liczbę sztuk danego przedmiotu.',
+    },
+  )
+  @ApiModelProperty({
+    type: Number,
+    example: 3,
+    description: 'Product amount.',
+    required: true,
+  })
+  public readonly amount?: number;
 }

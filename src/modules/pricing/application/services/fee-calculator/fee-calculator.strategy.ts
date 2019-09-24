@@ -16,10 +16,13 @@ export class FeeCalculatorStrategy implements FeeCalculator {
   > = CategoriesStrategiesMap.generate();
 
   public calculate(calculatableOffer: CalculatableOfferDto): CalculatedFeeDto {
+    const fee: string = this.strategies
+      .get(calculatableOffer.category)
+      .calculate(calculatableOffer);
     return {
-      amount: this.strategies
-        .get(calculatableOffer.category)
-        .calculate(calculatableOffer),
+      amount: (
+        Number.parseFloat(fee) * (calculatableOffer.amount || 1)
+      ).toFixed(2),
       currency: 'PLN',
     };
   }

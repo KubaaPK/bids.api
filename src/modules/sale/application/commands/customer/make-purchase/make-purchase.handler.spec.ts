@@ -12,12 +12,12 @@ import { NewPurchaseDto } from '../../../dtos/write/purchase/new-purchase.dto';
 import * as faker from 'faker';
 import { MakePurchaseCommand } from './make-purchase.command';
 import { Offer } from '../../../../domain/offer/offer';
-import { NoItemsInStockException } from '../../../../../../../dist/modules/purchase/domain/exceptions/no-items-in-stock.exception';
-import { PurchaseRepository } from '../../../../../../../dist/modules/purchase/domain/purchase.repository';
 import { Customer } from '../../../../domain/customer/customer';
 import { EventBus } from '@nestjs/cqrs';
 import { Purchase } from '../../../../domain/purchase/purchase';
 import { PurchaseMadeEvent } from '../../../events/purchase-made/purchase-made.event';
+import { PurchaseRepository } from '../../../../domain/purchase/purchase.repository';
+import { NoItemsInStockException } from '../../../../domain/offer/exceptions/no-items-in-stock.exception';
 
 describe('Make Purchase Handler', () => {
   let handler: MakePurchaseHandler;

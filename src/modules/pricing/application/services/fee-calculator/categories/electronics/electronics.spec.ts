@@ -41,7 +41,7 @@ describe('Electronics Strategies', () => {
 
   describe('Accessories GSM', () => {
     it('should properly calculate fee if price is under 50zl', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.ACCESSORIES_GSM,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -56,7 +56,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('4.90');
     });
     it('should properly calculate fee if price is above 50zl', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.ACCESSORIES_GSM,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -74,7 +74,7 @@ describe('Electronics Strategies', () => {
 
   describe('Laptops', () => {
     it('should properly calculate fee if price is under 1000zl', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.LAPTOPS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -89,7 +89,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('15.60');
     });
     it('should properly calculate fee if price is above 1000 zl and under 2000 zl', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.LAPTOPS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -104,7 +104,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('46.70');
     });
     it('should properly calculate fee if price is above 2000 zl', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.LAPTOPS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -122,7 +122,7 @@ describe('Electronics Strategies', () => {
 
   describe('Monitors', () => {
     it('should properly calculate fee', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.MONITORS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -140,7 +140,7 @@ describe('Electronics Strategies', () => {
 
   describe('Pcs', () => {
     it('should properly calculate fee if price is under 1000zl', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.PCS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -155,7 +155,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('15.60');
     });
     it('should properly calculate fee if price is above 1000 zl and under 2000 zl', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.PCS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -170,7 +170,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('46.70');
     });
     it('should properly calculate fee if price is above 2000 zl', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.PCS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -188,7 +188,7 @@ describe('Electronics Strategies', () => {
 
   describe('Printers and Scanners', () => {
     it('should properly calculate fee', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.PRINTERS_AND_SCANNERS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -206,7 +206,7 @@ describe('Electronics Strategies', () => {
 
   describe('Projectors', () => {
     it('should properly calculate fee', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.PROJECTORS,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -224,7 +224,7 @@ describe('Electronics Strategies', () => {
 
   describe('Smartphones', () => {
     it('should properly calculate fee for buy out type', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.SMARTPHONES,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -239,7 +239,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('45.00');
     });
     it('should properly calculate fee for auction type', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.SMARTPHONES,
         sellingMode: {
           format: SellingModeFormat.AUCTION,
@@ -261,7 +261,7 @@ describe('Electronics Strategies', () => {
 
   describe('Smartwatches', () => {
     it('should properly calculate fee for buy out type', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.FRAGRANCES_FOR_MEN,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -276,7 +276,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('45.00');
     });
     it('should properly calculate fee for auction type', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.FRAGRANCES_FOR_MEN,
         sellingMode: {
           format: SellingModeFormat.AUCTION,
@@ -298,7 +298,7 @@ describe('Electronics Strategies', () => {
 
   describe('Tablets', () => {
     it('should properly calculate fee for buy out type', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.FRAGRANCES_FOR_MEN,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -313,7 +313,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('45.00');
     });
     it('should properly calculate fee for auction type', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.FRAGRANCES_FOR_MEN,
         sellingMode: {
           format: SellingModeFormat.AUCTION,
@@ -335,7 +335,7 @@ describe('Electronics Strategies', () => {
 
   describe('Tvs', () => {
     it('should properly calculate fee for buy out type', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.FRAGRANCES_FOR_MEN,
         sellingMode: {
           format: SellingModeFormat.BUY_NOW,
@@ -350,7 +350,7 @@ describe('Electronics Strategies', () => {
       expect(result).toBe('20.00');
     });
     it('should properly calculate fee for auction type', async () => {
-      const calculatableOffer: CalculatableOfferDto = {
+      const calculatableOffer: Partial<CalculatableOfferDto> = {
         category: CategoriesNames.FRAGRANCES_FOR_MEN,
         sellingMode: {
           format: SellingModeFormat.AUCTION,

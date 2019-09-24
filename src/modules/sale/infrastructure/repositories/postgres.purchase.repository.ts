@@ -3,6 +3,8 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Purchase } from '../../domain/purchase/purchase';
 import { AppLogger } from '../../../common/app-logger';
 import { EntityManager, Repository } from 'typeorm';
+import { Uuid } from '../../../common/uuid';
+import { ExceptionMessages } from '../../../common/exception-messages';
 
 @Injectable()
 export class PostgresPurchaseRepository implements PurchaseRepository {
@@ -22,6 +24,17 @@ export class PostgresPurchaseRepository implements PurchaseRepository {
     } catch (e) {
       this.logger.error(e.message);
       throw new InternalServerErrorException();
+    }
+  }
+
+  public async findOne(id: Uuid): Promise<Purchase | undefined> {
+    try {
+      return await this.repository.findOne(id);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

@@ -7,7 +7,7 @@ export class MaleWatches implements Calculatable {
   private readonly above200zlPercentFee: number = 8;
   private readonly above200zlFlatFee: number = 15;
 
-  public calculate(calculatableOffer: CalculatableOfferDto): string {
+  public calculate(calculatableOffer: Partial<CalculatableOfferDto>): string {
     if (calculatableOffer.sellingMode.format === SellingModeFormat.BUY_NOW) {
       const price: number = Number.parseFloat(
         calculatableOffer.sellingMode.price.amount,

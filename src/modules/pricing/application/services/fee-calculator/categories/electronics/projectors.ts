@@ -5,7 +5,7 @@ import { CalculatableOfferDto } from '../../../../dtos/write/calculatable-offer.
 export class Projectors implements Calculatable {
   private readonly percentFee: number = 2;
 
-  public calculate(calculatableOffer: CalculatableOfferDto): string {
+  public calculate(calculatableOffer: Partial<CalculatableOfferDto>): string {
     if (calculatableOffer.sellingMode.format === SellingModeFormat.BUY_NOW) {
       const price: number = Number.parseFloat(
         calculatableOffer.sellingMode.price.amount,
