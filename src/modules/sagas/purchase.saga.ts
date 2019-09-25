@@ -5,6 +5,7 @@ import { PurchaseMadeEvent } from '../sale/application/events/purchase-made/purc
 import { flatMap, map } from 'rxjs/operators';
 import { ChargeFeeCommand } from '../pricing/application/commands/charge-fee/charge-fee.command';
 import { UpdateOfferProductStockCommand } from '../sale/application/commands/customer/update-offer-product-stock/update-offer-product-stock.command';
+import { SaveSaleCommand } from '../sale/application/commands/customer/sava-sale/save-sale.command';
 
 @Injectable()
 export class PurchaseSaga {
@@ -19,6 +20,7 @@ export class PurchaseSaga {
         return [
           new UpdateOfferProductStockCommand(event.offer, event.amount),
           new ChargeFeeCommand(event.buyerId, event.purchaseId),
+          new SaveSaleCommand(event.offer.customer.id, event.purchaseId),
         ];
       }),
       flatMap(c => c),

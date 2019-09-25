@@ -19,6 +19,8 @@ import { PurchaseRepository } from '../modules/sale/domain/purchase/purchase.rep
 import { PostgresPurchaseRepository } from '../modules/sale/infrastructure/repositories/postgres.purchase.repository';
 import { FeeRepository } from '../modules/pricing/domain/fee/fee.repository';
 import { PostgresFeeRepository } from '../modules/pricing/infrastructure/repositories/postgres.fee.repository';
+import { SaleRepository } from '../modules/sale/domain/sale/sale.repository';
+import { PostgresSaleRepository } from '../modules/sale/infrastructure/repositories/postgres.sale.repository';
 
 export const ioCContainer: Provider<any>[] = [
   {
@@ -60,5 +62,9 @@ export const ioCContainer: Provider<any>[] = [
   {
     provide: FeeRepository,
     useClass: PostgresFeeRepository,
+  },
+  {
+    provide: SaleRepository,
+    useClass: PostgresSaleRepository,
   },
 ];
