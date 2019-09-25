@@ -18,7 +18,7 @@ export class Purchase {
   @ManyToOne(type => Offer, offer => offer.purchases)
   public offer: Promise<Offer>;
 
-  @ManyToOne(type => Customer, customer => customer.purchases)
+  @ManyToOne(type => Customer, customer => customer.purchases, { lazy: true })
   public buyer: Customer;
 
   @Column({

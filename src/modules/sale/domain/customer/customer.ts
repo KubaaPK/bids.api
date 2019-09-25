@@ -15,6 +15,7 @@ import { DescriptionItemText } from '../offer/description/description-item-text'
 import { DescriptionItemImage } from '../offer/description/description-item-image';
 import { OfferStatus } from '../offer/offer-status';
 import { Purchase } from '../purchase/purchase';
+import { Sale } from '../sale/sale';
 
 @Entity('customers')
 export class Customer {
@@ -34,6 +35,9 @@ export class Customer {
 
   @OneToMany(type => Purchase, purchase => purchase.buyer)
   public purchases: Promise<Purchase[]>;
+
+  @OneToMany(type => Sale, sale => sale.seller)
+  public sales: Promise<Sale[]>;
 
   constructor(id?: Uuid) {
     this.id = id;
@@ -159,6 +163,10 @@ export class Customer {
   public async publishOffer(offerIndex: number): Promise<void> {
     const offers: Offer[] = await this.offers;
     offers[offerIndex].status = OfferStatus.ACTIVE;
+  }
+
+  public async listSales(): Promise<Sale[]> {
+    return await this.sales;
   }
 
   public static create(id: Uuid): Customer {

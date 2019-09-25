@@ -15,11 +15,11 @@ export class Sale {
   @PrimaryGeneratedColumn('uuid')
   public id: Uuid;
 
-  @OneToOne(type => Purchase)
+  @OneToOne(type => Purchase, { lazy: true })
   @JoinColumn()
   public purchase: Purchase;
 
-  @ManyToOne(() => Customer)
+  @ManyToOne(() => Customer, seller => seller.sales)
   public seller: Customer;
 
   @CreateDateColumn()
