@@ -11,6 +11,7 @@ import { Uuid } from '../../../common/uuid';
 import { Customer } from '../../../sale/domain/customer/customer';
 import { Purchase } from '../../../sale/domain/purchase/purchase';
 import { FeeValue } from './fee-value';
+import { FeeStatus } from './fee-status';
 
 @Entity('fees')
 export class Fee {
@@ -29,6 +30,13 @@ export class Fee {
     type: 'simple-json',
   })
   public fee: FeeValue;
+
+  @Column({
+    enum: FeeStatus,
+    nullable: false,
+    default: FeeStatus.UN_PAID,
+  })
+  public status: FeeStatus;
 
   @CreateDateColumn()
   public createdAt;
