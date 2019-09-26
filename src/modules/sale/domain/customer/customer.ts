@@ -16,6 +16,7 @@ import { DescriptionItemImage } from '../offer/description/description-item-imag
 import { OfferStatus } from '../offer/offer-status';
 import { Purchase } from '../purchase/purchase';
 import { Sale } from '../sale/sale';
+import { Review } from '../../../reviews/domain/review';
 
 @Entity('customers')
 export class Customer {

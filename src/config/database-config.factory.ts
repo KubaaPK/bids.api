@@ -9,6 +9,8 @@ import { Offer } from '../modules/sale/domain/offer/offer';
 import { Purchase } from '../modules/sale/domain/purchase/purchase';
 import { Fee } from '../modules/pricing/domain/fee/fee';
 import { Sale } from '../modules/sale/domain/sale/sale';
+import { Review } from '../modules/reviews/domain/review';
+import { ReviewRequest } from '../modules/reviews/domain/review-request';
 
 export class DatabaseConfigFactory {
   public static create(env: string): ConnectionOptions {
@@ -46,6 +48,8 @@ export class DatabaseConfigFactory {
       Purchase,
       Fee,
       Sale,
+      Review,
+      ReviewRequest,
     ];
   }
 }
