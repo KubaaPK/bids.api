@@ -8,7 +8,7 @@ export class ReviewRequest {
   @PrimaryGeneratedColumn('uuid')
   public id: Uuid;
 
-  @ManyToOne(() => Purchase)
+  @ManyToOne(() => Purchase, { lazy: true })
   public purchase: Purchase;
 
   @ManyToOne(() => Customer)

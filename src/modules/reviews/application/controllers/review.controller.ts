@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
   InternalServerErrorException,
   Post,
@@ -10,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 import { AppLogger } from '../../../common/app-logger';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../../../auth/application/guards/roles.guard';
 import { roles } from '../../../auth/application/guards/roles.decorator';
@@ -20,6 +21,8 @@ import { ExceptionMessages } from '../../../common/exception-messages';
 import { Uuid } from '../../../common/uuid';
 import { AddReviewCommand } from '../commands/add-review/add-review.command';
 import { Response } from 'express';
+import { ListableReviewRequestDto } from '../dtos/read/review-request/listable-review-request.dto';
+import { ListPurchasesToEvaluateQuery } from '../queries/list-purchases-to-evaluate/list-purchases-to-evaluate.query';
 
 @ApiUseTags('reviews')
 @Controller('/sale/reviews')
@@ -29,7 +32,10 @@ export class ReviewController {
     true,
   );
 
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @Post()
   @UseGuards(AuthGuard('bearer'), RolesGuard)
@@ -56,6 +62,24 @@ export class ReviewController {
         new InternalServerErrorException(
           ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
         );
+    }
+  }
+
+  @Get('/requests')
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  public async getReviewRequests(
+    @Req() request,
+  ): Promise<ListableReviewRequestDto[]> {
+    try {
+      return await this.queryBus.execute(
+        new ListPurchasesToEvaluateQuery(request.user.uid),
+      );
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

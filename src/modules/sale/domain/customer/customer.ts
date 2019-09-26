@@ -17,6 +17,7 @@ import { OfferStatus } from '../offer/offer-status';
 import { Purchase } from '../purchase/purchase';
 import { Sale } from '../sale/sale';
 import { Review } from '../../../reviews/domain/review';
+import { ReviewRequest } from '../../../reviews/domain/review-request';
 
 @Entity('customers')
 export class Customer {
@@ -39,6 +40,12 @@ export class Customer {
 
   @OneToMany(type => Sale, sale => sale.seller)
   public sales: Promise<Sale[]>;
+
+  @OneToMany(() => Review, review => review.reviewer)
+  public reviews: Promise<Review[]>;
+
+  @OneToMany(type => ReviewRequest, request => request.buyer)
+  public reviewRequests: Promise<ReviewRequest[]>;
 
   constructor(id?: Uuid) {
     this.id = id;
@@ -168,6 +175,10 @@ export class Customer {
 
   public async listSales(): Promise<Sale[]> {
     return await this.sales;
+  }
+
+  public async listReviewRequests(): Promise<ReviewRequest[]> {
+    return await this.reviewRequests;
   }
 
   public static create(id: Uuid): Customer {
