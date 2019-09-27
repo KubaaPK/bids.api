@@ -17,6 +17,7 @@ import { AddReviewCommand } from './add-review.command';
 import { Purchase } from '../../../../sale/domain/purchase/purchase';
 import { Customer } from '../../../../sale/domain/customer/customer';
 import { Review } from '../../../domain/review';
+import { Offer } from '../../../../sale/domain/offer/offer';
 
 describe('Add Review Handler', () => {
   let handler: AddReviewHandler;
@@ -198,6 +199,17 @@ describe('Add Review Handler', () => {
 
     jest.spyOn(purchaseRepository, 'findOne').mockImplementationOnce(async () =>
       Object.assign(new Purchase(), {
+        offer: new Promise(resolve =>
+          resolve(
+            Object.assign(new Offer(), {
+              customer: new Promise(resolve =>
+                resolve(
+                  Object.assign(new Customer(), { id: faker.random.uuid() }),
+                ),
+              ),
+            }),
+          ),
+        ),
         buyer: new Promise(resolve =>
           resolve(Object.assign(new Customer(), { id: purchaserId })),
         ),

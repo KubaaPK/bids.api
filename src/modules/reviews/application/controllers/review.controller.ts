@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   Req,
   Res,
@@ -23,6 +24,7 @@ import { AddReviewCommand } from '../commands/add-review/add-review.command';
 import { Response } from 'express';
 import { ListableReviewRequestDto } from '../dtos/read/review-request/listable-review-request.dto';
 import { ListPurchasesToEvaluateQuery } from '../queries/list-purchases-to-evaluate/list-purchases-to-evaluate.query';
+import { ListSellerReviewsQuery } from '../queries/list-seller-reviews/list-seller-reviews.query';
 
 @ApiUseTags('reviews')
 @Controller('/sale/reviews')
@@ -80,6 +82,19 @@ export class ReviewController {
       throw new InternalServerErrorException(
         ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  @Get('/:sellerId')
+  public async getReviews(@Param('sellerId') sellerId: Uuid): Promise<any> {
+    try {
+      return await this.queryBus.execute(new ListSellerReviewsQuery(sellerId));
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
     }
   }
 }

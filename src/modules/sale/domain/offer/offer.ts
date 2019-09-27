@@ -80,7 +80,7 @@ export class Offer extends AggregateRoot {
   })
   public shippingRate: ShippingRate;
 
-  @ManyToOne(type => Customer, customer => customer.offers)
+  @ManyToOne(type => Customer, customer => customer.offers, { lazy: true })
   public customer: Customer;
 
   @Column({

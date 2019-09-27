@@ -22,8 +22,11 @@ export class Review {
   })
   public rating: Rating;
 
-  @ManyToOne(type => Customer)
+  @ManyToOne(type => Customer, customer => customer.issuedRatings)
   public reviewer: Customer;
+
+  @ManyToOne(type => Customer, customer => customer.receivedRatings)
+  public seller: Customer;
 
   @OneToOne(() => Purchase)
   @JoinColumn()
@@ -43,11 +46,13 @@ export class Review {
     id: Uuid,
     rateType: RateType,
     reviewerId: Uuid,
+    sellerId: Uuid,
     purchaseId: Uuid,
   ): Review {
     const review: Review = new Review();
     review.id = id;
     review.reviewer = new Customer(reviewerId);
+    review.seller = new Customer(sellerId);
     review.purchase = new Purchase(purchaseId);
     review.rateType = rateType;
     return review;

@@ -42,7 +42,10 @@ export class Customer {
   public sales: Promise<Sale[]>;
 
   @OneToMany(() => Review, review => review.reviewer)
-  public reviews: Promise<Review[]>;
+  public issuedRatings: Promise<Review[]>;
+
+  @OneToMany(() => Review, review => review.seller)
+  public receivedRatings: Promise<Review[]>;
 
   @OneToMany(type => ReviewRequest, request => request.buyer)
   public reviewRequests: Promise<ReviewRequest[]>;
@@ -179,6 +182,10 @@ export class Customer {
 
   public async listReviewRequests(): Promise<ReviewRequest[]> {
     return await this.reviewRequests;
+  }
+
+  public async listReview(): Promise<Review[]> {
+    return await this.receivedRatings;
   }
 
   public static create(id: Uuid): Customer {

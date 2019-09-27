@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { Review } from '../../../domain/review';
 import { ReviewRequestRepository } from '../../../domain/review-request.repository';
+import { Uuid } from '../../../../common/uuid';
 
 @CommandHandler(AddReviewCommand)
 export class AddReviewHandler implements ICommandHandler<AddReviewCommand> {
@@ -45,10 +46,12 @@ export class AddReviewHandler implements ICommandHandler<AddReviewCommand> {
       );
     }
 
+    const sellerId: Uuid = (await (await purchase.offer).customer).id;
     const review: Review = Review.create(
       newReview.id,
       newReview.rateType,
       newReview.reviewerId,
+      sellerId,
       newReview.purchaseId,
     );
     review.attachRating(newReview.rating);
