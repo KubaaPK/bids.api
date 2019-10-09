@@ -17,6 +17,7 @@ export class PostgresOfferRepository implements OfferRepository {
   private readonly repository: Repository<Offer>;
 
   constructor(private readonly manager: EntityManager) {
+    //@ts-ignore
     this.repository = this.manager.getRepository(Offer);
   }
 
@@ -36,7 +37,9 @@ export class PostgresOfferRepository implements OfferRepository {
     limit?: number,
     categoryId?: Uuid,
     sellerId?: Uuid,
+    order?: string,
   ): Promise<Offer[]> {
+    console.log(order);
     try {
       return await this.repository.find({
         take: limit,
@@ -50,6 +53,9 @@ export class PostgresOfferRepository implements OfferRepository {
           customer: {
             id: sellerId || Not(IsNull()),
           },
+        },
+        order: {
+          createdAt: order as 'ASC' | 'DESC',
         },
       });
     } catch (e) {

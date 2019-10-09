@@ -248,10 +248,11 @@ export class OfferController {
     @Query('limit') limit?: number,
     @Query('category.id') categoryId?: string,
     @Query('seller.id') sellerId?: string,
+    @Query('order') order?: string,
   ): Promise<ListableOfferDto> {
     try {
       return await this.queryBus.execute(
-        new ListOffersQuery(offset, limit, categoryId, sellerId),
+        new ListOffersQuery(offset, limit, categoryId, sellerId, order),
       );
     } catch (e) {
       this.logger.error(e.message);

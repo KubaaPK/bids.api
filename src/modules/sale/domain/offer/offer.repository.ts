@@ -8,6 +8,7 @@ export abstract class OfferRepository {
     limit?: number,
     categoryId?: Uuid,
     sellerId?: Uuid,
+    order?: string,
   ): Promise<Offer[]>;
   public abstract async findOne(id: Uuid): Promise<Offer | undefined>;
 }

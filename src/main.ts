@@ -13,6 +13,7 @@ import {
 async function bootstrap(): Promise<void> {
   const app: NestApplication = await NestFactory.create(AppModule);
   app.use(helmet());
+  app.enableCors();
   app.setGlobalPrefix(process.env.APP_API_PREFIX);
   app.useGlobalPipes(new ValidationPipe());
 

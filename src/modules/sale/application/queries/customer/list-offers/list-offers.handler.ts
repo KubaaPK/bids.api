@@ -15,6 +15,7 @@ export class ListOffersHandler implements IQueryHandler<ListOffersQuery> {
       query.limit,
       query.categoryId,
       query.sellerId,
+      query.order,
     );
     return offers.map(offer => plainToClass(ListableOfferDto, offer));
   }

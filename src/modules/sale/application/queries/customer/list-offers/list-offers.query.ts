@@ -6,5 +6,6 @@ export class ListOffersQuery {
     public readonly limit?: number,
     public readonly categoryId?: Uuid,
     public readonly sellerId?: Uuid,
+    public readonly order?: string,
   ) {}
 }

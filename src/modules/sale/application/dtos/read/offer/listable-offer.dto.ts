@@ -28,7 +28,7 @@ export class ListableOfferDto {
       id: 'a792cfa2-5bfa-48f0-a13f-fe5b0467727e \n',
     },
   })
-  @Expose({ name: 'customer' })
+  @Expose({ name: '__customer__' })
   public readonly seller: Customer;
 
   @ApiResponseModelProperty({
