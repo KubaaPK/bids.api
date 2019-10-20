@@ -124,7 +124,7 @@ export class ParameterController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('bearer'), RolesGuard)
-  @roles('admin')
+  @roles('user')
   public async getAll(): Promise<ListableParameterDto[]> {
     try {
       return await this.queryBus.execute(new ListParametersQuery());

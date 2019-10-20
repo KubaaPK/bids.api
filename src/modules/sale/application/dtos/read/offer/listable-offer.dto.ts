@@ -6,6 +6,7 @@ import { SellingMode } from '../../../../domain/offer/selling-mode';
 import { Stock } from '../../../../domain/offer/stock';
 import { ListableOfferCategoryDto } from './listable-offer-category.dto';
 import { ApiResponseModelProperty } from '@nestjs/swagger';
+import { ParameterValue } from 'src/modules/sale/domain/offer/parameter-value';
 
 @Exclude()
 export class ListableOfferDto {
@@ -101,4 +102,7 @@ export class ListableOfferDto {
   @Expose({ name: '__category__' })
   @Type(() => ListableOfferCategoryDto)
   public readonly category: ListableOfferCategoryDto;
+
+  @Expose()
+  public readonly parameters: ParameterValue[];
 }

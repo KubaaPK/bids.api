@@ -63,6 +63,7 @@ export class CreateAccountHandler
           uid: newAccount.id.toString(),
           email: newAccount.email,
           password: newAccount.password,
+          displayName: newAccount.username,
         });
 
       await admin.auth().setCustomUserClaims(createdFirebaseUser.uid, {

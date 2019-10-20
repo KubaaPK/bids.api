@@ -6,6 +6,7 @@ import { Offer } from '../../../../domain/offer/offer';
 import { plainToClass } from 'class-transformer';
 import { ListableSingleOfferDto } from '../../../dtos/read/offer/listable-single-offer.dto';
 import { AccountInformationService } from '../../../../../account/application/services/account-information/account-information.service';
+import { Customer } from '../../../../domain/customer/customer';
 
 @QueryHandler(ListOfferQuery)
 export class ListOfferHandler implements IQueryHandler<ListOfferQuery> {
@@ -20,10 +21,9 @@ export class ListOfferHandler implements IQueryHandler<ListOfferQuery> {
       throw new NotFoundException('Oferta o podanym ID nie istnieje.');
     }
 
-    offer.customer = Object.assign(offer.customer, {
-      username: await this.accountInformationService.getUsername(
-        offer.customer.id,
-      ),
+    let seller: Customer = await offer.customer;
+    seller = Object.assign(seller, {
+      username: await this.accountInformationService.getUsername(seller.id),
     });
     return plainToClass(ListableSingleOfferDto, offer);
   }

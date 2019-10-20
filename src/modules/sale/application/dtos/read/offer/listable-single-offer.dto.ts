@@ -1,14 +1,13 @@
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { Uuid } from '../../../../../common/uuid';
-import { Customer } from '../../../../domain/customer/customer';
 import { ShippingRate } from '../../../../domain/customer/shipping-rate/shipping-rate';
 import { SellingMode } from '../../../../domain/offer/selling-mode';
 import { Stock } from '../../../../domain/offer/stock';
-import { ListableOfferCategoryDto } from './listable-offer-category.dto';
 import { ApiResponseModelProperty } from '@nestjs/swagger';
 import { DescriptionSection } from '../../../../domain/offer/description/description-section';
 import { ListableSingleOfferCategoryDto } from './listable-single-offer-category.dto';
 import { ListableSingleOfferCustomerDto } from './listable-single-offer-customer.dto';
+import { ParameterValue } from '../../../../domain/offer/parameter-value';
 
 @Exclude()
 export class ListableSingleOfferDto {
@@ -33,7 +32,7 @@ export class ListableSingleOfferDto {
   @ApiResponseModelProperty({
     type: ListableSingleOfferCustomerDto,
   })
-  @Expose({ name: 'customer' })
+  @Expose({ name: '__customer__' })
   public readonly seller: ListableSingleOfferCustomerDto;
 
   @ApiResponseModelProperty({
@@ -114,4 +113,7 @@ export class ListableSingleOfferDto {
   @Expose({ name: '__category__' })
   @Type(() => ListableSingleOfferCategoryDto)
   public readonly category: ListableSingleOfferCategoryDto;
+
+  @Expose()
+  public readonly parameters: ParameterValue[];
 }
