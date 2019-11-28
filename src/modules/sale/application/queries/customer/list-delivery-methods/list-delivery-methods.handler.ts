@@ -16,7 +16,6 @@ export class ListDeliveryMethodsHandler
     query: ListDeliveryMethodsQuery,
   ): Promise<ListableDeliveryMethodDto[]> {
     const deliveryMethods: DeliveryMethod[] = await this.deliveryMethodRepository.find();
-
     return deliveryMethods.map((deliveryMethod: DeliveryMethod) =>
       plainToClass(ListableDeliveryMethodDto, deliveryMethod),
     );

@@ -1,6 +1,7 @@
 import { Exclude, Expose, Transform } from 'class-transformer';
 import { Uuid } from '../../../../common/uuid';
 import { OfferStatus } from '../../../domain/offer/offer-status';
+import { StockDto } from '../write/offer/stock.dto';
 
 @Exclude()
 export class ListableDraftOfferDto {
@@ -37,4 +38,7 @@ export class ListableDraftOfferDto {
 
   @Expose()
   public readonly status: OfferStatus;
+
+  @Expose()
+  public readonly stock: StockDto;
 }

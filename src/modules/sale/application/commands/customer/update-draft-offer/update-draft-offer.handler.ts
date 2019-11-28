@@ -59,6 +59,10 @@ export class UpdateDraftOfferHandler
       command.updatedDraftOffer.images = uploadedImagesUrls;
     }
 
+    if (command.updatedDraftOffer.description === null || undefined) {
+      delete command.updatedDraftOffer.description;
+    }
+
     await customer.updateDraftOffer(command.offerId, command.updatedDraftOffer);
     await this.customerRepository.save(customer);
   }

@@ -37,12 +37,15 @@ export class CreateDraftOfferHandler
         category,
         command.newDraftOffer.parameters,
       );
-      const parameterValidationErrors: string[] = await this.validOfferParameters(
-        category,
-        command.newDraftOffer.parameters,
-      );
-      if (parameterValidationErrors.length > 0) {
-        throw new InvalidParameterValueException(parameterValidationErrors);
+
+      if (command.newDraftOffer.parameters) {
+        const parameterValidationErrors: string[] = await this.validOfferParameters(
+          category,
+          command.newDraftOffer.parameters,
+        );
+        if (parameterValidationErrors.length > 0) {
+          throw new InvalidParameterValueException(parameterValidationErrors);
+        }
       }
     }
 

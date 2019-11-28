@@ -1,6 +1,5 @@
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { Uuid } from '../../../../../common/uuid';
-import { Customer } from '../../../../domain/customer/customer';
 import { ShippingRate } from '../../../../domain/customer/shipping-rate/shipping-rate';
 import { SellingMode } from '../../../../domain/offer/selling-mode';
 import { Stock } from '../../../../domain/offer/stock';
@@ -30,7 +29,9 @@ export class ListableOfferDto {
     },
   })
   @Expose({ name: '__customer__' })
-  public readonly seller: Customer;
+  public readonly seller: {
+    id: string;
+  };
 
   @ApiResponseModelProperty({
     type: ShippingRate,

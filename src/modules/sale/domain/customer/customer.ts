@@ -124,9 +124,9 @@ export class Customer {
       {
         images: dto.images,
         // prettier-ignore
-        description:
+        description: 
           dto.description !== undefined
-            ? dto.description.sections.map((el: any) => {
+            ? JSON.stringify(dto.description.sections.map((el: any) => {
               const section: DescriptionSection = DescriptionSection.create();
               const items: any = el.items.map((el: DescriptionItem) => {
                 return el.type === OfferDescriptionItemType.TEXT
@@ -135,14 +135,17 @@ export class Customer {
               });
               items.map(el => section.addItem(el));
               return section;
-            })
+            }))
             : existingOffers[offerToUpdateIdx].description,
         sellingMode: dto.sellingMode,
         parameters: dto.parameters,
-        shippingRate: dto.shippingRate,
+        shippingRate: dto.shippingRate && {
+          id: dto.shippingRate.id,
+        },
         ean: dto.ean,
         name: dto.name,
         category: dto.category,
+        stock: dto.stock,
       },
     );
   }
@@ -153,9 +156,7 @@ export class Customer {
   ): Promise<Offer[]> {
     const existingOffers: Offer[] = await this.offers;
     return existingOffers
-      .map((offer: Offer) =>
-        offer.status === OfferStatus.IN_ACTIVE ? offer : null,
-      )
+      .filter((offer: Offer) => offer.status === OfferStatus.IN_ACTIVE)
       .splice(offset, limit !== undefined ? limit : existingOffers.length);
   }
 

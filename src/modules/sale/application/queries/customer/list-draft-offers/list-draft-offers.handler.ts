@@ -30,9 +30,13 @@ export class ListDraftOffersHandler
   }
 
   private async resolveLazyPromises(offers: Offer[]): Promise<void> {
-    for (let i = 0; i < offers.length - 1; i += 1) {
-      await offers[i].category;
-      await offers[i].shippingRate;
+    for (let i = 0; i < offers.length; i += 1) {
+      if (await offers[i].category) {
+        await offers[i].category;
+      }
+      if (await offers[i].shippingRate) {
+        await offers[i].shippingRate;
+      }
     }
   }
 }

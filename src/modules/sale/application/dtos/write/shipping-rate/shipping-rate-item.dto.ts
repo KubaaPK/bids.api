@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { ShippingRateDeliveryMethodDto } from './shipping-rate-delivery-method.dto';
 import { ItemRateDto } from './item-rate.dto';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { Optional } from '@nestjs/common';
 
 export class ShippingRateItemDto {
   @IsNotEmpty({ message: 'Należy zdefiniować sposób dostawy.' })
@@ -23,7 +24,7 @@ export class ShippingRateItemDto {
     },
   )
   public readonly maxQuantityPerPackage: number;
-
+Shippingrateitem
   @ApiModelProperty({
     type: ItemRateDto,
   })
@@ -37,10 +38,8 @@ export class ShippingRateItemDto {
   @ApiModelProperty({
     type: ItemRateDto,
   })
-  @IsNotEmpty({
-    message: 'Należy zdefiniować parametry dostawy kolejnego elementu.',
-  })
   @ValidateNested()
   @Type(() => ItemRateDto)
-  public readonly nextItemRate: ItemRateDto;
+  @Optional()
+  public readonly nextItemRate?: ItemRateDto;
 }

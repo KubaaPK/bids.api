@@ -9,12 +9,13 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { OfferCategoryDto } from './offer-category.dto';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import { SellingModeDto } from './selling-mode.dto';
 import { ParameterValueDto } from './parameter-value.dto';
 import { ShippingRateOfferDto } from './shipping-rate-offer.dto';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 import { OfferDescriptionDto } from './offer-description.dto';
+import { StockDto } from './stock.dto';
 
 export class UpdatedDraftOfferDto {
   @ApiModelPropertyOptional({
@@ -55,7 +56,7 @@ export class UpdatedDraftOfferDto {
   @ValidateNested()
   @Type(() => OfferDescriptionDto)
   @IsOptional()
-  public readonly description?: OfferDescriptionDto;
+  public description?: OfferDescriptionDto;
 
   @ApiModelPropertyOptional({
     type: [ParameterValueDto],
@@ -85,6 +86,9 @@ export class UpdatedDraftOfferDto {
     message: 'Zdjęcia muszą być przesłane tablicą zawierającą adresy url.',
   })
   public images?: string[];
+
+  @IsOptional()
+  public readonly stock?: StockDto;
 
   public customer: admin.auth.DecodedIdToken;
 }

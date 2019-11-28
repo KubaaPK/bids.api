@@ -8,7 +8,7 @@ export class ShippingRateItem {
   };
   public maxQuantityPerPackage: number;
   public firstItemRate: CurrencyRate;
-  public nextItemRate: CurrencyRate;
+  public nextItemRate?: CurrencyRate;
 
   public static create(dto: ShippingRateItemDto): ShippingRateItem {
     const newShippingRateItem: ShippingRateItem = new ShippingRateItem();

@@ -90,8 +90,11 @@ export class OfferController {
       response
         .header({
           Location: `${process.env.APP_API_ROOT_URL}/sale/offers/${id}`,
+          'Access-Control-Expose-Headers': '*',
         })
-        .sendStatus(HttpStatus.CREATED);
+        .json({
+          id: id,
+        });
     } catch (e) {
       this.logger.error(e.message);
       throw e ||
@@ -152,7 +155,6 @@ export class OfferController {
         new ListDraftOffersQuery(request.user, offset, limit),
       );
     } catch (e) {
-      console.log(e);
       this.logger.error(e.message);
       throw new InternalServerErrorException(
         ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
