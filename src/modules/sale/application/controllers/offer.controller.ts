@@ -93,7 +93,7 @@ export class OfferController {
           'Access-Control-Expose-Headers': '*',
         })
         .json({
-          id: id,
+          id,
         });
     } catch (e) {
       this.logger.error(e.message);

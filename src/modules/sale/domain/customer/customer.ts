@@ -123,19 +123,20 @@ export class Customer {
       existingOffers[offerToUpdateIdx],
       {
         images: dto.images,
-        // prettier-ignore
-        description: 
+        description:
           dto.description !== undefined
-            ? JSON.stringify(dto.description.sections.map((el: any) => {
-              const section: DescriptionSection = DescriptionSection.create();
-              const items: any = el.items.map((el: DescriptionItem) => {
-                return el.type === OfferDescriptionItemType.TEXT
-                  ? DescriptionItemText.create(el.type, el.content)
-                  : DescriptionItemImage.create(el.type, el.url);
-              });
-              items.map(el => section.addItem(el));
-              return section;
-            }))
+            ? JSON.stringify(
+                dto.description.sections.map((el: any) => {
+                  const section: DescriptionSection = DescriptionSection.create();
+                  const items: any = el.items.map((el: DescriptionItem) => {
+                    return el.type === OfferDescriptionItemType.TEXT
+                      ? DescriptionItemText.create(el.type, el.content)
+                      : DescriptionItemImage.create(el.type, el.url);
+                  });
+                  items.map(el => section.addItem(el));
+                  return section;
+                }),
+              )
             : existingOffers[offerToUpdateIdx].description,
         sellingMode: dto.sellingMode,
         parameters: dto.parameters,

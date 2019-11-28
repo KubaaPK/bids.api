@@ -17,7 +17,6 @@ export class PostgresOfferRepository implements OfferRepository {
   private readonly repository: Repository<Offer>;
 
   constructor(private readonly manager: EntityManager) {
-    //@ts-ignore
     this.repository = this.manager.getRepository(Offer);
   }
 

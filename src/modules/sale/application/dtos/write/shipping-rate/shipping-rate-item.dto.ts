@@ -24,7 +24,7 @@ export class ShippingRateItemDto {
     },
   )
   public readonly maxQuantityPerPackage: number;
-Shippingrateitem
+
   @ApiModelProperty({
     type: ItemRateDto,
   })
