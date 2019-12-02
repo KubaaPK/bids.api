@@ -6,6 +6,8 @@ import { EntityManager } from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import * as faker from 'faker';
 import { SaveSaleCommand } from './save-sale.command';
+import { Offer } from '../../../../domain/offer/offer';
+import { Customer } from '../../../../domain/customer/customer';
 
 describe('Save Sale Handler', () => {
   let handler: SaveSaleHandler;
@@ -44,7 +46,15 @@ describe('Save Sale Handler', () => {
 
     await expect(
       handler.execute(
-        new SaveSaleCommand(faker.random.uuid(), faker.random.uuid()),
+        new SaveSaleCommand(
+          Object.assign(new Offer(), {
+            id: faker.random.uuid(),
+            customer: Object.assign(new Customer(), {
+              id: faker.random.uuid(),
+            }),
+          }),
+          faker.random.uuid(),
+        ),
       ),
     ).rejects.toThrowError(InternalServerErrorException);
   });

@@ -1,5 +1,5 @@
 import { Uuid } from '../../../../../common/uuid';
-import { IsNumber, IsUUID } from 'class-validator';
+import { IsNumber, IsUUID, IsNumberString } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class NewPurchaseDto {
@@ -23,8 +23,8 @@ export class NewPurchaseDto {
     example: 3,
     description: 'Product amount to bought.',
   })
-  @IsNumber(
-    {},
+  @IsNumberString(
+    // { allowInfinity: false, allowNaN: false },
     {
       message: 'Należy zdefiniować liczbę zakupionych sztuk danego przedmiotu.',
     },

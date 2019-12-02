@@ -8,7 +8,8 @@ export class SaveSaleHandler implements ICommandHandler<SaveSaleCommand> {
   constructor(private readonly saleRepository: SaleRepository) {}
 
   public async execute(command: SaveSaleCommand): Promise<any> {
-    const { purchaseId, sellerId } = command;
+    const { purchaseId, offer } = command;
+    const sellerId = (await offer.customer).id;
     const sale: Sale = Sale.create(purchaseId, sellerId);
     await this.saleRepository.save(sale);
   }

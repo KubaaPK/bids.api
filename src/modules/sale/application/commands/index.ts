@@ -18,7 +18,7 @@ import { DeleteDraftOfferHandler } from './customer/delete-draft-offer/delete-dr
 import { RequestOfferPublicationHandler } from './customer/request-offer-publication/request-offer-publication.handler';
 import { MakePurchaseHandler } from './customer/make-purchase/make-purchase.handler';
 import { UpdateOfferProductStockHandler } from './customer/update-offer-product-stock/update-offer-product-stock.handler';
-import { SaveSaleHandler } from './customer/sava-sale/save-sale.handler';
+import { SaveSaleHandler } from './customer/save-sale/save-sale.handler';
 
 export const commandHandlers: Type<any>[] = [
   CreateCategoryHandler,
