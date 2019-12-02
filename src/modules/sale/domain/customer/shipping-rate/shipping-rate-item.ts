@@ -5,6 +5,7 @@ import { ShippingRateItemDto } from '../../../application/dtos/write/shipping-ra
 export class ShippingRateItem {
   public deliveryMethod: {
     id: Uuid;
+    name: string;
   };
   public maxQuantityPerPackage: number;
   public firstItemRate: CurrencyRate;
@@ -12,7 +13,10 @@ export class ShippingRateItem {
 
   public static create(dto: ShippingRateItemDto): ShippingRateItem {
     const newShippingRateItem: ShippingRateItem = new ShippingRateItem();
-    newShippingRateItem.deliveryMethod = dto.deliveryMethod;
+    newShippingRateItem.deliveryMethod = {
+      id: dto.deliveryMethod.id,
+      name: dto.deliveryMethod.name,
+    };
     newShippingRateItem.firstItemRate = dto.firstItemRate;
     newShippingRateItem.nextItemRate = dto.nextItemRate;
     newShippingRateItem.maxQuantityPerPackage = dto.maxQuantityPerPackage;
