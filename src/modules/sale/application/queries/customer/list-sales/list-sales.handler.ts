@@ -11,13 +11,12 @@ import { Offer } from '../../../../domain/offer/offer';
 export class ListSalesHandler implements IQueryHandler<ListSalesQuery> {
   constructor(private readonly customerRepository: CustomerRepository) {}
 
-  public async execute(query: ListSalesQuery): Promise<ListableSaleDto[]> {
+  public async execute(query: ListSalesQuery): Promise<any[]> {
     const customer: Customer = await this.customerRepository.findOne(
       query.sellerId,
     );
 
     const sales: Sale[] = await customer.listSales();
-
     await this.resolveLazyPromises(sales);
     return sales.map((sale: Sale) => {
       return plainToClass(ListableSaleDto, sale);
@@ -27,6 +26,7 @@ export class ListSalesHandler implements IQueryHandler<ListSalesQuery> {
   private async resolveLazyPromises(sales: Sale[]): Promise<void> {
     for (let i = 0; i < sales.length; i += 1) {
       await sales[i].purchase;
+      await (await sales[i].purchase).offer;
       await (await sales[i].purchase).buyer;
     }
   }
