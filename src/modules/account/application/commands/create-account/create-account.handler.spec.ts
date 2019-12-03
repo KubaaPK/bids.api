@@ -233,11 +233,12 @@ describe('Create Account Handler', () => {
       'publish',
     );
 
+    const username = faker.internet.userName();
     const newAccount: NewAccountDto = {
+      username,
       email: faker.internet.email(),
       id: (firebaseCreatedUserId as any) as Uuid,
       password: faker.internet.password(),
-      username: faker.internet.userName(),
       type: AccountType.PRIVATE,
     };
 
@@ -246,6 +247,7 @@ describe('Create Account Handler', () => {
     expect(eventBusPublishSpy).toBeCalledWith(
       new AccountCreatedEvent(
         (firebaseCreatedUserId as any) as Uuid,
+        username,
         new Date('2019-09-01T07:30:11.967Z'),
       ),
     );

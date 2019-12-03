@@ -9,7 +9,11 @@ export class AccountCreatedEventHandler
   constructor(private readonly customerRepository: CustomerRepository) {}
 
   public async handle(event: AccountCreatedEvent): Promise<void> {
-    const newCustomer: Customer = Customer.create(event.accountId);
+    const newCustomer: Customer = Customer.create(
+      event.accountId,
+      event.username,
+      event.createdAt,
+    );
     await this.customerRepository.save(newCustomer);
   }
 }

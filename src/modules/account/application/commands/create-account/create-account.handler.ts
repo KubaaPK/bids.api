@@ -37,6 +37,7 @@ export class CreateAccountHandler
     await this.eventBus.publish(
       new AccountCreatedEvent(
         (createdFirebaseUser.uid as any) as Uuid,
+        account.username,
         new Date(),
       ),
     );

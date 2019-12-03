@@ -5,4 +5,7 @@ import { Uuid } from '../../../../../common/uuid';
 export class BuyerDto {
   @Expose()
   public id: Uuid;
+
+  @Expose()
+  public username: string;
 }

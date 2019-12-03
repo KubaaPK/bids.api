@@ -1,4 +1,10 @@
-import { Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+  Column,
+  CreateDateColumn,
+} from 'typeorm';
 import { ShippingRate } from './shipping-rate/shipping-rate';
 import { ToManyShippingRatesDefinedException } from './exceptions/to-many-shipping-rates-defined.exception';
 import { ShippingRateAlreadyExistsException } from './exceptions/shipping-rate-already-exists.exception';
@@ -23,6 +29,14 @@ import { ReviewRequest } from '../../../reviews/domain/review-request';
 export class Customer {
   @PrimaryColumn('uuid')
   public id: Uuid;
+
+  @Column({ nullable: true })
+  public username: string;
+
+  @CreateDateColumn({
+    nullable: true,
+  })
+  public createdAt: Date;
 
   @OneToMany(type => ShippingRate, shippingRate => shippingRate.customer, {
     cascade: true,
@@ -190,9 +204,15 @@ export class Customer {
     return await this.receivedRatings;
   }
 
-  public static create(id: Uuid): Customer {
+  public static create(
+    id: Uuid,
+    username?: string,
+    createdAt?: Date,
+  ): Customer {
     const customer: Customer = new Customer();
     customer.id = id;
+    customer.username = username;
+    customer.createdAt = createdAt;
 
     return customer;
   }
