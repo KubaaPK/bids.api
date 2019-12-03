@@ -169,6 +169,10 @@ export class Customer {
     return await this.sales;
   }
 
+  public async listPurchases(): Promise<Purchase[]> {
+    return await this.purchases;
+  }
+
   public static create(id: Uuid): Customer {
     const customer: Customer = new Customer();
     customer.id = id;

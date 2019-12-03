@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
@@ -18,7 +19,7 @@ import {
   ApiUseTags,
 } from '@nestjs/swagger';
 import { AppLogger } from '../../../common/app-logger';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../../../auth/application/guards/roles.guard';
 import { roles } from '../../../auth/application/guards/roles.decorator';
@@ -28,6 +29,8 @@ import { NewPurchaseDto } from '../dtos/write/purchase/new-purchase.dto';
 import { ExceptionMessages } from '../../../common/exception-messages';
 import { Uuid } from '../../../common/uuid';
 import { MakePurchaseCommand } from '../commands/customer/make-purchase/make-purchase.command';
+import { ListPurchasesQuery } from '../queries/customer/list-purchases/list-purchases.query';
+import { ListablePurchaseDto } from '../dtos/read/purchase/listable-purchase.dto';
 
 @ApiUseTags('purchases')
 @Controller('/sale/purchases')
@@ -37,7 +40,10 @@ export class PurchaseController {
     true,
   );
 
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @ApiCreatedResponse({ description: 'Purchase has been made.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
@@ -67,6 +73,24 @@ export class PurchaseController {
           Location: `${process.env.APP_API_ROOT_URL}/sale/purchases/${id}`,
         })
         .sendStatus(HttpStatus.CREATED);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @Get()
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  @HttpCode(HttpStatus.OK)
+  public async get(@Req() request): Promise<ListablePurchaseDto[]> {
+    try {
+      return await this.queryBus.execute(
+        new ListPurchasesQuery(request.user.uid),
+      );
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

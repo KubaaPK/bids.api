@@ -19,7 +19,7 @@ export class Purchase {
   public offer: Promise<Offer>;
 
   @ManyToOne(type => Customer, customer => customer.purchases, { lazy: true })
-  public buyer: Customer;
+  public buyer: Promise<Customer>;
 
   @Column({
     nullable: false,
@@ -38,7 +38,7 @@ export class Purchase {
     purchase.id = dto.id;
     purchase.amount = dto.amount;
     purchase.offer = Promise.resolve(new Offer(dto.offerId));
-    purchase.buyer = new Customer(dto.buyerId);
+    purchase.buyer = new Promise(resolve => resolve(new Customer(dto.buyerId)));
     return purchase;
   }
 }
