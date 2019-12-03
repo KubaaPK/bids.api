@@ -9,6 +9,7 @@ import { ListDraftOffersHandler } from './customer/list-draft-offers/list-draft-
 import { ListOffersHandler } from './customer/list-offers/list-offers.handler';
 import { ListOfferHandler } from './customer/list-offer/list-offer.handler';
 import { ListSalesHandler } from './customer/list-sales/list-sales.handler';
+import { ListPurchasesHandler } from './customer/list-purchases/list-purchases.handler';
 
 export const queryHandlers: Type<any>[] = [
   ListCategoriesHandler,
@@ -21,4 +22,5 @@ export const queryHandlers: Type<any>[] = [
   ListOffersHandler,
   ListOfferHandler,
   ListSalesHandler,
+  ListPurchasesHandler,
 ];

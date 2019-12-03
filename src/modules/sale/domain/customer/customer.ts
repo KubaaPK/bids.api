@@ -196,19 +196,11 @@ export class Customer {
     return await this.sales;
   }
 
-  public async listReviewRequests(): Promise<ReviewRequest[]> {
-    return await this.reviewRequests;
+  public async listPurchases(): Promise<Purchase[]> {
+    return await this.purchases;
   }
 
-  public async listReview(): Promise<Review[]> {
-    return await this.receivedRatings;
-  }
-
-  public static create(
-    id: Uuid,
-    username?: string,
-    createdAt?: Date,
-  ): Customer {
+  public static create(id: Uuid, username: string, createdAt: Date): Customer {
     const customer: Customer = new Customer();
     customer.id = id;
     customer.username = username;
