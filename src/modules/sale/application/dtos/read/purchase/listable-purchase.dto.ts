@@ -13,4 +13,7 @@ export class ListablePurchaseDto {
   @Expose({ name: '__offer__' })
   @Transform(value => plainToClass(ListableOfferDto, value))
   public readonly offer: ListableOfferDto;
+
+  @Expose()
+  public readonly createdAt: Date;
 }
