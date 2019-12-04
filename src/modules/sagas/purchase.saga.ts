@@ -20,7 +20,7 @@ export class PurchaseSaga {
       map((event: PurchaseMadeEvent) => {
         return [
           new UpdateOfferProductStockCommand(event.offer, event.amount),
-          new ChargeFeeCommand(event.buyerId, event.purchaseId),
+          new ChargeFeeCommand(event.purchaseId),
           new SaveSaleCommand(event.offer, event.purchaseId),
           new RequestAddReviewCommand(event.buyerId, event.purchaseId),
         ];

@@ -200,6 +200,10 @@ export class Customer {
     return await this.purchases;
   }
 
+  public async listReviewRequests(): Promise<ReviewRequest[]> {
+    return await this.reviewRequests;
+  }
+
   public static create(id: Uuid, username: string, createdAt: Date): Customer {
     const customer: Customer = new Customer();
     customer.id = id;

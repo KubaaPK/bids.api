@@ -9,6 +9,7 @@ import { Offer } from '../../../../sale/domain/offer/offer';
 import { FeeCalculator } from '../../../domain/fee/fee-calculator';
 import { CategoriesNames } from '../../dtos/write/calculatable-offer.dto';
 import { CalculatedFeeDto } from '../../dtos/read/calculated-fee.dto';
+import { Customer } from '../../../../sale/domain/customer/customer';
 
 @CommandHandler(ChargeFeeCommand)
 export class ChargeFeeHandler implements ICommandHandler<ChargeFeeCommand> {
@@ -19,7 +20,7 @@ export class ChargeFeeHandler implements ICommandHandler<ChargeFeeCommand> {
   ) {}
 
   public async execute(command: ChargeFeeCommand): Promise<any> {
-    const { purchaseId, debtorId } = command;
+    const { purchaseId } = command;
     const purchase: Purchase = await this.purchaseRepository.findOne(
       purchaseId,
     );
@@ -28,6 +29,7 @@ export class ChargeFeeHandler implements ICommandHandler<ChargeFeeCommand> {
     }
 
     const offer: Offer = await purchase.offer;
+    const debtor: Customer = await offer.customer;
     const offerCategoryName: string = (await offer.category).name;
     const calculatedFee: CalculatedFeeDto = this.feeCalculator.calculate({
       category: offerCategoryName as CategoriesNames,
@@ -35,7 +37,7 @@ export class ChargeFeeHandler implements ICommandHandler<ChargeFeeCommand> {
       amount: purchase.amount,
     });
 
-    const fee: Fee = Fee.create(debtorId, purchaseId);
+    const fee: Fee = Fee.create(debtor.id, purchaseId);
     fee.addFee({
       currency: calculatedFee.currency,
       amount: calculatedFee.amount,

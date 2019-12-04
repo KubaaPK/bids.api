@@ -65,9 +65,7 @@ describe('Charge Fee Handler', () => {
     });
 
     await expect(
-      handler.execute(
-        new ChargeFeeCommand(faker.random.uuid(), faker.random.uuid()),
-      ),
+      handler.execute(new ChargeFeeCommand(faker.random.uuid())),
     ).rejects.toThrowError(InternalServerErrorException);
   });
 
@@ -77,9 +75,7 @@ describe('Charge Fee Handler', () => {
       .mockImplementationOnce(() => undefined);
 
     await expect(
-      handler.execute(
-        new ChargeFeeCommand(faker.random.uuid(), faker.random.uuid()),
-      ),
+      handler.execute(new ChargeFeeCommand(faker.random.uuid())),
     ).rejects.toThrowError(NotFoundException);
   });
 
@@ -104,6 +100,13 @@ describe('Charge Fee Handler', () => {
                   }),
                 ),
               ),
+              customer: new Promise(resolve =>
+                resolve(
+                  Object.assign(new Customer(), {
+                    id: faker.random.uuid(),
+                  }),
+                ),
+              ),
             }),
           ),
         ),
@@ -115,16 +118,16 @@ describe('Charge Fee Handler', () => {
     });
 
     await expect(
-      handler.execute(
-        new ChargeFeeCommand(faker.random.uuid(), faker.random.uuid()),
-      ),
+      handler.execute(new ChargeFeeCommand(faker.random.uuid())),
     ).rejects.toThrowError(InternalServerErrorException);
   });
 
   it('should save properly fee to Postgres', async () => {
+    const debtorId = faker.random.uuid();
+
     jest.spyOn(purchaseRepository, 'findOne').mockImplementationOnce(async () =>
       Object.assign(new Purchase(), {
-        amount: 1,
+        amount: 3,
         offer: new Promise(resolve =>
           resolve(
             Object.assign(new Offer(), {
@@ -142,6 +145,13 @@ describe('Charge Fee Handler', () => {
                   }),
                 ),
               ),
+              customer: new Promise(resolve =>
+                resolve(
+                  Object.assign(new Customer(), {
+                    id: debtorId,
+                  }),
+                ),
+              ),
             }),
           ),
         ),
@@ -152,15 +162,14 @@ describe('Charge Fee Handler', () => {
       .spyOn(feeRepository, 'save')
       .mockImplementationOnce(() => undefined);
     const purchaseId = faker.random.uuid();
-    const debtorId = faker.random.uuid();
 
-    await handler.execute(new ChargeFeeCommand(debtorId, purchaseId));
+    await handler.execute(new ChargeFeeCommand(purchaseId));
 
     expect(feeSaveSpy).toBeCalledWith({
       debtor: new Customer(debtorId),
       purchase: new Purchase(purchaseId),
       fee: {
-        amount: '20.00',
+        amount: '60.00',
         currency: 'PLN',
       },
     });
