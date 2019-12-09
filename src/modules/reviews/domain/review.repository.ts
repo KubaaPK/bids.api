@@ -8,4 +8,5 @@ export abstract class ReviewRepository {
     purchaseId: Uuid,
     reviewerId: Uuid,
   ): Promise<Review | undefined>;
+  public abstract async findIssuedReviews(issuerId: Uuid): Promise<Review[]>;
 }

@@ -25,6 +25,8 @@ import { Response } from 'express';
 import { ListableReviewRequestDto } from '../dtos/read/review-request/listable-review-request.dto';
 import { ListPurchasesToEvaluateQuery } from '../queries/list-purchases-to-evaluate/list-purchases-to-evaluate.query';
 import { ListSellerReviewsQuery } from '../queries/list-seller-reviews/list-seller-reviews.query';
+import { ListableIssuedReviewDto } from '../dtos/read/issued-reviews/listable-issued-review.dto';
+import { ListIssuedReviewsQuery } from '../queries/list-issued-reviews/list-issued-reviews.query';
 
 @ApiUseTags('reviews')
 @Controller('/sale/reviews')
@@ -85,12 +87,30 @@ export class ReviewController {
     }
   }
 
-  @Get('/:sellerId')
+  @Get('/seller/:sellerId')
   public async getReviews(@Param('sellerId') sellerId: Uuid): Promise<any> {
     try {
       return await this.queryBus.execute(new ListSellerReviewsQuery(sellerId));
     } catch (e) {
       this.logger.error(e.message);
+      throw e ||
+        new InternalServerErrorException(
+          ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @Get('/issued')
+  @UseGuards(AuthGuard('bearer'), RolesGuard)
+  @roles(AccountRole.USER)
+  public async getIssuedReviews(
+    @Req() request,
+  ): Promise<ListableIssuedReviewDto[]> {
+    try {
+      return await this.queryBus.execute(
+        new ListIssuedReviewsQuery(request.user.uid),
+      );
+    } catch (e) {
       throw e ||
         new InternalServerErrorException(
           ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,

@@ -68,4 +68,22 @@ export class PostgresReviewRepository implements ReviewRepository {
       );
     }
   }
+
+  public async findIssuedReviews(issuerId: Uuid): Promise<Review[]> {
+    try {
+      return await this.repository.find({
+        where: {
+          reviewer: {
+            id: issuerId,
+          },
+        },
+        relations: ['seller', 'purchase', 'purchase.offer'],
+      });
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
