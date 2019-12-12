@@ -10,7 +10,7 @@ export class ListOffersHandler implements IQueryHandler<ListOffersQuery> {
   constructor(private readonly offerRepository: OfferRepository) {}
 
   public async execute(query: ListOffersQuery): Promise<any> {
-    const offers: Offer[] = await this.offerRepository.find(
+    const offers: [Offer[], number] = await this.offerRepository.find(
       query.offset,
       query.limit,
       query.categoryId,

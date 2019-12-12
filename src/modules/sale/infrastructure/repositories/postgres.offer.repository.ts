@@ -37,10 +37,9 @@ export class PostgresOfferRepository implements OfferRepository {
     categoryId?: Uuid,
     sellerId?: Uuid,
     order?: string,
-  ): Promise<Offer[]> {
-    console.log(order);
+  ): Promise<[Offer[], number]> {
     try {
-      return await this.repository.find({
+      return await this.repository.findAndCount({
         take: limit,
         skip: offset,
         relations: ['category', 'customer', 'shippingRate'],
