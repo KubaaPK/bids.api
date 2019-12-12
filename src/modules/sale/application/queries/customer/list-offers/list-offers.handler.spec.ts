@@ -57,20 +57,23 @@ describe('List Offers Handler', () => {
 
   it('should return array with Listable Item Dto', async () => {
     jest.spyOn(offerRepository, 'find').mockImplementationOnce(async () => [
-      Object.assign(new Offer(), {
-        description: {},
-        images: [],
-      }),
-      Object.assign(new Offer(), {
-        description: {},
-        images: [],
-      }),
+      [
+        Object.assign(new Offer(), {
+          description: {},
+          images: [],
+        }),
+        Object.assign(new Offer(), {
+          description: {},
+          images: [],
+        }),
+      ],
+      2,
     ]);
 
     const offers: ListableOfferDto = await handler.execute(
       new ListOffersQuery(),
     );
     expect(offers).toHaveLength(2);
-    expect(offers[0]).toBeInstanceOf(ListableOfferDto);
+    expect(offers[0][0]).toBeInstanceOf(ListableOfferDto);
   });
 });
