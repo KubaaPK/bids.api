@@ -31,6 +31,5 @@ export class ListableCategoryDto {
     example: null,
   })
   @Expose()
-  @Type(() => ListableCategoryParentDto)
-  public readonly parent: ListableCategoryParentDto;
+  public readonly children: ListableCategoryDto;
 }
