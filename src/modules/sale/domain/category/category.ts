@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
+  Tree,
 } from 'typeorm';
 import { Uuid } from '../../../common/uuid';
 import { NewCategoryDto } from '../../application/dtos/write/category/new-category.dto';
@@ -73,7 +74,7 @@ export class Category {
     category.id = dto.id;
     category.name = dto.name;
     category.parent = (dto.parent as unknown) as Category;
-    dto.parent === undefined ? (category.leaf = true) : (category.leaf = false);
+    category.leaf = true;
     return category;
   }
 }

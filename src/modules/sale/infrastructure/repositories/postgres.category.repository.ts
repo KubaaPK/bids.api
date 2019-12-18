@@ -1,7 +1,12 @@
 import { CategoryRepository } from '../../domain/category/category.repository';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AppLogger } from '../../../common/app-logger';
-import { EntityManager, EntityRepository, Repository } from 'typeorm';
+import {
+  EntityManager,
+  EntityRepository,
+  Repository,
+  TreeRepository,
+} from 'typeorm';
 import { Category } from '../../domain/category/category';
 import { Uuid } from '../../../common/uuid';
 import { ExceptionMessages } from '../../../common/exception-messages';
@@ -48,7 +53,7 @@ export class PostgresCategoryRepository implements CategoryRepository {
         where: {
           parent: null,
         },
-        relations: ['parent'],
+        relations: ['children'],
       });
     } catch (e) {
       this.logger.error(e.message);
