@@ -53,7 +53,7 @@ export class PostgresCategoryRepository implements CategoryRepository {
         where: {
           parent: null,
         },
-        relations: ['children'],
+        relations: ['children', 'children.children'],
       });
     } catch (e) {
       this.logger.error(e.message);
