@@ -1,5 +1,4 @@
 import { Type } from '@nestjs/common';
-import { ListCategoriesHandler } from './customer/list-categories/list-categories.handler';
 import { ListCategoryHandler } from './customer/list-category/list-category.handler';
 import { ListParametersHandler } from './admin/list-parameters/list-parameters.handler';
 import { ListCategoryParametersHandler } from './customer/list-category-parameters/list-category-parameters.handler';
@@ -10,9 +9,9 @@ import { ListOffersHandler } from './customer/list-offers/list-offers.handler';
 import { ListOfferHandler } from './customer/list-offer/list-offer.handler';
 import { ListSalesHandler } from './customer/list-sales/list-sales.handler';
 import { ListPurchasesHandler } from './customer/list-purchases/list-purchases.handler';
+import { ListCategoriesHandler } from './customer/list-categories/list-categories.handler';
 
 export const queryHandlers: Type<any>[] = [
-  ListCategoriesHandler,
   ListCategoryHandler,
   ListParametersHandler,
   ListCategoryParametersHandler,
@@ -23,4 +22,5 @@ export const queryHandlers: Type<any>[] = [
   ListOfferHandler,
   ListSalesHandler,
   ListPurchasesHandler,
+  ListCategoriesHandler,
 ];

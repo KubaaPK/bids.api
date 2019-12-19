@@ -11,7 +11,12 @@ export class ListCategoriesHandler
   constructor(private readonly categoryRepository: CategoryRepository) {}
 
   public async execute(query: ListCategoriesQuery): Promise<any> {
-    const categories: Category[] = await this.categoryRepository.find();
+    let categories: Category[];
+    if (query.flat) {
+      categories = await this.categoryRepository.findAll();
+    } else {
+      categories = await this.categoryRepository.find();
+    }
 
     return categories.map((category: Category) => {
       return plainToClass(ListableCategoryDto, category);

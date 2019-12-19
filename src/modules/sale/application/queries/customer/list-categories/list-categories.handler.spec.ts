@@ -48,7 +48,7 @@ describe('List Categories Handler', () => {
     });
 
     await expect(
-      handler.execute(new ListCategoriesQuery()),
+      handler.execute(new ListCategoriesQuery(false)),
     ).rejects.toThrowError(InternalServerErrorException);
   });
 
@@ -57,9 +57,31 @@ describe('List Categories Handler', () => {
       return [new Category(), new Category()];
     });
 
-    const categories: any[] = await handler.execute(new ListCategoriesQuery());
+    const categories: any[] = await handler.execute(
+      new ListCategoriesQuery(false),
+    );
 
     expect(Array.isArray(categories)).toBeTruthy();
+  });
+
+  it('should call findAll method if flat query value is true', async () => {
+    const spyFindAll = jest
+      .spyOn(categoryRepository, 'findAll')
+      .mockImplementationOnce(async () => {
+        return [new Category(), new Category()];
+      });
+
+    const spyFind = jest
+      .spyOn(categoryRepository, 'find')
+      .mockImplementationOnce(async () => {
+        return [new Category(), new Category()];
+      });
+    const categories: any[] = await handler.execute(
+      new ListCategoriesQuery(true),
+    );
+
+    expect(spyFindAll).toBeCalled();
+    expect(spyFind).not.toBeCalled();
   });
 
   it('should single array element be an instance of Listable Category Dto', async () => {
@@ -68,7 +90,7 @@ describe('List Categories Handler', () => {
     });
 
     const categories: ListableCategoryDto[] = await handler.execute(
-      new ListCategoriesQuery(),
+      new ListCategoriesQuery(false),
     );
 
     expect(categories[0]).toBeInstanceOf(ListableCategoryDto);

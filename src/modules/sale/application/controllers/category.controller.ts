@@ -11,6 +11,7 @@ import {
   Post,
   Res,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
@@ -98,9 +99,11 @@ export class CategoryController {
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error.' })
   @Get()
   @HttpCode(HttpStatus.OK)
-  public async getAll(): Promise<ListableCategoryDto[]> {
+  public async getAll(
+    @Query('flat') flat: boolean,
+  ): Promise<ListableCategoryDto[]> {
     try {
-      return await this.queryBus.execute(new ListCategoriesQuery());
+      return await this.queryBus.execute(new ListCategoriesQuery(flat));
     } catch (e) {
       this.logger.error(e.message);
       throw e ||

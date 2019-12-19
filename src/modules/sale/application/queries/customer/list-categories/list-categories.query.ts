@@ -1,3 +1,3 @@
 export class ListCategoriesQuery {
-  constructor() {}
+  constructor(public readonly flat: boolean) {}
 }

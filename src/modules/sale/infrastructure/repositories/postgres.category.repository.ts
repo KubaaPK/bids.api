@@ -86,4 +86,15 @@ export class PostgresCategoryRepository implements CategoryRepository {
       );
     }
   }
+
+  public async findAll(): Promise<Category[]> {
+    try {
+      return await this.repository.find();
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new InternalServerErrorException(
+        ExceptionMessages.GENERIC_INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

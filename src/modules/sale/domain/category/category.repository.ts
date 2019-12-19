@@ -8,5 +8,6 @@ export abstract class CategoryRepository {
   ): Promise<Category | undefined>;
   public abstract async findOne(id: Uuid): Promise<Category | undefined>;
   public abstract async find(): Promise<Category[]>;
+  public abstract async findAll(): Promise<Category[]>;
   public abstract async delete(id: Uuid): Promise<void>;
 }
