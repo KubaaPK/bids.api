@@ -152,7 +152,7 @@ export class OfferController {
   ): Promise<ListableDraftOfferDto[]> {
     try {
       return await this.queryBus.execute(
-        new ListDraftOffersQuery(request.user, offset, limit),
+        new ListDraftOffersQuery(request.user.uid, offset, limit),
       );
     } catch (e) {
       this.logger.error(e.message);
