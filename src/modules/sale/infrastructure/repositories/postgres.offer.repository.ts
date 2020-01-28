@@ -37,6 +37,7 @@ export class PostgresOfferRepository implements OfferRepository {
     categoryId?: Uuid,
     sellerId?: Uuid,
     order?: string,
+    title?: string,
   ): Promise<[Offer[], number]> {
     try {
       return await this.repository.findAndCount({
@@ -47,6 +48,7 @@ export class PostgresOfferRepository implements OfferRepository {
           category: {
             id: categoryId || Not(IsNull()),
           },
+          name: title === undefined ? Like(`%%`) : Like(`%${title}%`),
           status: OfferStatus.ACTIVE,
           customer: {
             id: sellerId || Not(IsNull()),

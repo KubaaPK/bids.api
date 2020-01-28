@@ -63,6 +63,7 @@ export class UpdateDraftOfferHandler
       delete command.updatedDraftOffer.description;
     }
 
+    console.log(command.updatedDraftOffer);
     await customer.updateDraftOffer(command.offerId, command.updatedDraftOffer);
     await this.customerRepository.save(customer);
   }

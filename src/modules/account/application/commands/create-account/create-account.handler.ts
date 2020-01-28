@@ -1,15 +1,15 @@
-import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import {CommandHandler, EventBus, ICommandHandler} from '@nestjs/cqrs';
 import * as admin from 'firebase-admin';
-import { CreateAccountCommand } from './create-account.command';
-import { AccountRepository } from '../../../domain/account.repository';
-import { InternalServerErrorException, Logger } from '@nestjs/common';
-import { Account } from '../../../domain/account';
-import { NewAccountDto } from '../../dtos/write/new-account.dto';
-import { AccountRole } from '../../../domain/account-role.enum';
-import { AccountCreatedEvent } from '../../events/account-created/account-created.event';
-import { Uuid } from '../../../../common/uuid';
-import { ExceptionMessages } from '../../../../common/exception-messages';
-import { AccountAlreadyExistsException } from '../../../domain/exceptions/account-already-exists.exception';
+import {CreateAccountCommand} from './create-account.command';
+import {AccountRepository} from '../../../domain/account.repository';
+import {InternalServerErrorException, Logger} from '@nestjs/common';
+import {Account} from '../../../domain/account';
+import {NewAccountDto} from '../../dtos/write/new-account.dto';
+import {AccountRole} from '../../../domain/account-role.enum';
+import {AccountCreatedEvent} from '../../events/account-created/account-created.event';
+import {Uuid} from '../../../../common/uuid';
+import {ExceptionMessages} from '../../../../common/exception-messages';
+import {AccountAlreadyExistsException} from '../../../domain/exceptions/account-already-exists.exception';
 
 @CommandHandler(CreateAccountCommand)
 export class CreateAccountHandler

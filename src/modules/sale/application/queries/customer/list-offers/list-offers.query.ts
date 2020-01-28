@@ -7,5 +7,6 @@ export class ListOffersQuery {
     public readonly categoryId?: Uuid,
     public readonly sellerId?: Uuid,
     public readonly order?: string,
+    public readonly title?: string,
   ) {}
 }
